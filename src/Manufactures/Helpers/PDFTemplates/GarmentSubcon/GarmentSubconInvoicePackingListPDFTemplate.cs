@@ -178,7 +178,7 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
             cellCenterTopNoBorder.Phrase = new Paragraph(" ", normal_font);
             tableSignature.AddCell(cellCenterTopNoBorder);
 
-            cellLeftNoBorder.Phrase = new Paragraph("(DAN LIRIS)", normal_font);
+            cellLeftNoBorder.Phrase = new Paragraph("(AMBASSADOR GARMINDO)", normal_font);
             tableSignature.AddCell(cellLeftNoBorder);
 
             PdfPCell cellSignature = new PdfPCell(tableSignature);
