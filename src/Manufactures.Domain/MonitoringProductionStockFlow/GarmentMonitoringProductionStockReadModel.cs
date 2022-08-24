@@ -100,7 +100,6 @@ namespace Manufactures.Domain.MonitoringProductionStockFlow
 		public double SamplePrice { get; internal set; }
 		public double FinishingInExpenditure { get; internal set; }
 		public double FinishingInExpenditurepPrice { get; internal set; }
-
 		public double ExpenditureGoodRemainingQty { get; internal set; }
 		public double ExpenditureGoodRemainingPrice { get; internal set; }
 		public double ExpenditureGoodAdj { get; internal set; }
