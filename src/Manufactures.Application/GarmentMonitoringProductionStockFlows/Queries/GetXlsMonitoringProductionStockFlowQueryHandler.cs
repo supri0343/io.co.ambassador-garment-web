@@ -196,7 +196,9 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 			public double ExpenditureGoodReturPrice { get; internal set; }
 			public double ExportQty { get; internal set; }
 			public double ExportPrice { get; internal set; }
-			public double OtherQty { get; internal set; }
+            public double LocalQty { get; internal set; }
+            public double LocalPrice { get; internal set; }
+            public double OtherQty { get; internal set; }
 			public double OtherPrice { get; internal set; }
 			public double SampleQty { get; internal set; }
 			public double SamplePrice { get; internal set; }
@@ -273,7 +275,6 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                           select a.CreatedDate).FirstOrDefault();
             DateTimeOffset dateFareNew = dateTo.AddDays(1);
 
-
             var sumbasicPrice = (from a in (from prep in garmentPreparingRepository.Query
                                             where (request.ro == null || (request.ro != null && request.ro != "" && prep.RONo == request.ro))
                                             select new { prep.RONo,prep.Identity})
@@ -286,6 +287,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                              BasicPrice = Convert.ToDecimal(group.Sum(s => s.BasicPrice)),
                              Count = group.Count()
                          });
+
             var sumFCs = (from a in garmentCuttingInRepository.Query
                           where (request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) && a.CuttingType == "Main Fabric" &&
                           a.CuttingInDate <= dateTo
@@ -309,9 +311,9 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                   FC = (from cost in sumFCs where cost.RO == a.RONo select cost.FC / cost.Count).FirstOrDefault() }).Distinct();
             
             var queryBalance = from a in
-                                      (from aa in garmentBalanceProductionStockRepository.Query
-                                       where aa.CreatedDate < dateFrom && (request.ro == null || (request.ro != null && request.ro != "" && aa.Ro == request.ro)) && aa.UnitId == (request.unit == 0 ? aa.UnitId : request.unit) && aa.UnitId == aa.UnitId
-                                       select aa)
+                                   (from aa in garmentBalanceProductionStockRepository.Query
+                                    where aa.CreatedDate < dateFrom && (request.ro == null || (request.ro != null && request.ro != "" && aa.Ro == request.ro)) && aa.UnitId == (request.unit == 0 ? aa.UnitId : request.unit) && aa.UnitId == aa.UnitId
+                                    select aa)
 
                                select new monitoringView
                                {
@@ -380,6 +382,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                    PriceCuttingOut = 0,
                                    ExportQty = 0,
                                    ExportPrice = 0,
+                                   LocalQty = 0,
+                                   LocalPrice = 0,
                                    SampleQty = 0,
                                    SamplePrice = 0,
                                    OtherQty = 0,
@@ -388,7 +392,6 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                    PriceLoadingInTransfer = 0,
                                    ExpenditureGoodInTransfer = 0,
                                    ExpenditureGoodInTransferPrice = 0
-
                                };
 
 
@@ -539,6 +542,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                        PriceCuttingOut = group.Sum(x => x.PriceCuttingOut),
                                        ExportQty = 0,
                                        ExportPrice = 0,
+                                       LocalQty = 0,
+                                       LocalPrice = 0,
                                        SampleQty = 0,
                                        SamplePrice = 0,
                                        OtherQty = 0,
@@ -698,6 +703,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                              ExpenditureGoodReturPrice = 0,
                                              ExportQty = 0,
                                              ExportPrice = 0,
+                                             LocalQty = 0,
+                                             LocalPrice = 0,
                                              SampleQty = 0,
                                              SamplePrice = 0,
                                              OtherQty = 0,
@@ -857,6 +864,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                                ExpenditureGoodReturPrice = 0,
                                                ExportQty = 0,
                                                ExportPrice = 0,
+                                               LocalQty = 0,
+                                               LocalPrice = 0,
                                                SampleQty = 0,
                                                SamplePrice = 0,
                                                OtherQty = 0,
@@ -1012,6 +1021,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                       ExpenditureGoodReturPrice = 0,
                                       ExportQty = 0,
                                       ExportPrice = 0,
+                                      LocalQty = 0,
+                                      LocalPrice = 0,
                                       SampleQty = 0,
                                       SamplePrice = 0,
                                       OtherQty = 0,
@@ -1165,6 +1176,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                            ExpenditureGoodReturPrice = 0,
                                            ExportQty = 0,
                                            ExportPrice = 0,
+                                           LocalQty = 0,
+                                           LocalPrice = 0,
                                            SampleQty = 0,
                                            SamplePrice = 0,
                                            OtherQty = 0,
@@ -1317,6 +1330,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                             ExpenditureGoodReturPrice = 0,
                                             ExportQty = 0,
                                             ExportPrice = 0,
+                                            LocalQty = 0,
+                                            LocalPrice = 0,
                                             SampleQty = 0,
                                             SamplePrice = 0,
                                             OtherQty = 0,
@@ -1475,6 +1490,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                      ExpenditureGoodReturPrice = 0,
                                      ExportQty = 0,
                                      ExportPrice = 0,
+                                     LocalQty = 0,
+                                     LocalPrice = 0,
                                      SampleQty = 0,
                                      SamplePrice = 0,
                                      OtherQty = 0,
@@ -1632,6 +1649,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                               ExpenditureGoodReturPrice = 0,
                                               ExportQty = 0,
                                               ExportPrice = 0,
+                                              LocalQty = 0,
+                                              LocalPrice = 0,
                                               SampleQty = 0,
                                               SamplePrice = 0,
                                               OtherQty = 0,
@@ -1792,6 +1811,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                     ExpenditureGoodReturPrice = 0,
                                     ExportQty = 0,
                                     ExportPrice = 0,
+                                    LocalQty = 0,
+                                    LocalPrice = 0,
                                     SampleQty = 0,
                                     SamplePrice = 0,
                                     OtherQty = 0,
@@ -1944,6 +1965,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                        ExpenditureGoodReturPrice = 0,
                                        ExportQty = 0,
                                        ExportPrice = 0,
+                                       LocalQty = 0,
+                                       LocalPrice = 0,
                                        SampleQty = 0,
                                        SamplePrice = 0,
                                        OtherQty = 0,
@@ -2100,6 +2123,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                      ExpenditureGoodReturPrice = 0,
                                      ExportQty = 0,
                                      ExportPrice = 0,
+                                     LocalQty = 0,
+                                     LocalPrice = 0,
                                      SampleQty = 0,
                                      SamplePrice = 0,
                                      OtherQty = 0,
@@ -2290,6 +2315,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                       PriceLoadingInTransfer = 0,
                                       ExportQty = 0,
                                       ExportPrice = 0,
+                                      LocalQty = 0,
+                                      LocalPrice = 0,
                                       SampleQty = 0,
                                       SamplePrice = 0,
                                       OtherQty = 0,
@@ -2444,6 +2471,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                       ExpenditureGoodReturPrice = 0,
                                       ExportQty = 0,
                                       ExportPrice = 0,
+                                      LocalQty = 0,
+                                      LocalPrice = 0,
                                       SampleQty = 0,
                                       SamplePrice = 0,
                                       OtherQty = 0,
@@ -2611,6 +2640,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                         ExpenditureGoodReturPrice = 0,
                                         ExportQty = 0,
                                         ExportPrice = 0,
+                                        LocalQty = 0,
+                                        LocalPrice = 0,
                                         SampleQty = 0,
                                         SamplePrice = 0,
                                         OtherQty = 0,
@@ -2779,7 +2810,6 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                          BeginingBalanceExpenditureGoodPrice = group.Sum(x => x.BeginingBalanceExpenditureGoodPrice),
                                          BeginingBalanceSubconQty = group.Sum(x => x.BeginingBalanceSubconQty),
                                          BeginingBalanceSubconPrice = group.Sum(x => x.BeginingBalanceSubconPrice),
-
                                          FinishingOutQty = group.Sum(x => x.FinishingOutQty),
                                          FinishingOutPrice = group.Sum(x => x.FinishingOutPrice),
                                          SubconOutQty = group.Sum(x => x.SubconOutQty),
@@ -2789,6 +2819,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                          ExpenditureGoodReturPrice = 0,
                                          ExportQty = 0,
                                          ExportPrice = 0,
+                                         LocalQty = 0,
+                                         LocalPrice = 0,
                                          SampleQty = 0,
                                          SamplePrice = 0,
                                          OtherQty = 0,
@@ -2949,6 +2981,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                                       ExpenditureGoodReturPrice = 0,
                                                       ExportQty = 0,
                                                       ExportPrice = 0,
+                                                      LocalQty = 0,
+                                                      LocalPrice = 0,
                                                       SampleQty = 0,
                                                       SamplePrice = 0,
                                                       OtherQty = 0,
@@ -3106,6 +3140,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                          ExpenditureGoodReturPrice = 0,
                                          ExportQty = 0,
                                          ExportPrice = 0,
+                                         LocalQty = 0,
+                                         LocalPrice = 0,
                                          SampleQty = 0,
                                          SamplePrice = 0,
                                          OtherQty = 0,
@@ -3267,6 +3303,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                            ExportPrice = 0,
                                            SampleQty = 0,
                                            SamplePrice = 0,
+                                           LocalQty = 0,
+                                           LocalPrice = 0,
                                            OtherQty = 0,
                                            OtherPrice = 0,
                                            ExpenditureGoodInTransfer = 0,
@@ -3362,6 +3400,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                              BeginingBalanceExpenditureGoodPrice = a.ExpenditureDate < dateFrom && a.ExpenditureDate > dateBalance ? -b.Price : 0,
                                              ExportQty = (a.ExpenditureDate >= dateFrom && a.ExpenditureType == "EXPORT") ? b.Quantity : 0,
                                              ExportPrice = (a.ExpenditureDate >= dateFrom && a.ExpenditureType == "EXPORT") ? b.Price : 0,
+                                             LocalQty = (a.ExpenditureDate >= dateFrom && a.ExpenditureType == "LOKAL") ? b.Quantity : 0,
+                                             LocalPrice = (a.ExpenditureDate >= dateFrom && a.ExpenditureType == "LOKAL") ? b.Price : 0,
                                              SampleQty = (a.ExpenditureDate >= dateFrom && (a.ExpenditureType == "LAIN-LAIN")) ? b.Quantity : 0,
                                              SamplePrice = (a.ExpenditureDate >= dateFrom & (a.ExpenditureType == "LAIN-LAIN")) ? b.Price : 0,
                                              OtherQty = (a.ExpenditureDate >= dateFrom && (a.ExpenditureType == "SISA")) ? b.Quantity : 0,
@@ -3422,6 +3462,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                              BeginingBalanceExpenditureGoodPrice = group.Sum(x => x.BeginingBalanceExpenditureGoodPrice),
                                              ExportQty = group.Sum(x => x.ExportQty),
                                              ExportPrice = group.Sum(x => x.ExportPrice),
+                                             LocalQty = group.Sum(x => x.LocalQty),
+                                             LocalPrice = group.Sum(x => x.LocalPrice),
                                              SampleQty = group.Sum(x => x.SampleQty),
                                              SamplePrice = group.Sum(x => x.SamplePrice),
                                              OtherQty = group.Sum(x => x.OtherQty),
@@ -3588,6 +3630,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                                 ExpenditureGoodReturPrice = 0,
                                                 ExportQty = 0,
                                                 ExportPrice = 0,
+                                                LocalQty = 0,
+                                                LocalPrice = 0,
                                                 SampleQty = 0,
                                                 SamplePrice = 0,
                                                 OtherQty = 0,
@@ -3749,6 +3793,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                                  Ro = key,
                                                  ExportQty = 0,
                                                  ExportPrice = 0,
+                                                 LocalQty = 0,
+                                                 LocalPrice = 0,
                                                  SampleQty = 0,
                                                  SamplePrice = 0,
                                                  OtherQty = 0,
@@ -3863,6 +3909,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                 a.ExpenditureGoodReturPrice,
                                 a.ExportQty,
                                 a.ExportPrice,
+                                a.LocalQty,
+                                a.LocalPrice,
                                 a.OtherQty,
                                 a.OtherPrice,
                                 a.SampleQty,
@@ -3941,6 +3989,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                     subconoutPrice = group.Sum(s => s.SubconOutPrice),
                     exportQty = group.Sum(s => s.ExportQty),
                     exportPrice = group.Sum(s => s.ExportPrice),
+                    localQty = group.Sum(s => s.LocalQty),
+                    locaPrice = group.Sum(s => s.LocalPrice),
                     otherqty = group.Sum(s => s.OtherQty),
                     otherprice = group.Sum(s => s.OtherPrice),
                     sampleQty = group.Sum(s => s.SampleQty),
@@ -4066,6 +4116,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                             EndBalanceFinishingPrice = Math.Round(((Convert.ToDouble(a.fare) * 0.75) + b.BasicPrice) * (a.beginingbalanceFinishing + a.finishingin + a.finishingintransfer - a.finishingout - a.finishingadj - a.finishinigretur), 2),
                             ExportQty = Math.Round(a.exportQty, 2),
                             ExportPrice = Math.Round(((Convert.ToDouble(a.fare)) + b.BasicPrice) * a.exportQty, 2),
+                            LocalQty = Math.Round(a.localQty, 2),
+                            LocalPrice = Math.Round(((Convert.ToDouble(a.fare)) + b.BasicPrice) * a.localQty, 2),
                             SampleQty = Math.Round(a.sampleQty, 2),
                             SamplePrice = Math.Round(((Convert.ToDouble(a.fare)) + b.BasicPrice) * a.sampleQty, 2),
                             OtherQty = Math.Round(a.otherqty, 2),
@@ -4076,14 +4128,14 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                             ExpenditureGoodReturPrice = Math.Round(((Convert.ToDouble(a.fare)) + b.BasicPrice) * a.expendRetur, 2),
                             ExpenditureGoodInTransfer = Math.Round(a.expenditureInTransfer, 2),
                             ExpenditureGoodInTransferPrice = Math.Round(((Convert.ToDouble(a.fare)) + b.BasicPrice) * a.expenditureInTransfer, 2),
-                            EndBalanceExpenditureGood = Math.Round(a.beginingBalanceExpenditureGood + a.finishingout + a.subconout + a.expendRetur + a.expenditureInTransfer - a.exportQty - a.otherqty - a.sampleQty - a.expendAdj, 2),
-                            EndBalanceExpenditureGoodPrice = Math.Round(((Convert.ToDouble(a.fare)) + b.BasicPrice) * (a.beginingBalanceExpenditureGood + a.finishingout + a.subconout + a.expendRetur + a.expenditureInTransfer - a.exportQty - a.otherqty - a.sampleQty - a.expendAdj), 2),
+                            EndBalanceExpenditureGood = Math.Round(a.beginingBalanceExpenditureGood + a.finishingout + a.subconout + a.expendRetur + a.expenditureInTransfer - a.exportQty - a.localQty - a.otherqty - a.sampleQty - a.expendAdj, 2),
+                            EndBalanceExpenditureGoodPrice = Math.Round(((Convert.ToDouble(a.fare)) + b.BasicPrice) * (a.beginingBalanceExpenditureGood + a.finishingout + a.subconout + a.expendRetur + a.expenditureInTransfer - a.exportQty - a.localQty - a.otherqty - a.sampleQty - a.expendAdj), 2),
                             FareNew = a.farenew,
                             CuttingNew = Math.Round(a.farenew * Convert.ToDecimal(a.begining + a.qtyCuttingIn - a.qtycutting - a.qtyCuttingTransfer - a.qtCuttingSubkon - a.qtyavalcut - a.qtyavalsew), 2),
                             LoadingNew = Math.Round(a.farenew * Convert.ToDecimal(a.beginingloading + a.qtyLoadingIn - a.qtyloading - a.qtyLoadingAdj), 2),
                             SewingNew = Math.Round(a.farenew * Convert.ToDecimal(a.beginingSewing + a.sewingIn - a.sewingout + a.sewingintransfer - a.wipsewing - a.wipfinishing - a.sewingretur - a.sewingadj), 2),
                             FinishingNew = Math.Round(a.farenew * Convert.ToDecimal(a.beginingbalanceFinishing + a.finishingin + a.finishingintransfer - a.finishingout - a.finishingadj - a.finishinigretur), 2),
-                            ExpenditureNew = Math.Round(a.farenew * Convert.ToDecimal(a.beginingBalanceExpenditureGood + a.finishingout + a.subconout + a.expendRetur + a.expenditureInTransfer - a.exportQty - a.otherqty - a.sampleQty - a.expendAdj), 2),
+                            ExpenditureNew = Math.Round(a.farenew * Convert.ToDecimal(a.beginingBalanceExpenditureGood + a.finishingout + a.subconout + a.expendRetur + a.expenditureInTransfer - a.exportQty - a.localQty - a.otherqty - a.sampleQty - a.expendAdj), 2),
                             SubconNew = Math.Round(a.farenew * Convert.ToDecimal(a.beginingbalancesubcon + a.subconIn - a.subconout), 2)
                         }).ToList();
 
@@ -4268,7 +4320,6 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 
             //var costcal2 = costCalculation.data.Distinct().Count();
 
-
             var dataend = (from item in data
                            join b in costcalgroup on item.Ro equals b.ro
                            select new GarmentMonitoringProductionStockFlowDto
@@ -4356,6 +4407,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                                EndBalanceFinishingPrice = item.EndBalanceFinishingPrice,
                                ExportQty = item.ExportQty,
                                ExportPrice = item.ExportPrice,
+                               LocalQty = item.LocalQty,
+                               LocalPrice = item.LocalPrice,
                                SampleQty = item.SampleQty,
                                SamplePrice = item.SamplePrice,
                                OtherQty = item.OtherQty,
@@ -4677,6 +4730,8 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                 EndBalanceFinishingPrice = dataend.Sum(x => x.EndBalanceFinishingPrice),
                 ExportQty = dataend.Sum(x => x.ExportQty),
                 ExportPrice = dataend.Sum(x => x.ExportPrice),
+                LocalQty = dataend.Sum(x => x.LocalQty),
+                LocalPrice = dataend.Sum(x => x.LocalPrice),
                 SampleQty = dataend.Sum(x => x.SampleQty),
                 SamplePrice = dataend.Sum(x => x.SamplePrice),
                 OtherQty = dataend.Sum(x => x.OtherQty),
@@ -4689,7 +4744,6 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
                 ExpenditureGoodInTransferPrice = dataend.Sum(x => x.ExpenditureGoodInTransferPrice),
                 EndBalanceExpenditureGood = dataend.Sum(x => x.EndBalanceExpenditureGood),
                 EndBalanceExpenditureGoodPrice = dataend.Sum(x => x.EndBalanceExpenditureGoodPrice),
-
                 CuttingNew = dataend.Sum(x => x.CuttingNew),
                 LoadingNew = dataend.Sum(x => x.LoadingNew),
                 SewingNew = dataend.Sum(x => x.SewingNew),
@@ -4751,13 +4805,14 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI7", DataType = typeof(string) });
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI8", DataType = typeof(string) });
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI9", DataType = typeof(string) });
+                reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI10", DataType = typeof(string) });
 
-				reportDataTable.Rows.Add("", "", "", "",
+                reportDataTable.Rows.Add("", "", "", "",
 				"Saldo Awal WIP Cutting", "Cutting In (WIP Cutting)", "Cutting Out / HP(WIP Loading)", "Cutting Out Transfer", "Cutting Out Subkon", "Aval Komponen dari Cutting", "Aval Komponen dari Sewing", "Saldo Akhir WIP Cutting",
 				"Saldo Awal Loading", "Loading In", "Loading In Transfer", "Loading Out (WIP Sewing)	", "Adjs Loading", "Saldo Akhir Loading",
 				"Saldo Awal WIP Sewing", "Sewing In (WIP Sewing)", "Sewing Out (WIP Finishing)", "Sewing In Transfer", "Sewing Out Tranfer WIP Sewing", "Sewing Out Transfer WIP Finishing", "Retur ke Cutting", "Adjs Sewing", "Saldo Akhir WIP Sewing",
 				"Saldo Awal WIP Finishing", "Finishing In (WIP Finishing)", "Saldo Awal WIP Subkon", "Subkon In", "Subkon Out", "Saldo Akhir WIP Subkon", "Finishing Out (WIP BJ)", "Finishing In Transfer", "Adjs Finishing", "Retur ke Sewing", "Saldo Akhir WIP Finishing",
-				"Saldo Awal Barang jadi", "Barang Jadi In/ (WIP BJ)", "Barang Jadi In Transfer", "Penerimaan Lain-lain (Retur)", "Pengiriman Export", "Pengiriman Gudang Sisa", "Pengiriman Lain-lain/Sample", "Adjust Barang Jadi", "Saldo Akhir Barang Jadi"
+				"Saldo Awal Barang jadi", "Barang Jadi In/ (WIP BJ)", "Barang Jadi In Transfer", "Penerimaan Lain-lain (Retur)", "Pengiriman Export", "Pengiriman Lokal", "Pengiriman Gudang Sisa", "Pengiriman Lain-lain/Sample", "Adjust Barang Jadi", "Saldo Akhir Barang Jadi"
 				);
 			}
 			else
@@ -4860,7 +4915,9 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI18", DataType = typeof(string) });
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI19", DataType = typeof(string) });
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI20", DataType = typeof(string) });
-				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Nilai Baru Komersil(SaldoAkhir)", DataType = typeof(string) });
+                reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI21", DataType = typeof(string) });
+                reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BARANG JADI22", DataType = typeof(string) });
+                reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Nilai Baru Komersil(SaldoAkhir)", DataType = typeof(string) });
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Nilai Baru Komersil(SaldoAkhir)2", DataType = typeof(string) });
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Nilai Baru Komersil(SaldoAkhir)3", DataType = typeof(string) });
 				reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Nilai Baru Komersil(SaldoAkhir)4", DataType = typeof(string) });
@@ -4873,7 +4930,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 									"Saldo Awal Loading","", "Loading In","", "Loading In Transfer", "", "Loading Out (WIP Sewing)	","", "Adjs Loading","", "Saldo Akhir Loading","",
 									"Saldo Awal WIP Sewing","", "Sewing In (WIP Sewing)","", "Sewing Out (WIP Finishing)","", "Sewing In Transfer","", "Sewing Out Tranfer WIP Sewing","", "Sewing Out Transfer WIP Finishing","", "Retur ke Cutting","", "Adjs Sewing","", "Saldo Akhir WIP Sewing","",
 									"Saldo Awal WIP Finishing","", "Finishing In (WIP Finishing)","", "Saldo Awal WIP Subkon","", "Subkon In","", "Subkon Out","", "Saldo Akhir WIP Subkon","", "Finishing Out (WIP BJ)","", "Finishing In Transfer","", "Adjs Finishing","", "Retur ke Sewing","", "Saldo Akhir WIP Finishing","",
-									"Saldo Awal Barang jadi","", "Barang Jadi In/ (WIP BJ)","", "Finishing Transfer","", "Penerimaan Lain-lain (Retur)","", "Standar Konversi Biaya","", "Pengiriman Export","", "Pengiriman Gudang Sisa","", "Pengiriman Lain-lain/Sample","", "Adjust Barang Jadi","", "Saldo Akhir Barang Jadi","",
+									"Saldo Awal Barang jadi","", "Barang Jadi In/ (WIP BJ)","", "Finishing Transfer","", "Penerimaan Lain-lain (Retur)","", "Standar Konversi Biaya","", "Pengiriman Export","", "Pengiriman Lokal", "", "Pengiriman Gudang Sisa","", "Pengiriman Lain-lain/Sample","", "Adjust Barang Jadi","", "Saldo Akhir Barang Jadi","",
 									"Tarif","Cutting","Loading","Sewing","Finishing", "Subkon","Barang Jadi"
 									);
 				reportDataTable.Rows.Add("", "", "", "", "", "", "", "", "",
@@ -4881,7 +4938,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 					"Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga",
 					"Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga",
 					"Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga",
-					"Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Tarif", "Pemakaian Bahan Baku", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty","Harga",
+					"Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Tarif", "Pemakaian Bahan Baku", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty", "Harga", "Qty","Harga",
 					"","","","","","",""
 					);
 				
@@ -4897,7 +4954,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 					report.BeginingBalanceLoadingQty, report.QtyLoadingIn,report.QtyLoadingInTransfer, report.QtyLoading, report.QtyLoadingAdjs, report.EndBalanceLoadingQty,
 					report.BeginingBalanceSewingQty, report.QtySewingIn, report.QtySewingOut, report.QtySewingInTransfer, report.WipSewingOut, report.WipFinishingOut, report.QtySewingRetur, report.QtySewingAdj, report.EndBalanceSewingQty,
 					report.BeginingBalanceFinishingQty, report.FinishingInQty, report.BeginingBalanceSubconQty, report.SubconInQty, report.SubconOutQty, report.EndBalanceSubconQty, report.FinishingOutQty, report.FinishingInTransferQty, report.FinishingAdjQty, report.FinishingReturQty, report.EndBalanceFinishingQty,
-					report.BeginingBalanceExpenditureGood, report.FinishingInExpenditure, report.FinishingInTransferQty, report.ExpenditureGoodRetur, report.ExportQty, report.OtherQty, report.SampleQty, report.ExpenditureGoodAdj, report.EndBalanceExpenditureGood);
+					report.BeginingBalanceExpenditureGood, report.FinishingInExpenditure, report.FinishingInTransferQty, report.ExpenditureGoodRetur, report.ExportQty, report.LocalQty, report.OtherQty, report.SampleQty, report.ExpenditureGoodAdj, report.EndBalanceExpenditureGood);
 					counter++;
 				}
 				else
@@ -4907,7 +4964,7 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 						report.BeginingBalanceLoadingQty, report.BeginingBalanceLoadingPrice, report.QtyLoadingIn, report.PriceLoadingIn,report.QtyLoadingInTransfer,report.PriceLoadingInTransfer, report.QtyLoading, report.PriceLoading, report.QtyLoadingAdjs, report.PriceLoadingAdjs, report.EndBalanceLoadingQty, report.EndBalanceLoadingPrice,
 						report.BeginingBalanceSewingQty, report.BeginingBalanceSewingPrice, report.QtySewingIn,report.PriceSewingIn, report.QtySewingOut,report.PriceSewingOut, report.QtySewingInTransfer,report.PriceSewingInTransfer, report.WipSewingOut,report.WipSewingOutPrice, report.WipFinishingOut,report.WipFinishingOutPrice, report.QtySewingRetur,report.PriceSewingRetur, report.QtySewingAdj,report.PriceSewingAdj, report.EndBalanceSewingQty,report.EndBalanceSewingPrice,
 						report.BeginingBalanceFinishingQty,report.BeginingBalanceFinishingPrice, report.FinishingInQty,report.FinishingInPrice, report.BeginingBalanceSubconQty,report.BeginingBalanceSubconPrice, report.SubconInQty,report.SubconInPrice, report.SubconOutQty,report.SubconOutPrice, report.EndBalanceSubconQty,report.EndBalanceSubconPrice, report.FinishingOutQty,report.FinishingOutPrice, report.FinishingInTransferQty,report.FinishingInTransferPrice, report.FinishingAdjQty,report.FinishingAdjPRice, report.FinishingReturQty,report.FinishingReturPrice, report.EndBalanceFinishingQty,report.EndBalanceFinishingPrice,
-						report.BeginingBalanceExpenditureGood,report.BeginingBalanceExpenditureGoodPrice, report.FinishingInExpenditure,report.FinishingInExpenditurepPrice, report.FinishingInTransferQty,report.FinishingInTransferPrice, report.ExpenditureGoodRetur,report.ExpenditureGoodReturPrice,report.PriceUsage, report.MaterialUsage, report.ExportQty,report.ExportPrice, report.OtherQty,report.OtherPrice, report.SampleQty,report.SamplePrice, report.ExpenditureGoodAdj,report.ExpenditureGoodAdjPrice, report.EndBalanceExpenditureGood,report.EndBalanceExpenditureGoodPrice,
+						report.BeginingBalanceExpenditureGood,report.BeginingBalanceExpenditureGoodPrice, report.FinishingInExpenditure,report.FinishingInExpenditurepPrice, report.FinishingInTransferQty,report.FinishingInTransferPrice, report.ExpenditureGoodRetur,report.ExpenditureGoodReturPrice,report.PriceUsage, report.MaterialUsage, report.ExportQty,report.ExportPrice, report.LocalQty, report.LocalPrice, report.OtherQty,report.OtherPrice, report.SampleQty,report.SamplePrice, report.ExpenditureGoodAdj,report.ExpenditureGoodAdjPrice, report.EndBalanceExpenditureGood,report.EndBalanceExpenditureGoodPrice,
 						report.FareNew, report.CuttingNew, report.LoadingNew, report.SewingNew, report.FinishingNew,report.SubconNew, report.ExpenditureNew
 						);
 					counter++;
@@ -4922,61 +4979,61 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 				
 				if (request.type != "bookkeeping")
 				{
-					worksheet.Cells["A1"].Value = "Report Produksi"; worksheet.Cells["A" + 1 + ":AU" + 1 + ""].Merge = true;
+					worksheet.Cells["A1"].Value = "Report Produksi"; worksheet.Cells["A" + 1 + ":AV" + 1 + ""].Merge = true;
 					worksheet.Cells["A2"].Value = "Periode " + dateFrom.ToString("dd-MM-yyyy") + " s/d " + dateTo.ToString("dd-MM-yyyy");
 					worksheet.Cells["A3"].Value = "Konfeksi " + _unitName;
-					worksheet.Cells["A" + 1 + ":AU" + 1 + ""].Merge = true;
-					worksheet.Cells["A" + 2 + ":AU" + 2 + ""].Merge = true;
-					worksheet.Cells["A" + 3 + ":AU" + 3 + ""].Merge = true;
-					worksheet.Cells["A" + 1 + ":AU" + 3 + ""].Style.Font.Size = 15;
-					worksheet.Cells["A" + 1 + ":AU" + 3 + ""].Style.Font.Bold = true;
-					worksheet.Cells["A" + 1 + ":AU" + 6 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-					worksheet.Cells["A" + 1 + ":AU" + 6 + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+					worksheet.Cells["A" + 1 + ":AV" + 1 + ""].Merge = true;
+					worksheet.Cells["A" + 2 + ":AV" + 2 + ""].Merge = true;
+					worksheet.Cells["A" + 3 + ":AV" + 3 + ""].Merge = true;
+					worksheet.Cells["A" + 1 + ":AV" + 3 + ""].Style.Font.Size = 15;
+					worksheet.Cells["A" + 1 + ":AV" + 3 + ""].Style.Font.Bold = true;
+					worksheet.Cells["A" + 1 + ":AV" + 6 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+					worksheet.Cells["A" + 1 + ":AV" + 6 + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
 					worksheet.Cells["A5"].LoadFromDataTable(reportDataTable, true);
-					worksheet.Cells["E" + 5 + ":AU" + 5 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+					worksheet.Cells["E" + 5 + ":AV" + 5 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 
 					worksheet.Cells["E" + 5 + ":L" + 5 + ""].Merge = true;
 					worksheet.Cells["M" + 5 + ":R" + 5 + ""].Merge = true;
 					worksheet.Cells["S" + 5 + ":AA" + 5 + ""].Merge = true;
 					worksheet.Cells["AB" + 5 + ":AL" + 5 + ""].Merge = true;
-					worksheet.Cells["AM" + 5 + ":AU" + 5 + ""].Merge = true;
+					worksheet.Cells["AM" + 5 + ":AV" + 5 + ""].Merge = true;
 					worksheet.Cells["E" + 5 + ":L" + 5 + ""].Merge = true;
 					worksheet.Cells["S" + 5 + ":AA" + 5 + ""].Merge = true;
 					worksheet.Cells["AB" + 5 + ":AL" + 5 + ""].Merge = true;
-					worksheet.Cells["AM" + 5 + ":AU" + 5 + ""].Merge = true;
+					worksheet.Cells["AM" + 5 + ":AV" + 5 + ""].Merge = true;
 					worksheet.Cells["A" + counter + ":D" + counter + ""].Merge = true;
-					worksheet.Cells["A" + 5 + ":AU"  +6 + ""].Style.Font.Bold = true;
-					worksheet.Cells["E" + 6 + ":AU" + counter + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-					worksheet.Cells["A" + 5 + ":AU" + counter + ""].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-					worksheet.Cells["A" + 5 + ":AU" + counter + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
-					worksheet.Cells["A" + 5 + ":AU" + counter + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
-					worksheet.Cells["A" + 5 + ":AU" + counter + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-					worksheet.Cells["A" + counter + ":AU" + counter + ""].Style.Font.Bold = true;
-                    foreach (var cell in worksheet.Cells["D" + 7 + ":AU" + (counter + 1) + ""])
+					worksheet.Cells["A" + 5 + ":AV"  +6 + ""].Style.Font.Bold = true;
+					worksheet.Cells["E" + 6 + ":AV" + counter + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+					worksheet.Cells["A" + 5 + ":AV" + counter + ""].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+					worksheet.Cells["A" + 5 + ":AV" + counter + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+					worksheet.Cells["A" + 5 + ":AV" + counter + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+					worksheet.Cells["A" + 5 + ":AV" + counter + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+					worksheet.Cells["A" + counter + ":AV" + counter + ""].Style.Font.Bold = true;
+                    foreach (var cell in worksheet.Cells["D" + 7 + ":AV" + (counter + 1) + ""])
                     {
                         cell.Value = Convert.ToDecimal(cell.Value);
                     }
                 }
 				else
 				{
-					worksheet.Cells["A1"].Value = "Report Produksi"; worksheet.Cells["A" + 1 + ":AT" + 1 + ""].Merge = true;
+					worksheet.Cells["A1"].Value = "Report Produksi"; worksheet.Cells["A" + 1 + ":AV" + 1 + ""].Merge = true;
 					worksheet.Cells["A2"].Value = "Periode " + dateFrom.ToString("dd-MM-yyyy") + " s/d " + dateTo.ToString("dd-MM-yyyy");
 					worksheet.Cells["A3"].Value = "Konfeksi " + _unitName;
-					worksheet.Cells["A" + 1 + ":CZ" + 1 + ""].Merge = true;
-					worksheet.Cells["A" + 2 + ":CZ" + 2 + ""].Merge = true;
-					worksheet.Cells["A" + 3 + ":CZ" + 3 + ""].Merge = true;
-					worksheet.Cells["A" + 1 + ":CZ" + 3 + ""].Style.Font.Size = 15;
-					worksheet.Cells["A" + 1 + ":CZ" + 3 + ""].Style.Font.Bold = true;
-					worksheet.Cells["A" + 1 + ":CZ" + 3 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-					worksheet.Cells["A" + 1 + ":CZ" + 3 + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+					worksheet.Cells["A" + 1 + ":DB" + 1 + ""].Merge = true;
+					worksheet.Cells["A" + 2 + ":DB" + 2 + ""].Merge = true;
+					worksheet.Cells["A" + 3 + ":DB" + 3 + ""].Merge = true;
+					worksheet.Cells["A" + 1 + ":DB" + 3 + ""].Style.Font.Size = 15;
+					worksheet.Cells["A" + 1 + ":DB" + 3 + ""].Style.Font.Bold = true;
+					worksheet.Cells["A" + 1 + ":DB" + 3 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+					worksheet.Cells["A" + 1 + ":DB" + 3 + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
 					worksheet.Cells["A5"].LoadFromDataTable(reportDataTable, true);
 					worksheet.Cells["E" + 5 + ":L" + 5 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 					worksheet.Cells["J" + 5 + ":Y" + 5 + ""].Merge = true;
 					worksheet.Cells["Z" + 5 + ":AK" + 5 + ""].Merge = true;
 					worksheet.Cells["AL" + 5 + ":BC" + 5 + ""].Merge = true;
 					worksheet.Cells["BD" + 5 + ":BY" + 5 + ""].Merge = true;
-					worksheet.Cells["BZ" + 5 + ":CS" + 5 + ""].Merge = true;
-					worksheet.Cells["CT" + 5 + ":CZ" + 5 + ""].Merge = true;
+					worksheet.Cells["BZ" + 5 + ":CU" + 5 + ""].Merge = true;
+					worksheet.Cells["CV" + 5 + ":DB" + 5 + ""].Merge = true;
 					worksheet.Cells["A" + 5 + ":A" + 7 + ""].Merge = true;
 					worksheet.Cells["B" + 5 + ":B" + 7 + ""].Merge = true;
 					worksheet.Cells["C" + 5 + ":C" + 7 + ""].Merge = true;
@@ -5030,18 +5087,19 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 					worksheet.Cells["CN" + 6 + ":CO" + 6 + ""].Merge = true;
 					worksheet.Cells["CP" + 6 + ":CQ" + 6 + ""].Merge = true;
 					worksheet.Cells["CR" + 6 + ":CS" + 6 + ""].Merge = true;
+                    worksheet.Cells["CT" + 6 + ":CU" + 6 + ""].Merge = true;
 					worksheet.Cells["A" + (counter + 1) + ":i" + (counter + 1) + ""].Merge = true;
-					worksheet.Cells["A" + 5 + ":CZ" + 7 + ""].Style.Font.Bold = true;
-					worksheet.Cells["A" + (counter + 1) + ":CZ" + (counter + 1) + ""].Style.Font.Bold = true;
-					worksheet.Cells["A" + 5 + ":CZ" + 7 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-					worksheet.Cells["A" + 5 + ":CZ" + 6 + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-					worksheet.Cells["E" + 8 + ":CZ" + (counter + 1) + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+					worksheet.Cells["A" + 5 + ":DB" + 7 + ""].Style.Font.Bold = true;
+					worksheet.Cells["A" + (counter + 1) + ":DB" + (counter + 1) + ""].Style.Font.Bold = true;
+					worksheet.Cells["A" + 5 + ":DB" + 7 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+					worksheet.Cells["A" + 5 + ":DB" + 6 + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+					worksheet.Cells["E" + 8 + ":DB" + (counter + 1) + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
 					
-					worksheet.Cells["A" + 5 + ":CZ" + (counter + 1) + ""].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-					worksheet.Cells["A" + 5 + ":CZ" + (counter + 1) + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
-					worksheet.Cells["A" + 5 + ":CZ" + (counter + 1) + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
-					worksheet.Cells["A" + 5 + ":CZ" + (counter + 1) + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                    foreach (var cell in worksheet.Cells["E" + 8 + ":CZ" + (counter + 1) + ""])
+					worksheet.Cells["A" + 5 + ":DB" + (counter + 1) + ""].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+					worksheet.Cells["A" + 5 + ":DB" + (counter + 1) + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+					worksheet.Cells["A" + 5 + ":DB" + (counter + 1) + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+					worksheet.Cells["A" + 5 + ":DB" + (counter + 1) + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    foreach (var cell in worksheet.Cells["E" + 8 + ":DB" + (counter + 1) + ""])
                     {
                         cell.Value = Convert.ToDecimal(cell.Value);
                     }
