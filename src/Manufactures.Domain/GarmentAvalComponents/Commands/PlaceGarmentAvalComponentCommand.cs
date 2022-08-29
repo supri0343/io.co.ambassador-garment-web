@@ -21,7 +21,6 @@ namespace Manufactures.Domain.GarmentAvalComponents.Commands
         public DateTimeOffset? SewingDate { get; set; }
         public decimal Price { get; set; }
         public bool IsReceived { get; set; }
-
         public List<PlaceGarmentAvalComponentItemValueObject> Items { get; set; }
     }
 

@@ -119,7 +119,6 @@ namespace DanLiris.Admin.Web
 
 		}
 
-
         public void RegisterCustomsDataSettings()
 		{
 			if (!configuration.GetSection("DanLirisSettings").Exists())
@@ -143,8 +142,8 @@ namespace DanLiris.Admin.Web
         {
             MasterDataSettings.StorageAccountName = this.configuration.GetValue<string>("StorageAccountName") ?? configuration["StorageAccountName"];
             MasterDataSettings.StorageAccountKey = this.configuration.GetValue<string>("StorageAccountKey") ?? configuration["StorageAccountKey"];
-            
         }
+
         public void ConfigureServices(IServiceCollection services)
         {
             RegisterMasterDataSettings();
