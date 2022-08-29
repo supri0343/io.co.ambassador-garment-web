@@ -460,8 +460,8 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
                 string[] headOffices = {
                     "Head Office : JL. MERAPI NO. 23, Banaran, Grogol, Sukoharjo 57552",
                     "Central Java, Indonesia",
-                    "TELP.: (+62 271) 740888, 714400          PO BOX 166 Solo, 57100" ,
-                    "FAX. : (+62 271) 735222, 740777          Website : www.danliris.com" ,
+                    "TELP.: (+62 271) 732888                  PO BOX 166 Solo, 57100" ,
+                    "Website : www.ambassadorgarmindo.com" ,
                 };
                 for (int i = 0; i < headOffices.Length; i++)
                 {
