@@ -430,7 +430,7 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
 
                 var branchOfficeY = height - marginTop + 35;
 
-                byte[] imageByteDL = Convert.FromBase64String(Base64ImageStrings.LOGO_DANLIRIS_58_58);
+                byte[] imageByteDL = Convert.FromBase64String(Base64ImageStrings.LOGO_AG_58_58);
                 Image imageDL = Image.GetInstance(imageByteDL);
                 imageDL.SetAbsolutePosition(marginLeft, branchOfficeY);
                 cb.AddImage(imageDL, inlineImage: true);
