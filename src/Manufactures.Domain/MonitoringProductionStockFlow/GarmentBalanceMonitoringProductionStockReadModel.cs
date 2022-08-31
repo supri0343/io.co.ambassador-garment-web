@@ -14,7 +14,6 @@ namespace Manufactures.Domain.MonitoringProductionStockFlow
         public int UnitId { get; internal set; }
         public string UnitCode { get; internal set; }
         public string UnitName { get; internal set; }
-
         public string Ro { get; internal set; }
         public string BuyerCode { get; internal set; }
         public string Article { get; internal set; }
