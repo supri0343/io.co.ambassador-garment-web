@@ -40,7 +40,7 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSample
             tableHeader.SetWidths(new float[] { 1f, 1f, 1f });
 
             PdfPCell cellHeaderContentLeft = new PdfPCell() { Border = Rectangle.NO_BORDER };
-            cellHeaderContentLeft.AddElement(new Phrase("PT DAN LIRIS", normal_font));
+            cellHeaderContentLeft.AddElement(new Phrase("PT AMBASSADOR GARMINDO", normal_font));
             cellHeaderContentLeft.AddElement(new Phrase("SUKOHARJO", normal_font));
             cellHeaderContentLeft.AddElement(new Phrase("BANARAN, GROGOL", normal_font));
             tableHeader.AddCell(cellHeaderContentLeft);
@@ -52,7 +52,7 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSample
             tableHeader.AddCell(cellHeaderContentCenter);
 
             PdfPCell cellHeaderContentRight = new PdfPCell() { Border = Rectangle.NO_BORDER };
-            cellHeaderContentRight.AddElement(new Phrase("FM-00-AD-09-008 B", normal_font));
+            cellHeaderContentRight.AddElement(new Phrase("", normal_font));
             cellHeaderContentRight.AddElement(new Phrase("BUYER  :" + buyer, normal_font));
             cellHeaderContentRight.AddElement(new Phrase("ART.NO : " + exGood.Article, normal_font));
             cellHeaderContentRight.AddElement(new Phrase("NO.        : " + exGood.ExpenditureGoodNo, normal_font));

@@ -95,13 +95,14 @@ namespace Manufactures.Application.GarmentMonitoringProductionStockFlows.Queries
 		public double ExpenditureGoodReturPrice { get; internal set; }
 		public double ExportQty { get; internal set; }
 		public double ExportPrice { get; internal set; }
+		public double LocalQty { get; internal set; }
+		public double LocalPrice { get; internal set; }
 		public double OtherQty { get; internal set; }
 		public double OtherPrice { get; internal set; }
 		public double SampleQty { get; internal set; }
 		public double SamplePrice { get; internal set; }
 		public double FinishingInExpenditure { get; internal set; }
 		public double FinishingInExpenditurepPrice { get; internal set; }
-		
 		public double ExpenditureGoodRemainingQty { get; internal set; }
 		public double ExpenditureGoodRemainingPrice { get; internal set; }
 		public double ExpenditureGoodInTransfer { get; internal set; }

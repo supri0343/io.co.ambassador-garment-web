@@ -17,7 +17,6 @@ namespace Manufactures.Domain.GarmentAvalComponents.ValueObjects
         public double Quantity { get; set; }
         public double SourceQuantity { get; set; }
         public SizeValueObject Size { get; set; }
-
         public bool IsSave { get; set; }
         public decimal Price { get; set; }
         public decimal BasicPrice { get; set; }

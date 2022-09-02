@@ -98,7 +98,7 @@ namespace Manufactures.Helpers.PDFTemplates
 
             cellLeftNoBorder.Phrase = new Phrase("cc", normal_font);
             tableHeader.AddCell(cellLeftNoBorder);
-            cellLeftNoBorder.Phrase = new Phrase(": QA", normal_font);
+            cellLeftNoBorder.Phrase = new Phrase(": QC", normal_font);
             tableHeader.AddCell(cellLeftNoBorder);
 
             PdfPCell cellHeader = new PdfPCell(tableHeader); // dont remove

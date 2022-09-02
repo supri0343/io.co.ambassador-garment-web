@@ -52,9 +52,8 @@ namespace Manufactures.Domain.MonitoringProductionFlow
 				QtyFinishing = qtyFinishing,
 				Wip = wip
 			};
-
-
 		}
+
 		public GarmentMonitoringProductionFlow(GarmentMonitoringProductionFlowReadModel readModel) : base(readModel)
 		{
 			Ro = readModel.Ro;

@@ -430,7 +430,7 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
 
                 var branchOfficeY = height - marginTop + 35;
 
-                byte[] imageByteDL = Convert.FromBase64String(Base64ImageStrings.LOGO_DANLIRIS_58_58);
+                byte[] imageByteDL = Convert.FromBase64String(Base64ImageStrings.LOGO_AG_58_58);
                 Image imageDL = Image.GetInstance(imageByteDL);
                 imageDL.SetAbsolutePosition(marginLeft, branchOfficeY);
                 cb.AddImage(imageDL, inlineImage: true);
@@ -460,8 +460,8 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
                 string[] headOffices = {
                     "Head Office : JL. MERAPI NO. 23, Banaran, Grogol, Sukoharjo 57552",
                     "Central Java, Indonesia",
-                    "TELP.: (+62 271) 740888, 714400          PO BOX 166 Solo, 57100" ,
-                    "FAX. : (+62 271) 735222, 740777          Website : www.danliris.com" ,
+                    "TELP.: (+62 271) 732888                  PO BOX 166 Solo, 57100" ,
+                    "Website : www.ambassadorgarmindo.com" ,
                 };
                 for (int i = 0; i < headOffices.Length; i++)
                 {
