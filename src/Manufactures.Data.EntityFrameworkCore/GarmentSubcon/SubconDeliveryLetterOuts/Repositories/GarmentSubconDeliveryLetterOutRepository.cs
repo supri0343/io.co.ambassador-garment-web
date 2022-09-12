@@ -26,6 +26,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSubcon.SubconDeliveryLett
                 "DLType",
                 "ContractType",
                 "ContractNo",
+                "EPONo",
                 "UENNo",
             };
 
@@ -33,7 +34,6 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSubcon.SubconDeliveryLett
 
             Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
             data = OrderDictionary.Count == 0 ? data.OrderByDescending(o => o.ModifiedDate) : QueryHelper<GarmentSubconDeliveryLetterOutReadModel>.Order(data, OrderDictionary);
-
 
             return data;
         }

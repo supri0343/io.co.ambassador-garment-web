@@ -29,6 +29,9 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.ReadModels
         public bool IsUsed { get; internal set; }
 
         public string SubconCategory { get; internal set; }
+
+        public int EPOId { get; internal set; }
+        public string EPONo { get; internal set; }
         public virtual List<GarmentSubconDeliveryLetterOutItemReadModel> GarmentSubconDeliveryLetterOutItem { get; internal set; }
     }
 }

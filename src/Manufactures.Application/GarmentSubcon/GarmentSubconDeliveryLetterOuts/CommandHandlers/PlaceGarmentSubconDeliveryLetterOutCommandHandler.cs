@@ -69,7 +69,9 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
                 request.Remark,
                 request.IsUsed,
                 request.ServiceType,
-                request.SubconCategory
+                request.SubconCategory,
+                request.EPOId,
+                request.EPONo
             );
 
             foreach (var item in request.Items)
