@@ -15,6 +15,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSubcon.SubconDeliveryLett
             builder.HasKey(e => e.Identity);
 
             builder.Property(p => p.ContractNo).HasMaxLength(25);
+            builder.Property(p => p.EPONo).HasMaxLength(50);
             builder.Property(p => p.DLNo).HasMaxLength(25);
             builder.Property(p => p.PONo).HasMaxLength(25);
             builder.Property(p => p.UENNo).HasMaxLength(25);
