@@ -38,10 +38,10 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Commands
     {
         public PlaceGarmentSubconDeliveryLetterOutCommandValidator()
         {
-            //RuleFor(r => r.SubconContractId).NotNull();
-            //RuleFor(r => r.ContractNo).NotNull();
-            RuleFor(r => r.EPOId).NotNull();
-            RuleFor(r => r.EPONo).NotNull();
+            RuleFor(r => r.SubconContractId).NotNull();
+            RuleFor(r => r.ContractNo).NotNull();
+            //RuleFor(r => r.EPOId).NotNull();
+            //RuleFor(r => r.EPONo).NotNull();
             RuleFor(r => r.UENId).NotEmpty().When(r => r.SubconCategory == "SUBCON CUTTING SEWING");
             RuleFor(r => r.DLDate).NotNull().GreaterThan(DateTimeOffset.MinValue);
             RuleFor(r => r.UENNo).NotNull().When(r=>r.SubconCategory == "SUBCON CUTTING SEWING");
