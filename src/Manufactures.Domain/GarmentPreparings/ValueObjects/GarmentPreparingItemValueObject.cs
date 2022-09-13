@@ -38,6 +38,7 @@ namespace Manufactures.Domain.GarmentPreparings.ValueObjects
         public double BasicPrice { get; set; }
         public Guid GarmentPreparingId { get; set; }
         public string ROSource { get; set; }
+        public string CustomsCategory { get; set; }
 
         protected override IEnumerable<object> GetAtomicValues()
         {

@@ -41,7 +41,7 @@ namespace Manufactures.Tests.ViewModels.GarmentPreparings
         public void MapItem_Return_Success()
         {
             Guid id = Guid.NewGuid();
-            GarmentPreparingItemDto dto = new GarmentPreparingItemDto(new GarmentPreparingItem(id,1,new ProductId(1),"productCode","productName","designColor",1,new UomId(1),"uomUnit","fabricType",1,1,id,null));
+            GarmentPreparingItemDto dto = new GarmentPreparingItemDto(new GarmentPreparingItem(id,1,new ProductId(1),"productCode","productName","designColor",1,new UomId(1),"uomUnit","fabricType",1,1,id,null, "fasilitas"));
             CreateViewModelMapper viewModelMapper = new CreateViewModelMapper();
             viewModelMapper.MapItem(dto, id);
         }
