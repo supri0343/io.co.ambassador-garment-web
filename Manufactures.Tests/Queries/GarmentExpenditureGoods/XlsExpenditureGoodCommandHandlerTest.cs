@@ -108,7 +108,7 @@ namespace Manufactures.Tests.Queries.GarmentExpenditureGoods
             Guid guidPrepare = Guid.NewGuid();
             Guid guidPrepareItem = Guid.NewGuid();
 
-            GetXlsExpenditureGoodQuery getMonitoring = new GetXlsExpenditureGoodQuery(1, 25, "{}", 1, DateTime.Now, DateTime.Now.AddDays(2),"", "token");
+            GetXlsExpenditureGoodQuery getMonitoring = new GetXlsExpenditureGoodQuery(1, 25, "{}", DateTime.Now, DateTime.Now.AddDays(2),"", "token");
 
 			_mockGarmentCuttingInItemRepository
 				  .Setup(s => s.Query)
@@ -187,7 +187,7 @@ namespace Manufactures.Tests.Queries.GarmentExpenditureGoods
 			Guid guidPrepare = Guid.NewGuid();
 			Guid guidPrepareItem = Guid.NewGuid();
 
-			GetXlsExpenditureGoodQuery getMonitoring = new GetXlsExpenditureGoodQuery(1, 25, "{}", 1, DateTime.Now, DateTime.Now.AddDays(2), "bookkeeping", "token");
+			GetXlsExpenditureGoodQuery getMonitoring = new GetXlsExpenditureGoodQuery(1, 25, "{}", DateTime.Now, DateTime.Now.AddDays(2), "bookkeeping", "token");
 
 			_mockGarmentCuttingInItemRepository
 				  .Setup(s => s.Query)

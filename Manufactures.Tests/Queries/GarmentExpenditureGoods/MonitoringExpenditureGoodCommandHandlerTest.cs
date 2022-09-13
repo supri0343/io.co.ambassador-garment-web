@@ -112,7 +112,7 @@ namespace Manufactures.Tests.Queries.GarmentExpenditureGoods
             Guid guidPrepare = Guid.NewGuid();
             Guid guidPrepareItem = Guid.NewGuid();
 
-            GetMonitoringExpenditureGoodQuery getMonitoring = new GetMonitoringExpenditureGoodQuery(1, 25, "{}", 1, DateTime.Now, DateTime.Now.AddDays(2), "token");
+            GetMonitoringExpenditureGoodQuery getMonitoring = new GetMonitoringExpenditureGoodQuery(1, 25, "{}", DateTime.Now, DateTime.Now.AddDays(2), "token");
 
             _mockGarmentCuttingInItemRepository
                 .Setup(s => s.Query)
