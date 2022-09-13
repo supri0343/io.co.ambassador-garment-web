@@ -29,6 +29,8 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Commands
         public double TotalQty { get; set; }
         public double UsedQty { get; set; }
         public string SubconCategory { get; set; }
+        public int EPOId { get; set; }
+        public string EPONo { get; set; }
         public List<GarmentSubconDeliveryLetterOutItemValueObject> Items { get; set; }
     }
 
@@ -38,6 +40,8 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Commands
         {
             RuleFor(r => r.SubconContractId).NotNull();
             RuleFor(r => r.ContractNo).NotNull();
+            //RuleFor(r => r.EPOId).NotNull();
+            //RuleFor(r => r.EPONo).NotNull();
             RuleFor(r => r.UENId).NotEmpty().When(r => r.SubconCategory == "SUBCON CUTTING SEWING");
             RuleFor(r => r.DLDate).NotNull().GreaterThan(DateTimeOffset.MinValue);
             RuleFor(r => r.UENNo).NotNull().When(r=>r.SubconCategory == "SUBCON CUTTING SEWING");

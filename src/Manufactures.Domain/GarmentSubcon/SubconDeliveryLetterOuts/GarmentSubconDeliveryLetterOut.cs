@@ -28,8 +28,10 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts
         public bool IsUsed { get; private set; }
         public string ServiceType { get; private set; }
         public string SubconCategory { get; private set; }
+        public int EPOId { get; private set; }
+        public string EPONo { get; private set; }
 
-        public GarmentSubconDeliveryLetterOut(Guid identity, string dLNo, string dLType, Guid subconContractId, string contractNo, string contractType, DateTimeOffset dLDate, int uENId, string uENNo, string pONo, int ePOItemId, string remark, bool isUsed, string serviceType, string subconCategory) : base(identity)
+        public GarmentSubconDeliveryLetterOut(Guid identity, string dLNo, string dLType, Guid subconContractId, string contractNo, string contractType, DateTimeOffset dLDate, int uENId, string uENNo, string pONo, int ePOItemId, string remark, bool isUsed, string serviceType, string subconCategory, int epoId, string epoNo) : base(identity)
         {
             Identity = identity;
             DLNo = dLNo;
@@ -46,6 +48,8 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts
             IsUsed = isUsed;
             ServiceType = serviceType;
             SubconCategory = subconCategory;
+            EPOId = epoId;
+            EPONo = epoNo;
             ReadModel = new GarmentSubconDeliveryLetterOutReadModel(Identity)
             {
                 DLDate=DLDate,
@@ -61,7 +65,9 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts
                 Remark=Remark,
                 IsUsed = isUsed,
                 ServiceType=serviceType,
-                SubconCategory=subconCategory
+                SubconCategory=subconCategory,
+                EPOId = epoId,
+                EPONo = epoNo
             };
 
             ReadModel.AddDomainEvent(new OnGarmentSubconDeliveryLetterOutPlaced(Identity));
@@ -83,6 +89,8 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts
             IsUsed = readModel.IsUsed;
             ServiceType = readModel.ServiceType;
             SubconCategory = readModel.SubconCategory;
+            EPOId = readModel.EPOId;
+            EPONo = readModel.EPONo;
         }
 
         public void Modify()

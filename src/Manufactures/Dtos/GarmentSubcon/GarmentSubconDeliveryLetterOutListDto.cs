@@ -22,6 +22,8 @@ namespace Manufactures.Dtos.GarmentSubcon
             ServiceType = garmentSubconDeliveryLetterOutList.ServiceType;
             SubconCategory = garmentSubconDeliveryLetterOutList.SubconCategory;
             SubconContractId = garmentSubconDeliveryLetterOutList.SubconContractId;
+            EPOId = garmentSubconDeliveryLetterOutList.EPOId;
+            EPONo = garmentSubconDeliveryLetterOutList.EPONo;
             Items = new List<GarmentSubconDeliveryLetterOutItemDto>();
 
         }
@@ -39,6 +41,8 @@ namespace Manufactures.Dtos.GarmentSubcon
         public string ServiceType { get; set; }
         public string SubconCategory { get; set; }
         public Guid SubconContractId { get; set; }
+        public int EPOId { get; set; }
+        public string EPONo { get; set; }
         public List<GarmentSubconDeliveryLetterOutItemDto> Items { get; set; }
     }
 }
