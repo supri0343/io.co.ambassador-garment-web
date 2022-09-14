@@ -4,14 +4,16 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20220913075837_delete_subconcontract_sdlo")]
+    partial class delete_subconcontract_sdlo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -7160,8 +7162,6 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<string>("ProductRemark")
                         .HasMaxLength(2000);
 
-                    b.Property<int>("QtyPacking");
-
                     b.Property<double>("Quantity");
 
                     b.Property<string>("RONo")
@@ -7186,9 +7186,6 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<string>("UomOutUnit")
                         .HasMaxLength(50);
-
-                    b.Property<string>("UomSatuanUnit")
-                        .HasMaxLength(10);
 
                     b.Property<string>("UomUnit")
                         .HasMaxLength(50);
@@ -7245,8 +7242,6 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<string>("PONo")
                         .HasMaxLength(25);
 
-                    b.Property<int>("QtyPacking");
-
                     b.Property<string>("Remark")
                         .HasMaxLength(4000);
 
@@ -7264,9 +7259,6 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<string>("UENNo")
                         .HasMaxLength(25);
-
-                    b.Property<string>("UomUnit")
-                        .HasMaxLength(10);
 
                     b.HasKey("Identity");
 

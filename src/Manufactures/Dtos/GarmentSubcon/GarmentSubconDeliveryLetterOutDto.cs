@@ -13,8 +13,6 @@ namespace Manufactures.Dtos.GarmentSubcon
             Id = garmentSubconDeliveryLetterOutList.Identity;
             DLNo = garmentSubconDeliveryLetterOutList.DLNo;
             DLType = garmentSubconDeliveryLetterOutList.DLType;
-            SubconContractId = garmentSubconDeliveryLetterOutList.SubconContractId;
-            ContractNo = garmentSubconDeliveryLetterOutList.ContractNo;
             ContractType = garmentSubconDeliveryLetterOutList.ContractType;
             DLDate = garmentSubconDeliveryLetterOutList.DLDate;
             UENId = garmentSubconDeliveryLetterOutList.UENId;
@@ -29,13 +27,13 @@ namespace Manufactures.Dtos.GarmentSubcon
             SubconCategory = garmentSubconDeliveryLetterOutList.SubconCategory;
             EPONo = garmentSubconDeliveryLetterOutList.EPONo;
             EPOId = garmentSubconDeliveryLetterOutList.EPOId;
+            QtyPacking = garmentSubconDeliveryLetterOutList.QtyPacking;
+            UomUnit = garmentSubconDeliveryLetterOutList.UomUnit;
         }
 
         public Guid Id { get; set; }
         public string DLNo { get; set; }
         public string DLType { get; set; }
-        public Guid SubconContractId { get; set; }
-        public string ContractNo { get; set; }
         public string ContractType { get; set; }
         public DateTimeOffset DLDate { get; set; }
 
@@ -51,6 +49,8 @@ namespace Manufactures.Dtos.GarmentSubcon
         public string SubconCategory { get; set; }
         public int EPOId { get; set; }
         public string EPONo { get; set; }
+        public int QtyPacking { get; set; }
+        public string UomUnit { get; set; }
         public List<GarmentSubconDeliveryLetterOutItemDto> Items { get; set; }
     }
 }

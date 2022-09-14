@@ -59,8 +59,8 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
 
             cellIdentityContentLeft.Phrase = new Phrase("No. Kontrak", normal_font);
             tableIdentity.AddCell(cellIdentityContentLeft);
-            cellIdentityContentLeft.Phrase = new Phrase(": " + garmentSubconDLOut.ContractNo, normal_font);
-            tableIdentity.AddCell(cellIdentityContentLeft);
+            //cellIdentityContentLeft.Phrase = new Phrase(": " + garmentSubconDLOut.ContractNo, normal_font);
+            //tableIdentity.AddCell(cellIdentityContentLeft);
             cellIdentityContentLeft.Phrase = new Phrase(garmentSubconDLOut.SubconCategory == "SUBCON CUTTING SEWING" ? "Dasar Pengeluaran" : "", normal_font);
             tableIdentity.AddCell(cellIdentityContentLeft);
             cellIdentityContentLeft.Phrase = new Phrase(garmentSubconDLOut.SubconCategory == "SUBCON CUTTING SEWING" ? ": " + garmentSubconDLOut.UENNo : "", normal_font);

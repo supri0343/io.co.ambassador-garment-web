@@ -84,7 +84,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.CustomsOut
                 .Setup(s => s.Query)
                 .Returns(new List<GarmentSubconDeliveryLetterOutReadModel>()
                 {
-                    new GarmentSubconDeliveryLetterOut(SubconDLOutGuid,"","",Guid.Empty,"","SUBCON BAHAN BAKU",DateTimeOffset.Now,1,"","",1,"",false,"","",It.IsAny<int>(),"").GetReadModel()
+                    new GarmentSubconDeliveryLetterOut(SubconDLOutGuid,"","","SUBCON BAHAN BAKU",DateTimeOffset.Now,1,"","",1,"",false,"","",It.IsAny<int>(),"",It.IsAny<int>(),"").GetReadModel()
                 }.AsQueryable());
 
             _mockSubconDeliveryLetterOutRepository

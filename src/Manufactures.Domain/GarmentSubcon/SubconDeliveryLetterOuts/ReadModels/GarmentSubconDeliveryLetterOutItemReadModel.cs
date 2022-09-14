@@ -12,7 +12,6 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.ReadModels
         }
         public Guid SubconDeliveryLetterOutId { get; internal set; }
         public int UENItemId { get; internal set; }
-
         public int ProductId { get; internal set; }
         public string ProductCode { get; internal set; }
         public string ProductName { get; internal set; }
@@ -27,6 +26,8 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.ReadModels
         public string UomOutUnit { get; internal set; }
 
         public string FabricType { get; internal set; }
+        public int QtyPacking { get; internal set; }
+        public string UomSatuanUnit { get; internal set; }
 
         #region Cutting
         public string RONo { get; internal set; }

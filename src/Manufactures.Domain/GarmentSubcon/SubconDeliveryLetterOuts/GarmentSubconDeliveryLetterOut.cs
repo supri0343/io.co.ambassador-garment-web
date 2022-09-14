@@ -12,8 +12,6 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts
 
         public string DLNo { get; private set; }
         public string DLType { get; private set; }
-        public Guid SubconContractId { get; private set; }
-        public string ContractNo { get; private set; }
         public string ContractType { get; private set; }
         public DateTimeOffset DLDate { get; private set; }
 
@@ -30,14 +28,14 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts
         public string SubconCategory { get; private set; }
         public int EPOId { get; private set; }
         public string EPONo { get; private set; }
+        public int QtyPacking { get; private set; }
+        public string UomUnit { get; private set; }
 
-        public GarmentSubconDeliveryLetterOut(Guid identity, string dLNo, string dLType, Guid subconContractId, string contractNo, string contractType, DateTimeOffset dLDate, int uENId, string uENNo, string pONo, int ePOItemId, string remark, bool isUsed, string serviceType, string subconCategory, int epoId, string epoNo) : base(identity)
+        public GarmentSubconDeliveryLetterOut(Guid identity, string dLNo, string dLType, string contractType, DateTimeOffset dLDate, int uENId, string uENNo, string pONo, int ePOItemId, string remark, bool isUsed, string serviceType, string subconCategory, int epoId, string epoNo, int qtyPacking, string uomUnit) : base(identity)
         {
             Identity = identity;
             DLNo = dLNo;
             DLType = dLType;
-            SubconContractId = subconContractId;
-            ContractNo = contractNo;
             ContractType = contractType;
             DLDate = dLDate;
             UENId = uENId;
@@ -50,13 +48,13 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts
             SubconCategory = subconCategory;
             EPOId = epoId;
             EPONo = epoNo;
+            QtyPacking = qtyPacking;
+            UomUnit = uomUnit;
             ReadModel = new GarmentSubconDeliveryLetterOutReadModel(Identity)
             {
                 DLDate=DLDate,
                 DLNo= DLNo,
                 DLType=DLType,
-                SubconContractId= SubconContractId,
-                ContractNo=ContractNo,
                 ContractType=ContractType,
                 UENId=UENId,
                 UENNo=UENNo,
@@ -67,7 +65,9 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts
                 ServiceType=serviceType,
                 SubconCategory=subconCategory,
                 EPOId = epoId,
-                EPONo = epoNo
+                EPONo = epoNo,
+                QtyPacking = qtyPacking,
+                UomUnit = uomUnit
             };
 
             ReadModel.AddDomainEvent(new OnGarmentSubconDeliveryLetterOutPlaced(Identity));
@@ -82,8 +82,6 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts
             UENNo = readModel.UENNo;
             UENId = readModel.UENId;
             ContractType = readModel.ContractType;
-            ContractNo = readModel.ContractNo;
-            SubconContractId = readModel.SubconContractId;
             DLType = readModel.DLType;
             DLNo = readModel.DLNo;
             IsUsed = readModel.IsUsed;
@@ -91,6 +89,8 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts
             SubconCategory = readModel.SubconCategory;
             EPOId = readModel.EPOId;
             EPONo = readModel.EPONo;
+            QtyPacking = readModel.QtyPacking;
+            UomUnit = readModel.UomUnit;
         }
 
         public void Modify()
@@ -151,6 +151,28 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts
             {
                 this.Remark = remark;
                 ReadModel.Remark = remark;
+
+                MarkModified();
+            }
+        }
+
+        public void SetQtyPacking(int qtyPacking)
+        {
+            if (this.QtyPacking != qtyPacking)
+            {
+                this.QtyPacking = qtyPacking;
+                ReadModel.QtyPacking = qtyPacking;
+
+                MarkModified();
+            }
+        }
+
+        public void SetUomUnit(string uomUnit)
+        {
+            if (this.UomUnit != uomUnit)
+            {
+                this.UomUnit = uomUnit;
+                ReadModel.UomUnit = uomUnit;
 
                 MarkModified();
             }

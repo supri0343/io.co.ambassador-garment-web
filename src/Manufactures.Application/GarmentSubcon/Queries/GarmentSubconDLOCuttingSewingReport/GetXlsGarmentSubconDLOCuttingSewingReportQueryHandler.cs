@@ -135,7 +135,6 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOCutting
                              DLType = a.DLType,
                              DLNo = a.DLNo,
                              DLDate = a.DLDate,
-                             ContractNo = a.ContractNo,
                              ContractType = a.ContractType,
                              SubConCategory = a.SubconCategory,
                              UENNo = a.UENNo,
