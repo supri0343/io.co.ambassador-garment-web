@@ -74,7 +74,7 @@ namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentSubconDLOSewing
                 .Setup(s => s.Query)
                 .Returns(new List<GarmentSubconDeliveryLetterOutReadModel>
                 {
-                        new GarmentSubconDeliveryLetterOut(guidSubconDLO, "dLNo", "dLType", Guid.Empty, "contractNo", "SUBCON GARMENT", DateTimeOffset.Now, 1, "uENNo", "pONo", 1, "remark", true, "serviceType", "SUBCON SEWING",It.IsAny<int>(),"" ).GetReadModel()
+                        new GarmentSubconDeliveryLetterOut(guidSubconDLO, "dLNo", "dLType", "SUBCON GARMENT", DateTimeOffset.Now, 1, "uENNo", "pONo", 1, "remark", true, "serviceType", "SUBCON SEWING",It.IsAny<int>(),"" ).GetReadModel()
 
                 }.AsQueryable());
 
@@ -137,7 +137,7 @@ namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentSubconDLOSewing
                 .Setup(s => s.Query)
                 .Returns(new List<GarmentSubconDeliveryLetterOutReadModel>
                 {
-                        new GarmentSubconDeliveryLetterOut(guidSubconDLO, "dLNo", "dLType", Guid.Empty, "contractNo", "SUBCON GARMENT", DateTimeOffset.Now, 1, "uENNo", "pONo", 1, "remark", true, "serviceType", "SUBCON SEWING",It.IsAny<int>(),"" ).GetReadModel()
+                        new GarmentSubconDeliveryLetterOut(guidSubconDLO, "dLNo", "dLType", "SUBCON GARMENT", DateTimeOffset.Now, 1, "uENNo", "pONo", 1, "remark", true, "serviceType", "SUBCON SEWING",It.IsAny<int>(),"" ).GetReadModel()
 
                 }.AsQueryable());
 

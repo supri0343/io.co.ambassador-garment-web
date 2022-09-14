@@ -58,8 +58,6 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
                 Guid.NewGuid(),
                 GenerateNo(request),
                 request.DLType,
-                request.SubconContractId,
-                request.ContractNo,
                 request.ContractType,
                 request.DLDate,
                 request.UENId,
@@ -141,11 +139,11 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
                 await _garmentSubconDeliveryLetterOutItemRepository.Update(garmentSubconDeliveryLetterOutItem);
             }
 
-            var subconContract = _garmentSubconContractRepository.Query.Where(x => x.Identity == garmentSubconDeliveryLetterOut.SubconContractId).Select(s => new GarmentSubconContract(s)).Single();
-            subconContract.SetIsUsed(true);
-            subconContract.Modify();
+            //var subconContract = _garmentSubconContractRepository.Query.Where(x => x.Identity == garmentSubconDeliveryLetterOut.SubconContractId).Select(s => new GarmentSubconContract(s)).Single();
+            //subconContract.SetIsUsed(true);
+            //subconContract.Modify();
 
-            await _garmentSubconContractRepository.Update(subconContract);
+            //await _garmentSubconContractRepository.Update(subconContract);
 
             await _garmentSubconDeliveryLetterOutRepository.Update(garmentSubconDeliveryLetterOut);
 

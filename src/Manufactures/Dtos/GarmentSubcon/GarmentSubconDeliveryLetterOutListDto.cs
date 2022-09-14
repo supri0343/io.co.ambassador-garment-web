@@ -12,7 +12,6 @@ namespace Manufactures.Dtos.GarmentSubcon
             Id = garmentSubconDeliveryLetterOutList.Identity;
             DLNo = garmentSubconDeliveryLetterOutList.DLNo;
             DLType = garmentSubconDeliveryLetterOutList.DLType;
-            ContractNo = garmentSubconDeliveryLetterOutList.ContractNo;
             ContractType = garmentSubconDeliveryLetterOutList.ContractType;
             DLDate = garmentSubconDeliveryLetterOutList.DLDate;
             UENNo = garmentSubconDeliveryLetterOutList.UENNo;
@@ -21,7 +20,6 @@ namespace Manufactures.Dtos.GarmentSubcon
             IsUsed = garmentSubconDeliveryLetterOutList.IsUsed;
             ServiceType = garmentSubconDeliveryLetterOutList.ServiceType;
             SubconCategory = garmentSubconDeliveryLetterOutList.SubconCategory;
-            SubconContractId = garmentSubconDeliveryLetterOutList.SubconContractId;
             EPOId = garmentSubconDeliveryLetterOutList.EPOId;
             EPONo = garmentSubconDeliveryLetterOutList.EPONo;
             Items = new List<GarmentSubconDeliveryLetterOutItemDto>();
@@ -31,7 +29,6 @@ namespace Manufactures.Dtos.GarmentSubcon
         public Guid Id { get; set; }
         public string DLNo { get; set; }
         public string DLType { get; set; }
-        public string ContractNo { get; set; }
         public string ContractType { get; set; }
         public DateTimeOffset DLDate { get; set; }
         public string UENNo { get; set; }
@@ -40,7 +37,6 @@ namespace Manufactures.Dtos.GarmentSubcon
         public bool IsUsed { get; set; }
         public string ServiceType { get; set; }
         public string SubconCategory { get; set; }
-        public Guid SubconContractId { get; set; }
         public int EPOId { get; set; }
         public string EPONo { get; set; }
         public List<GarmentSubconDeliveryLetterOutItemDto> Items { get; set; }

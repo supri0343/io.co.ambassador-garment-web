@@ -12,8 +12,6 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Commands
     {
         public string DLNo { get; set; }
         public string DLType { get; set; }
-        public Guid SubconContractId { get; set; }
-        public string ContractNo { get; set; }
         public string ContractType { get; set; }
         public string ServiceType { get; set; }
         public DateTimeOffset DLDate { get; set; }
@@ -38,10 +36,10 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Commands
     {
         public PlaceGarmentSubconDeliveryLetterOutCommandValidator()
         {
-            RuleFor(r => r.SubconContractId).NotNull();
-            RuleFor(r => r.ContractNo).NotNull();
-            //RuleFor(r => r.EPOId).NotNull();
-            //RuleFor(r => r.EPONo).NotNull();
+            //RuleFor(r => r.SubconContractId).NotNull();
+            //RuleFor(r => r.ContractNo).NotNull();
+            RuleFor(r => r.EPOId).NotNull();
+            RuleFor(r => r.EPONo).NotNull();
             RuleFor(r => r.UENId).NotEmpty().When(r => r.SubconCategory == "SUBCON CUTTING SEWING");
             RuleFor(r => r.DLDate).NotNull().GreaterThan(DateTimeOffset.MinValue);
             RuleFor(r => r.UENNo).NotNull().When(r=>r.SubconCategory == "SUBCON CUTTING SEWING");

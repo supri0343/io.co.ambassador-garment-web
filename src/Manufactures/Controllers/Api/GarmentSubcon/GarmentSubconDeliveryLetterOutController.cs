@@ -218,7 +218,8 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
 
                 }).ToList()
             }).FirstOrDefault();
-            var supplier = _garmentSubconContractRepository.Find(a => a.Identity == garmentSubconDeliveryLetterOutDto.SubconContractId).Select(a => a.SupplierName).FirstOrDefault();
+            //var supplier = _garmentSubconContractRepository.Find(a => a.Identity == garmentSubconDeliveryLetterOutDto.SubconContractId).Select(a => a.SupplierName).FirstOrDefault();
+            var supplier = "";
             var stream = GarmentSubconDeliveryLetterOutPDFTemplate.Generate(garmentSubconDeliveryLetterOutDto, supplier);
 
             return new FileStreamResult(stream, "application/pdf")

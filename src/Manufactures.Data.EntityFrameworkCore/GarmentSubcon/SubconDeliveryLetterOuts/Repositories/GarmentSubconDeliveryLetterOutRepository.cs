@@ -25,7 +25,6 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSubcon.SubconDeliveryLett
                 "DLNo",
                 "DLType",
                 "ContractType",
-                "ContractNo",
                 "EPONo",
                 "UENNo",
             };

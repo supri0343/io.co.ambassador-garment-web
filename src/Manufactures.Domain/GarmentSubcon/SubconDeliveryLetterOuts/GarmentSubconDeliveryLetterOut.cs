@@ -12,8 +12,6 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts
 
         public string DLNo { get; private set; }
         public string DLType { get; private set; }
-        public Guid SubconContractId { get; private set; }
-        public string ContractNo { get; private set; }
         public string ContractType { get; private set; }
         public DateTimeOffset DLDate { get; private set; }
 
@@ -31,13 +29,11 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts
         public int EPOId { get; private set; }
         public string EPONo { get; private set; }
 
-        public GarmentSubconDeliveryLetterOut(Guid identity, string dLNo, string dLType, Guid subconContractId, string contractNo, string contractType, DateTimeOffset dLDate, int uENId, string uENNo, string pONo, int ePOItemId, string remark, bool isUsed, string serviceType, string subconCategory, int epoId, string epoNo) : base(identity)
+        public GarmentSubconDeliveryLetterOut(Guid identity, string dLNo, string dLType, string contractType, DateTimeOffset dLDate, int uENId, string uENNo, string pONo, int ePOItemId, string remark, bool isUsed, string serviceType, string subconCategory, int epoId, string epoNo) : base(identity)
         {
             Identity = identity;
             DLNo = dLNo;
             DLType = dLType;
-            SubconContractId = subconContractId;
-            ContractNo = contractNo;
             ContractType = contractType;
             DLDate = dLDate;
             UENId = uENId;
@@ -55,8 +51,6 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts
                 DLDate=DLDate,
                 DLNo= DLNo,
                 DLType=DLType,
-                SubconContractId= SubconContractId,
-                ContractNo=ContractNo,
                 ContractType=ContractType,
                 UENId=UENId,
                 UENNo=UENNo,
@@ -82,8 +76,6 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts
             UENNo = readModel.UENNo;
             UENId = readModel.UENId;
             ContractType = readModel.ContractType;
-            ContractNo = readModel.ContractNo;
-            SubconContractId = readModel.SubconContractId;
             DLType = readModel.DLType;
             DLNo = readModel.DLNo;
             IsUsed = readModel.IsUsed;

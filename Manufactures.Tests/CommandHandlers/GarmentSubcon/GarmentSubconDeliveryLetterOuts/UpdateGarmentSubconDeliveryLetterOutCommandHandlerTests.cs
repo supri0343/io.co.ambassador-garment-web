@@ -78,7 +78,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
             CancellationToken cancellationToken = CancellationToken.None;
             UpdateGarmentSubconDeliveryLetterOutCommand UpdateGarmentSubconDeliveryLetterOutCommand = new UpdateGarmentSubconDeliveryLetterOutCommand()
             {
-                ContractNo = "test",
+               
                 ContractType = "SUBCON BAHAN BAKU",
                 DLDate = DateTimeOffset.Now.AddDays(1),
                 DLType = "PROSES",
@@ -88,7 +88,6 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
                 Remark = "test",
                 TotalQty = 10,
                 UsedQty = 10,
-                SubconContractId = new Guid(),
                 UENId = 1,
                 UENNo = "test",
                 Items = new List<GarmentSubconDeliveryLetterOutItemValueObject>
@@ -114,7 +113,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
                .Setup(s => s.Query)
                .Returns(new List<GarmentSubconDeliveryLetterOutReadModel>()
                {
-                    new GarmentSubconDeliveryLetterOut(SubconDeliveryLetterOutGuid,"","",Guid.NewGuid(),"","SUBCON BAHAN BAKU",DateTimeOffset.Now,1,"","",1,"",false,"","",It.IsAny<int>(),"").GetReadModel()
+                    new GarmentSubconDeliveryLetterOut(SubconDeliveryLetterOutGuid,"","","SUBCON BAHAN BAKU",DateTimeOffset.Now,1,"","",1,"",false,"","",It.IsAny<int>(),"").GetReadModel()
                }.AsQueryable());
             _mockSubconDeliveryLetterOutItemRepository
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconDeliveryLetterOutItemReadModel, bool>>>()))
@@ -151,7 +150,6 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
             CancellationToken cancellationToken = CancellationToken.None;
             UpdateGarmentSubconDeliveryLetterOutCommand UpdateGarmentSubconDeliveryLetterOutCommand = new UpdateGarmentSubconDeliveryLetterOutCommand()
             {
-                ContractNo = "test",
                 ContractType = "SUBCON GARMENT",
                 SubconCategory= "SUBCON SEWING",
                 DLDate = DateTimeOffset.Now,
@@ -162,7 +160,6 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
                 Remark = "test",
                 TotalQty = 10,
                 UsedQty = 10,
-                SubconContractId = new Guid(),
                 UENId = 1,
                 UENNo = "test",
                 Items = new List<GarmentSubconDeliveryLetterOutItemValueObject>
@@ -192,7 +189,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
                .Setup(s => s.Query)
                .Returns(new List<GarmentSubconDeliveryLetterOutReadModel>()
                {
-                    new GarmentSubconDeliveryLetterOut(SubconDeliveryLetterOutGuid,"","",Guid.NewGuid(),"","SUBCON CUTTING",DateTimeOffset.Now,1,"","",1,"",false,"","",It.IsAny<int>(),"").GetReadModel()
+                    new GarmentSubconDeliveryLetterOut(SubconDeliveryLetterOutGuid,"","","SUBCON CUTTING",DateTimeOffset.Now,1,"","",1,"",false,"","",It.IsAny<int>(),"").GetReadModel()
                }.AsQueryable());
             _mockSubconDeliveryLetterOutItemRepository
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconDeliveryLetterOutItemReadModel, bool>>>()))
@@ -243,7 +240,6 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
             CancellationToken cancellationToken = CancellationToken.None;
             UpdateGarmentSubconDeliveryLetterOutCommand UpdateGarmentSubconDeliveryLetterOutCommand = new UpdateGarmentSubconDeliveryLetterOutCommand()
             {
-                ContractNo = "test",
                 ContractType = "SUBCON JASA",
                 DLDate = DateTimeOffset.Now,
                 DLType = "RE PROSES",
@@ -253,7 +249,6 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
                 Remark = "test",
                 TotalQty = 10,
                 UsedQty = 10,
-                SubconContractId = new Guid(),
                 UENId = 1,
                 UENNo = "test",
                 SubconCategory="SUBCON JASA KOMPONEN",
@@ -284,7 +279,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
                .Setup(s => s.Query)
                .Returns(new List<GarmentSubconDeliveryLetterOutReadModel>()
                {
-                    new GarmentSubconDeliveryLetterOut(SubconDeliveryLetterOutGuid,"","",Guid.NewGuid(),"","SUBCON JASA",DateTimeOffset.Now,1,"","",1,"",false,"SUBCON JASA KOMPONEN","",It.IsAny<int>(),"").GetReadModel()
+                    new GarmentSubconDeliveryLetterOut(SubconDeliveryLetterOutGuid,"","","SUBCON JASA",DateTimeOffset.Now,1,"","",1,"",false,"SUBCON JASA KOMPONEN","",It.IsAny<int>(),"").GetReadModel()
                }.AsQueryable());
             _mockSubconDeliveryLetterOutItemRepository
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconDeliveryLetterOutItemReadModel, bool>>>()))

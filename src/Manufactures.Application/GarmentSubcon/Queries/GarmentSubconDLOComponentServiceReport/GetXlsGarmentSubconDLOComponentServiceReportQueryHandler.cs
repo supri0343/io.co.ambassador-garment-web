@@ -92,7 +92,6 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOCompone
                               DLType = a.DLType,
                               DLNo = a.DLNo,
                               DLDate = a.DLDate,
-                              ContractNo = a.ContractNo,
                               ContractType = a.ContractType,
                               SubConCategory = a.SubconCategory,
                               SubConNo = b.SubconNo,

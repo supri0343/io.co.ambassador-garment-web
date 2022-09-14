@@ -108,7 +108,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSubconDeliveryLetterOutReadModel>>()))
                 .Returns(new List<GarmentSubconDeliveryLetterOut>()
                 {
-                    new GarmentSubconDeliveryLetterOut(SubconDeliveryLetterOutGuid, null,null,new Guid(),"","",DateTimeOffset.Now,1,"","",1,"", false,"","",It.IsAny<int>(),"")
+                    new GarmentSubconDeliveryLetterOut(SubconDeliveryLetterOutGuid, null,null,"",DateTimeOffset.Now,1,"","",1,"", false,"","",It.IsAny<int>(),"")
                 });
 
             Guid SubconDeliveryLetterOutItemGuid = Guid.NewGuid();
@@ -137,7 +137,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconDeliveryLetterOutReadModel, bool>>>()))
                 .Returns(new List<GarmentSubconDeliveryLetterOut>()
                 {
-                    new GarmentSubconDeliveryLetterOut(Guid.NewGuid(), null,null,new Guid(),"","",DateTimeOffset.Now,1,"","",1,"", false,"","",It.IsAny<int>(),"")
+                    new GarmentSubconDeliveryLetterOut(Guid.NewGuid(), null,null,"",DateTimeOffset.Now,1,"","",1,"", false,"","",It.IsAny<int>(),"")
                 });
 
             _mockGarmentSubconDeliveryLetterOutItemRepository
@@ -168,7 +168,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
             //    .Returns(new List<GarmentSubconDeliveryLetterOut>());
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<PlaceGarmentSubconDeliveryLetterOutCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentSubconDeliveryLetterOut(Guid.NewGuid(), null, null, new Guid(), "", "", DateTimeOffset.Now, 1, "", "", 1, "", false, "", "", It.IsAny<int>(), ""));
+                .ReturnsAsync(new GarmentSubconDeliveryLetterOut(Guid.NewGuid(), null, null, "", DateTimeOffset.Now, 1, "", "", 1, "", false, "", "", It.IsAny<int>(), ""));
 
             // Act
             var result = await unitUnderTest.Post(command);
@@ -199,7 +199,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
             Guid subconDeliveryLetterOutGuid = Guid.NewGuid();
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<UpdateGarmentSubconDeliveryLetterOutCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentSubconDeliveryLetterOut(subconDeliveryLetterOutGuid, null, null, new Guid(), "", "", DateTimeOffset.Now, 1, "", "", 1, "", false, "", "", It.IsAny<int>(), ""));
+                .ReturnsAsync(new GarmentSubconDeliveryLetterOut(subconDeliveryLetterOutGuid, null, null, "", DateTimeOffset.Now, 1, "", "", 1, "", false, "", "", It.IsAny<int>(), ""));
 
             // Act
             var result = await unitUnderTest.Put(Guid.NewGuid().ToString(), new UpdateGarmentSubconDeliveryLetterOutCommand());
@@ -219,13 +219,13 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconDeliveryLetterOutReadModel, bool>>>()))
                 .Returns(new List<GarmentSubconDeliveryLetterOut>()
                 {
-                    new GarmentSubconDeliveryLetterOut(subconDeliveryLetterOutGuid, null, null, new Guid(), "", "", DateTimeOffset.Now, 1, "", "", 1, "", false,"","",It.IsAny<int>(),"")
+                    new GarmentSubconDeliveryLetterOut(subconDeliveryLetterOutGuid, null, null, "", DateTimeOffset.Now, 1, "", "", 1, "", false,"","",It.IsAny<int>(),"")
                 });
 
 
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<RemoveGarmentSubconDeliveryLetterOutCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentSubconDeliveryLetterOut(subconDeliveryLetterOutGuid, null, null, new Guid(), "", "SUBCON BAHAN BAKU", DateTimeOffset.Now, 1, "", "", 1, "", false, "", "", It.IsAny<int>(), ""));
+                .ReturnsAsync(new GarmentSubconDeliveryLetterOut(subconDeliveryLetterOutGuid, null, null, "SUBCON BAHAN BAKU", DateTimeOffset.Now, 1, "", "", 1, "", false, "", "", It.IsAny<int>(), ""));
 
             // Act
             var result = await unitUnderTest.Delete(subconDeliveryLetterOutGuid.ToString());
@@ -249,7 +249,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSubconDeliveryLetterOutReadModel>>()))
                 .Returns(new List<GarmentSubconDeliveryLetterOut>()
                 {
-                    new GarmentSubconDeliveryLetterOut(SubconDeliveryLetterOutGuid, null,null,new Guid(),"","",DateTimeOffset.Now,1,"","",1,"", false,"","",It.IsAny<int>(),"")
+                    new GarmentSubconDeliveryLetterOut(SubconDeliveryLetterOutGuid, null,null,"",DateTimeOffset.Now,1,"","",1,"", false,"","",It.IsAny<int>(),"")
                 });
 
             Guid SubconDeliveryLetterOutItemGuid = Guid.NewGuid();
@@ -292,7 +292,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconDeliveryLetterOutReadModel, bool>>>()))
                 .Returns(new List<GarmentSubconDeliveryLetterOut>()
                 {
-                    new GarmentSubconDeliveryLetterOut(SubconDeliveryLetterOutGuid, null,null,SubconContractGuid,"","",DateTimeOffset.Now,1,"","",1,"", false,"","",It.IsAny<int>(),"")
+                    new GarmentSubconDeliveryLetterOut(SubconDeliveryLetterOutGuid, null,null,"",DateTimeOffset.Now,1,"","",1,"", false,"","",It.IsAny<int>(),"")
                 });
 
             Guid SubconDeliveryLetterOutItemGuid = Guid.NewGuid();
