@@ -22,6 +22,8 @@ namespace Manufactures.Dtos.GarmentSubcon
             SubconCategory = garmentSubconDeliveryLetterOutList.SubconCategory;
             EPOId = garmentSubconDeliveryLetterOutList.EPOId;
             EPONo = garmentSubconDeliveryLetterOutList.EPONo;
+            QtyPacking = garmentSubconDeliveryLetterOutList.QtyPacking;
+            UomUnit = garmentSubconDeliveryLetterOutList.UomUnit;
             Items = new List<GarmentSubconDeliveryLetterOutItemDto>();
 
         }
@@ -39,6 +41,8 @@ namespace Manufactures.Dtos.GarmentSubcon
         public string SubconCategory { get; set; }
         public int EPOId { get; set; }
         public string EPONo { get; set; }
+        public int QtyPacking { get; set; }
+        public string UomUnit { get; set; }
         public List<GarmentSubconDeliveryLetterOutItemDto> Items { get; set; }
     }
 }

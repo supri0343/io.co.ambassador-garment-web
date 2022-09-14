@@ -74,7 +74,7 @@ namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentSubconDLOGarmentWash
                 .Setup(s => s.Query)
                 .Returns(new List<GarmentSubconDeliveryLetterOutReadModel>
                 {
-                        new GarmentSubconDeliveryLetterOut(guidSubconDLO, "dLNo", "dLType", "SUBCON JASA", DateTimeOffset.Now, 1, "uENNo", "pONo", 1, "remark", true, "serviceType", "SUBCON JASA GARMENT WASH",It.IsAny<int>(),"").GetReadModel(),
+                        new GarmentSubconDeliveryLetterOut(guidSubconDLO, "dLNo", "dLType", "SUBCON JASA", DateTimeOffset.Now, 1, "uENNo", "pONo", 1, "remark", true, "serviceType", "SUBCON JASA GARMENT WASH",It.IsAny<int>(),"",It.IsAny<int>(),"").GetReadModel(),
 
                 }.AsQueryable());
 
@@ -82,7 +82,7 @@ namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentSubconDLOGarmentWash
                     .Setup(s => s.Query)
                     .Returns(new List<GarmentSubconDeliveryLetterOutItemReadModel>
                     {
-                    new GarmentSubconDeliveryLetterOutItem(guidSubconDLOItem,guidSubconDLO,1,new ProductId(1),"ProductCode","ProductName","ProductRemark","DesignColor",1,new UomId(1),"UomUnit", new UomId(1),"uomOutUnit","fabricType", guidSubconSewing, "roNo", "poSerialNumber", "SubconNo").GetReadModel()
+                    new GarmentSubconDeliveryLetterOutItem(guidSubconDLOItem,guidSubconDLO,1,new ProductId(1),"ProductCode","ProductName","ProductRemark","DesignColor",1,new UomId(1),"UomUnit", new UomId(1),"uomOutUnit","fabricType", guidSubconSewing, "roNo", "poSerialNumber", "SubconNo", It.IsAny<int>(),"").GetReadModel()
                     }.AsQueryable());
 
             _mockgarmentSubconSewingRepository
@@ -136,7 +136,7 @@ namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentSubconDLOGarmentWash
                 .Setup(s => s.Query)
                 .Returns(new List<GarmentSubconDeliveryLetterOutReadModel>
                 {
-                        new GarmentSubconDeliveryLetterOut(guidSubconDLO, "dLNo", "dLType", "SUBCON JASA", DateTimeOffset.Now, 1, "uENNo", "pONo", 1, "remark", true, "serviceType", "SUBCON JASA GARMENT WASH",It.IsAny<int>(),"").GetReadModel(),
+                        new GarmentSubconDeliveryLetterOut(guidSubconDLO, "dLNo", "dLType", "SUBCON JASA", DateTimeOffset.Now, 1, "uENNo", "pONo", 1, "remark", true, "serviceType", "SUBCON JASA GARMENT WASH",It.IsAny<int>(),"",It.IsAny<int>(),"").GetReadModel(),
 
                 }.AsQueryable());
 
@@ -144,7 +144,7 @@ namespace Manufactures.Tests.Queries.GarmentSubcon.GarmentSubconDLOGarmentWash
                     .Setup(s => s.Query)
                     .Returns(new List<GarmentSubconDeliveryLetterOutItemReadModel>
                     {
-                    new GarmentSubconDeliveryLetterOutItem(guidSubconDLOItem,guidSubconDLO,1,new ProductId(1),"ProductCode","ProductName","ProductRemark","DesignColor",1,new UomId(1),"UomUnit", new UomId(1),"uomOutUnit","fabricType", guidSubconSewing, "roNo", "poSerialNumber", "SubconNo").GetReadModel()
+                    new GarmentSubconDeliveryLetterOutItem(guidSubconDLOItem,guidSubconDLO,1,new ProductId(1),"ProductCode","ProductName","ProductRemark","DesignColor",1,new UomId(1),"UomUnit", new UomId(1),"uomOutUnit","fabricType", guidSubconSewing, "roNo", "poSerialNumber", "SubconNo", It.IsAny<int>(),"").GetReadModel()
                     }.AsQueryable());
 
             _mockgarmentSubconSewingRepository

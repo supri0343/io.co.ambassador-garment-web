@@ -23,6 +23,8 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.ValueObject
 
         public string FabricType { get; set; }
         public double ContractQuantity { get; set; }
+        public int QtyPacking { get; set; }
+        public string UomSatuanUnit { get; set; }
 
         #region Cutting
         public string RONo { get; set; }

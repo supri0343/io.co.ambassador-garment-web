@@ -28,8 +28,10 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts
         public string SubconCategory { get; private set; }
         public int EPOId { get; private set; }
         public string EPONo { get; private set; }
+        public int QtyPacking { get; private set; }
+        public string UomUnit { get; private set; }
 
-        public GarmentSubconDeliveryLetterOut(Guid identity, string dLNo, string dLType, string contractType, DateTimeOffset dLDate, int uENId, string uENNo, string pONo, int ePOItemId, string remark, bool isUsed, string serviceType, string subconCategory, int epoId, string epoNo) : base(identity)
+        public GarmentSubconDeliveryLetterOut(Guid identity, string dLNo, string dLType, string contractType, DateTimeOffset dLDate, int uENId, string uENNo, string pONo, int ePOItemId, string remark, bool isUsed, string serviceType, string subconCategory, int epoId, string epoNo, int qtyPacking, string uomUnit) : base(identity)
         {
             Identity = identity;
             DLNo = dLNo;
@@ -46,6 +48,8 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts
             SubconCategory = subconCategory;
             EPOId = epoId;
             EPONo = epoNo;
+            QtyPacking = qtyPacking;
+            UomUnit = uomUnit;
             ReadModel = new GarmentSubconDeliveryLetterOutReadModel(Identity)
             {
                 DLDate=DLDate,
@@ -61,7 +65,9 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts
                 ServiceType=serviceType,
                 SubconCategory=subconCategory,
                 EPOId = epoId,
-                EPONo = epoNo
+                EPONo = epoNo,
+                QtyPacking = qtyPacking,
+                UomUnit = uomUnit
             };
 
             ReadModel.AddDomainEvent(new OnGarmentSubconDeliveryLetterOutPlaced(Identity));
@@ -83,6 +89,8 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts
             SubconCategory = readModel.SubconCategory;
             EPOId = readModel.EPOId;
             EPONo = readModel.EPONo;
+            QtyPacking = readModel.QtyPacking;
+            UomUnit = readModel.UomUnit;
         }
 
         public void Modify()
@@ -143,6 +151,28 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts
             {
                 this.Remark = remark;
                 ReadModel.Remark = remark;
+
+                MarkModified();
+            }
+        }
+
+        public void SetQtyPacking(int qtyPacking)
+        {
+            if (this.QtyPacking != qtyPacking)
+            {
+                this.QtyPacking = qtyPacking;
+                ReadModel.QtyPacking = qtyPacking;
+
+                MarkModified();
+            }
+        }
+
+        public void SetUomUnit(string uomUnit)
+        {
+            if (this.UomUnit != uomUnit)
+            {
+                this.UomUnit = uomUnit;
+                ReadModel.UomUnit = uomUnit;
 
                 MarkModified();
             }

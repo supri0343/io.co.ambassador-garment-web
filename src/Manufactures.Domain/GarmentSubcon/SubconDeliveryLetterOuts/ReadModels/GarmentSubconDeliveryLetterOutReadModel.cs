@@ -30,6 +30,8 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.ReadModels
 
         public int EPOId { get; internal set; }
         public string EPONo { get; internal set; }
+        public int QtyPacking { get; internal set; }
+        public string UomUnit { get; internal set; }
         public virtual List<GarmentSubconDeliveryLetterOutItemReadModel> GarmentSubconDeliveryLetterOutItem { get; internal set; }
     }
 }

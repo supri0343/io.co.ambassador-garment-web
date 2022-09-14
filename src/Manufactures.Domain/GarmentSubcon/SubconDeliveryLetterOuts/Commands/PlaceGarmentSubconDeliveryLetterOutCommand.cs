@@ -29,6 +29,9 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Commands
         public string SubconCategory { get; set; }
         public int EPOId { get; set; }
         public string EPONo { get; set; }
+        public int QtyPacking { get; set; }
+        public string UomUnit { get; set; }
+
         public List<GarmentSubconDeliveryLetterOutItemValueObject> Items { get; set; }
     }
 
@@ -60,7 +63,6 @@ namespace Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Commands
     {
         public GarmentSubconDeliveryLetterOutItemValueObjectValidator()
         {
-
             RuleFor(r => r.Quantity)
                 .GreaterThan(0)
                 .WithMessage("'Jumlah' harus lebih dari '0'.");

@@ -148,7 +148,9 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
                             item.SubconId,
                             item.RONo,
                             item.POSerialNumber,
-                            item.SubconNo
+                            item.SubconNo,
+                            item.QtyPacking,
+                            item.UomSatuanUnit
                         );
                         if (request.SubconCategory == "SUBCON SEWING")
                         {
@@ -197,7 +199,6 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
 
             subconDeliveryLetterOut.SetDate(request.DLDate.GetValueOrDefault());
             subconDeliveryLetterOut.SetRemark(request.Remark);
-            
 
             subconDeliveryLetterOut.Modify();
 
