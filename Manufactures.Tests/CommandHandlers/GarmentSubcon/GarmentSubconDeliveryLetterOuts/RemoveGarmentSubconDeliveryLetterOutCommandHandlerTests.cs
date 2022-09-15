@@ -73,7 +73,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
             return new RemoveGarmentSubconDeliveryLetterOutCommandHandler(_MockStorage.Object);
         }
 
-        /*[Fact]
+        [Fact]
         public async Task Handle_StateUnderTest_ExpectedBehavior_BB()
         {
             // Arrange
@@ -87,13 +87,13 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
                 .Setup(s => s.Query)
                 .Returns(new List<GarmentSubconDeliveryLetterOutReadModel>()
                 {
-                    new GarmentSubconDeliveryLetterOut(subconDeliveryLetterOutGuid,"","",SubconContractGuid,"","SUBCON BAHAN BAKU",DateTimeOffset.Now,1,"","",1,"",false,"").GetReadModel()
+                    new GarmentSubconDeliveryLetterOut(subconDeliveryLetterOutGuid,"","","SUBCON BAHAN BAKU",DateTimeOffset.Now,1,"","",1,"",false,"","",1,"",1,"").GetReadModel()
                 }.AsQueryable());
             _mockSubconDeliveryLetterOutItemRepository
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconDeliveryLetterOutItemReadModel, bool>>>()))
                 .Returns(new List<GarmentSubconDeliveryLetterOutItem>()
                 {
-                    new GarmentSubconDeliveryLetterOutItem(Guid.Empty,subconDeliveryLetterOutGuid,1,new ProductId(1),"code","name","remark","color",1,new UomId(1),"unit",new UomId(1),"unit","fabType",new Guid(),"","","")
+                    new GarmentSubconDeliveryLetterOutItem(Guid.Empty,subconDeliveryLetterOutGuid,1,new ProductId(1),"code","name","remark","color",1,new UomId(1),"unit",new UomId(1),"unit","fabType",new Guid(),"","","",1,"")
                 });
 
             _mockSubconDeliveryLetterOutRepository
@@ -102,19 +102,6 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
             _mockSubconDeliveryLetterOutItemRepository
                 .Setup(s => s.Update(It.IsAny<GarmentSubconDeliveryLetterOutItem>()))
                 .Returns(Task.FromResult(It.IsAny<GarmentSubconDeliveryLetterOutItem>()));
-
-            GarmentSubconContract garmentSubconContract = new GarmentSubconContract(
-                SubconContractGuid, null, null, null, new SupplierId(1), "", "", null, null, null, 1, DateTimeOffset.Now, DateTimeOffset.Now, false, new BuyerId(1), "", "");
-
-            _mockSubconContractRepository
-                .Setup(s => s.Query)
-                .Returns(new List<GarmentSubconContractReadModel>()
-                {
-                    garmentSubconContract.GetReadModel()
-                }.AsQueryable());
-            _mockSubconContractRepository
-                .Setup(s => s.Update(It.IsAny<GarmentSubconContract>()))
-                .Returns(Task.FromResult(It.IsAny<GarmentSubconContract>()));
 
             _MockStorage
                 .Setup(x => x.Save())
@@ -125,7 +112,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
 
             // Assert
             result.Should().NotBeNull();
-        }*/
+        }
 
         /*[Fact]
         public async Task Handle_StateUnderTest_ExpectedBehavior_CT()
