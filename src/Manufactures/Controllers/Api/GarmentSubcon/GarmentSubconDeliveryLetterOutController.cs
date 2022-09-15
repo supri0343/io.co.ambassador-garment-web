@@ -1,5 +1,7 @@
 ﻿using Barebone.Controllers;
 using Infrastructure.Data.EntityFrameworkCore.Utilities;
+using Infrastructure.External.DanLirisClient.Microservice;
+using Infrastructure.External.DanLirisClient.Microservice.HttpClientService;
 using Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOComponentServiceReport;
 using Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOCuttingSewingReport;
 using Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOGarmentWashReport;
@@ -39,6 +41,7 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
         private readonly IGarmentServiceSubconSewingRepository _garmentServiceSubconSewingRepository;
         private readonly IGarmentServiceSubconSewingItemRepository _garmentServiceSubconSewingItemRepository;
         private readonly IGarmentServiceSubconSewingDetailRepository _garmentServiceSubconSewingDetailRepository;
+
         public GarmentSubconDeliveryLetterOutController(IServiceProvider serviceProvider) : base(serviceProvider)
         {
             _garmentSubconDeliveryLetterOutRepository = Storage.GetRepository<IGarmentSubconDeliveryLetterOutRepository>();
@@ -49,6 +52,7 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
             _garmentServiceSubconSewingRepository = Storage.GetRepository<IGarmentServiceSubconSewingRepository>();
             _garmentServiceSubconSewingItemRepository = Storage.GetRepository<IGarmentServiceSubconSewingItemRepository>();
             _garmentServiceSubconSewingDetailRepository = Storage.GetRepository<IGarmentServiceSubconSewingDetailRepository>();
+            
         }
 
         [HttpGet]
@@ -218,8 +222,31 @@ namespace Manufactures.Controllers.Api.GarmentSubcon
 
                 }).ToList()
             }).FirstOrDefault();
-            //var supplier = _garmentSubconContractRepository.Find(a => a.Identity == garmentSubconDeliveryLetterOutDto.SubconContractId).Select(a => a.SupplierName).FirstOrDefault();
-            var supplier = "";
+
+            string supplier = "";
+            var uri = PurchasingDataSettings.Endpoint + "/garment-external-purchase-orders/" + garmentSubconDeliveryLetterOutDto.EPOId;
+            var response = _http.GetAsync(uri, WorkContext.Token).Result.Content.ReadAsStringAsync();
+
+            Dictionary<string, object> result = JsonConvert.DeserializeObject<Dictionary<string, object>>(response.Result);
+            object data;
+
+            if (result.TryGetValue("data", out data))
+            {
+                Dictionary<string, object> _epo = JsonConvert.DeserializeObject<Dictionary<string, object>>(data.ToString());
+                object supp;
+
+                if (_epo.TryGetValue("Supplier", out supp))
+                {
+                    Dictionary<string, object> _supplier = JsonConvert.DeserializeObject<Dictionary<string, object>>(supp.ToString());
+                    object suppname;
+
+                    if (_supplier.TryGetValue("Name", out suppname))
+                    {
+                        supplier = suppname.ToString();
+                    }
+                }
+            }
+
             var stream = GarmentSubconDeliveryLetterOutPDFTemplate.Generate(garmentSubconDeliveryLetterOutDto, supplier);
 
             return new FileStreamResult(stream, "application/pdf")

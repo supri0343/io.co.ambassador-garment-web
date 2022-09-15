@@ -1,4 +1,5 @@
-﻿using iTextSharp.text;
+﻿using Infrastructure.External.DanLirisClient.Microservice.PurchasingResult;
+using iTextSharp.text;
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.draw;
 using Manufactures.Dtos.GarmentSubcon;
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
 {
@@ -30,13 +32,13 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
             Font normal_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
             Font bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
 
-            Document document = new Document(PageSize.A5.Rotate(), 10, 10,100, 10);
+            Document document = new Document(PageSize.A5.Rotate(), 10, 10, 100, 10);
             MemoryStream stream = new MemoryStream();
             PdfWriter writer = PdfWriter.GetInstance(document, stream);
             writer.PageEvent = new GarmentLocalCoverLetterPdfTemplatePageEvent(garmentSubconDLOut);
             document.Open();
 
-            Paragraph date= new Paragraph("Tanggal "+garmentSubconDLOut.DLDate.ToOffset(new TimeSpan(7, 0, 0)).ToString("dd MMMM yyyy", new CultureInfo("id-ID")), normal_font);
+            Paragraph date = new Paragraph("Tanggal " + garmentSubconDLOut.DLDate.ToOffset(new TimeSpan(7, 0, 0)).ToString("dd MMMM yyyy", new CultureInfo("id-ID")), normal_font);
             date.Alignment = Element.ALIGN_RIGHT;
 
             document.Add(date);
@@ -50,9 +52,9 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
 
             cellIdentityContentLeft.Phrase = new Phrase("Tujuan", normal_font);
             tableIdentity.AddCell(cellIdentityContentLeft);
-            cellIdentityContentLeft.Phrase = new Phrase(": "+ supplier, normal_font);
+            cellIdentityContentLeft.Phrase = new Phrase(": " + supplier, normal_font);
             tableIdentity.AddCell(cellIdentityContentLeft);
-            cellIdentityContentLeft.Phrase = new Phrase( garmentSubconDLOut.SubconCategory== "SUBCON CUTTING SEWING" ? "NO. PO" : "", normal_font);
+            cellIdentityContentLeft.Phrase = new Phrase(garmentSubconDLOut.SubconCategory == "SUBCON CUTTING SEWING" ? "NO. PO" : "", normal_font);
             tableIdentity.AddCell(cellIdentityContentLeft);
             cellIdentityContentLeft.Phrase = new Phrase(garmentSubconDLOut.SubconCategory == "SUBCON CUTTING SEWING" ? ": " + garmentSubconDLOut.PONo : "", normal_font);
             tableIdentity.AddCell(cellIdentityContentLeft);
@@ -110,7 +112,7 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
                 tableContent.AddCell(cellCenter);
                 cellCenter.Phrase = new Phrase("Satuan", bold_font);
                 tableContent.AddCell(cellCenter);
-                
+
 
                 //for (int indexItem = 0; indexItem < garmentSubconDLOut.Items.Count; indexItem++)
                 //{
@@ -157,7 +159,7 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
 
                         cellRight.Phrase = new Phrase($"{DLItem.Quantity}", normal_font);
                         tableContent.AddCell(cellRight);
-                        
+
                         cellLeft.Phrase = new Phrase("PCS", normal_font);
                         tableContent.AddCell(cellLeft);
 
@@ -258,7 +260,7 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
                     tableContent.AddCell(cellCenter);
                     cellCenter.Phrase = new Phrase("Satuan", bold_font);
                     tableContent.AddCell(cellCenter);
-                    
+
 
                     for (int indexItem = 0; indexItem < garmentSubconDLOut.Items.Count; indexItem++)
                     {
@@ -352,7 +354,7 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
                     tableContent.AddCell(cellCenter);
                     cellCenter.Phrase = new Phrase("Satuan", bold_font);
                     tableContent.AddCell(cellCenter);
-                    
+
 
                     for (int indexItem = 0; indexItem < garmentSubconDLOut.Items.Count; indexItem++)
                     {
@@ -416,7 +418,7 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
                 cellCenter.Phrase = new Phrase("Satuan", bold_font);
                 tableContent.AddCell(cellCenter);
                 int indexItem = 0;
-                foreach ( var DLItem in garmentSubconDLOut.Items)
+                foreach (var DLItem in garmentSubconDLOut.Items)
                 {
                     var cols = DLItem.SubconCutting.Items.Count;
                     foreach (var item in DLItem.SubconCutting.Items)
@@ -436,7 +438,7 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
 
                             cellLeft.Phrase = new Phrase(DLItem.POSerialNumber, normal_font);
                             tableContent.AddCell(cellLeft);
-                            cols =0;
+                            cols = 0;
                         }
 
                         cellLeft.Phrase = new Phrase(item.DesignColor, normal_font);
@@ -568,7 +570,7 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
 
                 #region LINE
 
-                cb.MoveTo(marginLeft-10, height - marginTop+25);
+                cb.MoveTo(marginLeft - 10, height - marginTop + 25);
                 cb.LineTo(width - marginRight, height - marginTop + 25);
                 cb.Stroke();
 
@@ -582,7 +584,7 @@ namespace Manufactures.Helpers.PDFTemplates.GarmentSubcon
                 cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "SURAT JALAN SUBCON", width / 2, titleY + 10, 0);
 
                 cb.SetFontAndSize(BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED), 8);
-                cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "NO : "+dto.DLNo, width / 2, titleY, 0);
+                cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "NO : " + dto.DLNo, width / 2, titleY, 0);
 
                 #endregion
 
