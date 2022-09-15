@@ -1,5 +1,4 @@
-﻿using Infrastructure.External.DanLirisClient.Microservice.PurchasingResult;
-using iTextSharp.text;
+﻿using iTextSharp.text;
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.draw;
 using Manufactures.Dtos.GarmentSubcon;
