@@ -26,7 +26,8 @@ namespace Manufactures.Domain.GarmentPreparings
         public Guid GarmentPreparingId { get; private set; }
         public string ROSource { get; private set; }
 		public string UId { get; private set; }
-		public GarmentPreparingItem(Guid identity, int uenItemId, ProductId productId, string productCode, string productName, string designColor, double quantity, UomId uomId, string uomUnit, string fabricType, double remainingQuantity, double basicPrice, Guid garmentPreparingId, string roSource) : base(identity)
+        public string CustomsCategory { get; private set; }
+        public GarmentPreparingItem(Guid identity, int uenItemId, ProductId productId, string productCode, string productName, string designColor, double quantity, UomId uomId, string uomUnit, string fabricType, double remainingQuantity, double basicPrice, Guid garmentPreparingId, string roSource, string customsCategory) : base(identity)
         {
             this.MarkTransient();
 
@@ -44,6 +45,7 @@ namespace Manufactures.Domain.GarmentPreparings
             BasicPrice = basicPrice;
             GarmentPreparingId = garmentPreparingId;
             ROSource = roSource;
+            CustomsCategory = customsCategory;
 
             ReadModel = new GarmentPreparingItemReadModel(Identity)
             {
@@ -59,7 +61,8 @@ namespace Manufactures.Domain.GarmentPreparings
                 RemainingQuantity = RemainingQuantity,
                 BasicPrice = BasicPrice,
                 GarmentPreparingId = GarmentPreparingId,
-                ROSource=roSource
+                ROSource=roSource,
+                CustomsCategory=CustomsCategory
             };
             ReadModel.AddDomainEvent(new OnGarmentPreparingPlaced(this.Identity));
         }
@@ -79,6 +82,7 @@ namespace Manufactures.Domain.GarmentPreparings
             BasicPrice = ReadModel.BasicPrice;
             GarmentPreparingId = ReadModel.GarmentPreparingId;
             ROSource = ReadModel.ROSource;
+            CustomsCategory = ReadModel.CustomsCategory;
         }
 
         public void setUenItemId(int newUenItemId)
