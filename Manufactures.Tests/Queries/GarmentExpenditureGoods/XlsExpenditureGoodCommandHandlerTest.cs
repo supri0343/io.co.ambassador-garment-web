@@ -154,12 +154,12 @@ namespace Manufactures.Tests.Queries.GarmentExpenditureGoods
 			//	}.AsQueryable());
 
 
-			//_mockGarmentPreparingItemRepository
-			//	.Setup(s => s.Query)
-			//	.Returns(new List<GarmentPreparingItemReadModel>
-			//	{
-			//		new GarmentPreparingItem(guidPrepareItem,1,new Domain.GarmentPreparings.ValueObjects.ProductId(1),"productCode","productName","designColor",1,new Domain.GarmentPreparings.ValueObjects.UomId(1),"uomUnit","fabricType",1,1,guidPrepare,null).GetReadModel()
-			//	}.AsQueryable());
+			_mockGarmentPreparingItemRepository
+				.Setup(s => s.Query)
+				.Returns(new List<GarmentPreparingItemReadModel>
+				{
+					new GarmentPreparingItem(guidPrepareItem,1,new Domain.GarmentPreparings.ValueObjects.ProductId(1),"productCode","productName","designColor",1,new Domain.GarmentPreparings.ValueObjects.UomId(1),"uomUnit","fabricType",1,1,guidPrepare,null,"fasilitas").GetReadModel()
+				}.AsQueryable());
 
 
 
@@ -233,12 +233,12 @@ namespace Manufactures.Tests.Queries.GarmentExpenditureGoods
 			//	}.AsQueryable());
 
 
-			//_mockGarmentPreparingItemRepository
-			//	.Setup(s => s.Query)
-			//	.Returns(new List<GarmentPreparingItemReadModel>
-			//	{
-			//		new GarmentPreparingItem(guidPrepareItem,1,new Domain.GarmentPreparings.ValueObjects.ProductId(1),"productCode","productName","designColor",1,new Domain.GarmentPreparings.ValueObjects.UomId(1),"uomUnit","fabricType",1,1,guidPrepare,null).GetReadModel()
-			//	}.AsQueryable());
+			_mockGarmentPreparingItemRepository
+				.Setup(s => s.Query)
+				.Returns(new List<GarmentPreparingItemReadModel>
+				{
+					new GarmentPreparingItem(guidPrepareItem,1,new Domain.GarmentPreparings.ValueObjects.ProductId(1),"productCode","productName","designColor",1,new Domain.GarmentPreparings.ValueObjects.UomId(1),"uomUnit","fabricType",1,1,guidPrepare,null,"fasilitas").GetReadModel()
+				}.AsQueryable());
 			// Act
 			var result = await unitUnderTest.Handle(getMonitoring, cancellationToken);
 

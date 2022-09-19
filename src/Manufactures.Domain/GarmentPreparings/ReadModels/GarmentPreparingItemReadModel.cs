@@ -29,5 +29,6 @@ namespace Manufactures.Domain.GarmentPreparings.ReadModels
 
 
         public string ROSource { get; internal set; }
+        public string CustomsCategory { get; internal set; }
     }
 }
