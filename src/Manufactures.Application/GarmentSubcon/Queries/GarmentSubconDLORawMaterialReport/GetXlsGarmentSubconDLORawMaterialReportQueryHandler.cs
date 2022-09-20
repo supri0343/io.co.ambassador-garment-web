@@ -82,10 +82,9 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLORawMate
                           join c in garmentServiceSubconShrinkagePanelRepository.Query on b.SubconId equals c.Identity
                           join d in garmentServiceSubconShrinkagePanelItemRepository.Query on c.Identity equals d.ServiceSubconShrinkagePanelId
                           join e in garmentServiceSubconShrinkagePanelDetailRepository.Query on d.Identity equals e.ServiceSubconShrinkagePanelItemId
-                          //where a.Deleted == false && b.Deleted == false 
-                          //&& c.Deleted == false && d.Deleted == false && e.Deleted == false
-                          where
-                          a.DLDate.AddHours(7).Date >= request.dateFrom
+                          where a.Deleted == false && b.Deleted == false
+                          && c.Deleted == false && d.Deleted == false && e.Deleted == false
+                          && a.DLDate.AddHours(7).Date >= request.dateFrom
                           && a.DLDate.AddHours(7).Date <= request.dateTo.Date
                           && a.ContractType == "SUBCON BAHAN BAKU" && a.SubconCategory == "SUBCON BB SHRINKAGE/PANEL"
 
@@ -94,7 +93,7 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLORawMate
                               DLType = a.DLType,
                               DLNo = a.DLNo,
                               DLDate = a.DLDate,
-                              ContractNo = a.ContractNo,
+                              ContractNo = a.EPONo,
                               ContractType = a.ContractType,
                               SubConCategory = a.SubconCategory,
                               SubConNo = b.SubconNo,
@@ -151,10 +150,9 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLORawMate
                          join c in garmentServiceSubconFabricWashRepository.Query on b.SubconId equals c.Identity
                          join d in garmentServiceSubconFabricWashItemRepository.Query on c.Identity equals d.ServiceSubconFabricWashId
                          join e in garmentServiceSubconFabricWashDetailRepository.Query on d.Identity equals e.ServiceSubconFabricWashItemId
-                          //where a.Deleted == false && b.Deleted == false
-                          //&& c.Deleted == false && d.Deleted == false && e.Deleted == false
-                         where
-                          a.DLDate.AddHours(7).Date >= request.dateFrom
+                          where a.Deleted == false && b.Deleted == false
+                          && c.Deleted == false && d.Deleted == false && e.Deleted == false
+                          && a.DLDate.AddHours(7).Date >= request.dateFrom
                           && a.DLDate.AddHours(7).Date <= request.dateTo.Date
                           && a.ContractType == "SUBCON BAHAN BAKU" && a.SubconCategory == "SUBCON BB FABRIC WASH/PRINT"
 
@@ -163,7 +161,7 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLORawMate
                              DLType = a.DLType,
                              DLNo = a.DLNo,
                              DLDate = a.DLDate,
-                             ContractNo = a.ContractNo,
+                             ContractNo = a.EPONo,
                              ContractType = a.ContractType,
                              SubConCategory = a.SubconCategory,
                              SubConNo = b.SubconNo,
@@ -216,7 +214,7 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLORawMate
                          }).ToList();
 
 
-            var Query = Query1.Union(Query2).OrderBy(x => x.contractType).ThenBy(x => x.subConCategory).ThenBy(x => x.dlNo);
+            var Query = Query1.Union(Query2).OrderBy(x => x.contractType).ThenBy(x => x.subConCategory).ThenBy(x => x.dlNo).ThenBy(x => x.contractNo).ThenBy(x => x.subConNo);
 
             GarmentSubconDLORawMaterialReportListViewModel listViewModel = new GarmentSubconDLORawMaterialReportListViewModel();
             List<GarmentSubconDLORawMaterialReportDto> rekapgarmentrawmaterial = new List<GarmentSubconDLORawMaterialReportDto>();
@@ -252,13 +250,13 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLORawMate
             DataTable reportDataTable = new DataTable();
 
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Jenis SJ SubCon", DataType = typeof(string) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Jenis SubCon Contract", DataType = typeof(string) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Jenis SubCon", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Kategori SubCon", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "No SJ SubCon", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Tgl SJ SubCon", DataType = typeof(string) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "No Contract", DataType = typeof(string) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "No SubCon Contract", DataType = typeof(string) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Tgl SubCon Contract", DataType = typeof(string) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "No PO External", DataType = typeof(string) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "No SubCon", DataType = typeof(string) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Tgl SubCon", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "No Bon Keluar", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Tgl Bon Keluar", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Unit Yang Meminta", DataType = typeof(string) });

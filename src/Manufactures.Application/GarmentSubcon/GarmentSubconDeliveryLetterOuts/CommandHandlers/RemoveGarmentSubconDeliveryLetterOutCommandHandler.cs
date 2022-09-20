@@ -100,15 +100,15 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
                 await _garmentSubconDeliveryLetterOutItemRepository.Update(subconDeliveryLetterOutItem);
             });
 
-            var subconDLOuts = _garmentSubconDeliveryLetterOutRepository.Query.Where(o => o.SubconContractId == subconDeliveryLetterOut.SubconContractId && o.Identity!=request.Identity).FirstOrDefault();
-            if (subconDLOuts == null)
-            {
-                var subconContract = _garmentSubconContractRepository.Query.Where(x => x.Identity == subconDeliveryLetterOut.SubconContractId).Select(s => new GarmentSubconContract(s)).Single();
-                subconContract.SetIsUsed(false);
-                subconContract.Modify();
+            //var subconDLOuts = _garmentSubconDeliveryLetterOutRepository.Query.Where(o => o.SubconContractId == subconDeliveryLetterOut.SubconContractId && o.Identity!=request.Identity).FirstOrDefault();
+            //if (subconDLOuts == null)
+            //{
+            //    var subconContract = _garmentSubconContractRepository.Query.Where(x => x.Identity == subconDeliveryLetterOut.SubconContractId).Select(s => new GarmentSubconContract(s)).Single();
+            //    subconContract.SetIsUsed(false);
+            //    subconContract.Modify();
 
-                await _garmentSubconContractRepository.Update(subconContract);
-            }
+            //    await _garmentSubconContractRepository.Update(subconContract);
+            //}
 
             subconDeliveryLetterOut.Remove();
             await _garmentSubconDeliveryLetterOutRepository.Update(subconDeliveryLetterOut);

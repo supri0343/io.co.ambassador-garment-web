@@ -74,10 +74,9 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOSewingR
                           join c in garmentCuttingOutRepository.Query on b.SubconId equals c.Identity
                           join d in garmentCuttingOutItemRepository.Query on c.Identity equals d.CutOutId
                           join e in garmentCuttingOutDetailRepository.Query on d.Identity equals e.CutOutItemId
-                          //where a.Deleted == false && b.Deleted == false && c.Deleted == false
-                          //&& d.Deleted == false && e.Deleted == false
-                          where
-                          a.DLDate.AddHours(7).Date >= request.dateFrom
+                          where a.Deleted == false && b.Deleted == false && c.Deleted == false
+                          && d.Deleted == false && e.Deleted == false
+                          && a.DLDate.AddHours(7).Date >= request.dateFrom
                           && a.DLDate.AddHours(7).Date <= request.dateTo.Date
                           && a.ContractType == "SUBCON GARMENT" && a.SubconCategory == "SUBCON SEWING"
 
@@ -86,7 +85,7 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOSewingR
                               DLType = a.DLType,
                               DLNo = a.DLNo,
                               DLDate = a.DLDate,
-                              ContractNo = a.ContractNo,
+                              ContractNo = a.EPONo,
                               ContractType = a.ContractType,
                               SubConCategory = a.SubconCategory,
                               SubConNo = b.SubconNo,
@@ -143,7 +142,7 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOSewingR
                               colour = key.Colour,
                               quantity = group.Sum(x => x.Quantity),
                               uomUnit = key.UomUnit
-                          }).ToList();
+                          }).ToList().OrderBy(x => x.dlNo).ThenBy(x => x.subConNo);
 
 
             GarmentSubconDLOSewingReportListViewModel listViewModel = new GarmentSubconDLOSewingReportListViewModel();
@@ -182,13 +181,13 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOSewingR
             DataTable reportDataTable = new DataTable();
 
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Jenis SJ SubCon", DataType = typeof(string) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Jenis SubCon Contract", DataType = typeof(string) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Jenis SubCon", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Kategori SubCon", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "No SJ SubCon", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Tgl SJ SubCon", DataType = typeof(string) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "No Contract", DataType = typeof(string) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "No SubCon Contract", DataType = typeof(string) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Tgl SubCon Contract", DataType = typeof(string) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "No PO External", DataType = typeof(string) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "No SubCon", DataType = typeof(string) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Tgl SubCon", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "RO No", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Nama Unit", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "No PO", DataType = typeof(string) });

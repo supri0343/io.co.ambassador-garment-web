@@ -78,7 +78,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
             CancellationToken cancellationToken = CancellationToken.None;
             UpdateGarmentSubconDeliveryLetterOutCommand UpdateGarmentSubconDeliveryLetterOutCommand = new UpdateGarmentSubconDeliveryLetterOutCommand()
             {
-                ContractNo = "test",
+
                 ContractType = "SUBCON BAHAN BAKU",
                 DLDate = DateTimeOffset.Now.AddDays(1),
                 DLType = "PROSES",
@@ -88,7 +88,6 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
                 Remark = "test",
                 TotalQty = 10,
                 UsedQty = 10,
-                SubconContractId = new Guid(),
                 UENId = 1,
                 UENNo = "test",
                 Items = new List<GarmentSubconDeliveryLetterOutItemValueObject>
@@ -114,13 +113,13 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
                .Setup(s => s.Query)
                .Returns(new List<GarmentSubconDeliveryLetterOutReadModel>()
                {
-                    new GarmentSubconDeliveryLetterOut(SubconDeliveryLetterOutGuid,"","",Guid.NewGuid(),"","SUBCON BAHAN BAKU",DateTimeOffset.Now,1,"","",1,"",false,"","").GetReadModel()
+                    new GarmentSubconDeliveryLetterOut(SubconDeliveryLetterOutGuid,"","","SUBCON BAHAN BAKU",DateTimeOffset.Now,1,"","",1,"",false,"","",It.IsAny<int>(),"",It.IsAny<int>(),"").GetReadModel()
                }.AsQueryable());
             _mockSubconDeliveryLetterOutItemRepository
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconDeliveryLetterOutItemReadModel, bool>>>()))
                 .Returns(new List<GarmentSubconDeliveryLetterOutItem>()
                 {
-                    new GarmentSubconDeliveryLetterOutItem(Guid.Empty,SubconDeliveryLetterOutGuid,1,new ProductId(1),"code","name","remark","color",1,new UomId(1),"unit",new UomId(1),"unit","fabType",new Guid(),"","","")
+                    new GarmentSubconDeliveryLetterOutItem(Guid.Empty,SubconDeliveryLetterOutGuid,1,new ProductId(1),"code","name","remark","color",1,new UomId(1),"unit",new UomId(1),"unit","fabType",new Guid(),"","","", It.IsAny<int>(),"")
                 });
 
             _mockSubconDeliveryLetterOutRepository
@@ -151,9 +150,8 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
             CancellationToken cancellationToken = CancellationToken.None;
             UpdateGarmentSubconDeliveryLetterOutCommand UpdateGarmentSubconDeliveryLetterOutCommand = new UpdateGarmentSubconDeliveryLetterOutCommand()
             {
-                ContractNo = "test",
                 ContractType = "SUBCON GARMENT",
-                SubconCategory= "SUBCON SEWING",
+                SubconCategory = "SUBCON SEWING",
                 DLDate = DateTimeOffset.Now,
                 DLType = "RE PROSES",
                 EPOItemId = 1,
@@ -162,7 +160,6 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
                 Remark = "test",
                 TotalQty = 10,
                 UsedQty = 10,
-                SubconContractId = new Guid(),
                 UENId = 1,
                 UENNo = "test",
                 Items = new List<GarmentSubconDeliveryLetterOutItemValueObject>
@@ -192,13 +189,13 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
                .Setup(s => s.Query)
                .Returns(new List<GarmentSubconDeliveryLetterOutReadModel>()
                {
-                    new GarmentSubconDeliveryLetterOut(SubconDeliveryLetterOutGuid,"","",Guid.NewGuid(),"","SUBCON CUTTING",DateTimeOffset.Now,1,"","",1,"",false,"","").GetReadModel()
+                    new GarmentSubconDeliveryLetterOut(SubconDeliveryLetterOutGuid,"","","SUBCON CUTTING",DateTimeOffset.Now,1,"","",1,"",false,"","",It.IsAny<int>(),"",It.IsAny<int>(),"").GetReadModel()
                }.AsQueryable());
             _mockSubconDeliveryLetterOutItemRepository
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconDeliveryLetterOutItemReadModel, bool>>>()))
                 .Returns(new List<GarmentSubconDeliveryLetterOutItem>()
                 {
-                    new GarmentSubconDeliveryLetterOutItem(Guid.Empty,SubconDeliveryLetterOutGuid,1,new ProductId(1),"code","name","remark","color",1,new UomId(1),"unit",new UomId(1),"unit","fabType",subconCuttingOutGuid,"","","")
+                    new GarmentSubconDeliveryLetterOutItem(Guid.Empty,SubconDeliveryLetterOutGuid,1,new ProductId(1),"code","name","remark","color",1,new UomId(1),"unit",new UomId(1),"unit","fabType",subconCuttingOutGuid,"","","", It.IsAny<int>(),"")
                 });
 
             GarmentSubconCuttingOut garmentSubconCuttingOut = new GarmentSubconCuttingOut(subconCuttingOutGuid, "no", "", new UnitDepartmentId(1), "", "", DateTimeOffset.Now, "ro", "", new GarmentComodityId(1), "", "", 1, 1, "", false);
@@ -243,7 +240,6 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
             CancellationToken cancellationToken = CancellationToken.None;
             UpdateGarmentSubconDeliveryLetterOutCommand UpdateGarmentSubconDeliveryLetterOutCommand = new UpdateGarmentSubconDeliveryLetterOutCommand()
             {
-                ContractNo = "test",
                 ContractType = "SUBCON JASA",
                 DLDate = DateTimeOffset.Now,
                 DLType = "RE PROSES",
@@ -253,10 +249,9 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
                 Remark = "test",
                 TotalQty = 10,
                 UsedQty = 10,
-                SubconContractId = new Guid(),
                 UENId = 1,
                 UENNo = "test",
-                SubconCategory="SUBCON JASA KOMPONEN",
+                SubconCategory = "SUBCON JASA KOMPONEN",
                 Items = new List<GarmentSubconDeliveryLetterOutItemValueObject>
                 {
                     new GarmentSubconDeliveryLetterOutItemValueObject
@@ -284,13 +279,13 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
                .Setup(s => s.Query)
                .Returns(new List<GarmentSubconDeliveryLetterOutReadModel>()
                {
-                    new GarmentSubconDeliveryLetterOut(SubconDeliveryLetterOutGuid,"","",Guid.NewGuid(),"","SUBCON JASA",DateTimeOffset.Now,1,"","",1,"",false,"SUBCON JASA KOMPONEN","").GetReadModel()
+                    new GarmentSubconDeliveryLetterOut(SubconDeliveryLetterOutGuid,"","","SUBCON JASA",DateTimeOffset.Now,1,"","",1,"",false,"SUBCON JASA KOMPONEN","",It.IsAny<int>(),"",It.IsAny<int>(),"").GetReadModel()
                }.AsQueryable());
             _mockSubconDeliveryLetterOutItemRepository
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconDeliveryLetterOutItemReadModel, bool>>>()))
                 .Returns(new List<GarmentSubconDeliveryLetterOutItem>()
                 {
-                    new GarmentSubconDeliveryLetterOutItem(Guid.Empty,SubconDeliveryLetterOutGuid,1,new ProductId(1),"code","name","remark","color",1,new UomId(1),"unit",new UomId(1),"unit","fabType",subconCuttingOutGuid,"","","")
+                    new GarmentSubconDeliveryLetterOutItem(Guid.Empty,SubconDeliveryLetterOutGuid,1,new ProductId(1),"code","name","remark","color",1,new UomId(1),"unit",new UomId(1),"unit","fabType",subconCuttingOutGuid,"","","", It.IsAny<int>(),"")
                 });
 
             GarmentServiceSubconCutting garmentSubconCutting = new GarmentServiceSubconCutting(subconGuid, "no", "BORDIR", new UnitDepartmentId(1), "", "", DateTimeOffset.Now, false, new BuyerId(1), "", "", new UomId(1), "UomUnit", 1);
@@ -325,372 +320,379 @@ namespace Manufactures.Tests.CommandHandlers.GarmentSubcon.GarmentSubconDelivery
             result.Should().NotBeNull();
         }
 
-        /*[Fact]
-        public async Task Handle_StateUnderTest_ExpectedBehavior_JS_SEWING()
-        {
-            Guid SubconDeliveryLetterOutGuid = Guid.NewGuid();
-            Guid subconCuttingOutGuid = Guid.NewGuid();
-            Guid subconGuid = Guid.NewGuid();
-            UpdateGarmentSubconDeliveryLetterOutCommandHandler unitUnderTest = CreateUpdateGarmentSubconDeliveryLetterOutCommandHandler();
-            CancellationToken cancellationToken = CancellationToken.None;
-            UpdateGarmentSubconDeliveryLetterOutCommand UpdateGarmentSubconDeliveryLetterOutCommand = new UpdateGarmentSubconDeliveryLetterOutCommand()
-            {
-                ContractNo = "test",
-                ContractType = "SUBCON JASA",
-                DLDate = DateTimeOffset.Now,
-                DLType = "RE PROSES",
-                EPOItemId = 1,
-                IsUsed = false,
-                PONo = "test",
-                Remark = "test",
-                TotalQty = 10,
-                UsedQty = 10,
-                SubconContractId = new Guid(),
-                UENId = 1,
-                UENNo = "test",
-                ServiceType = "SUBCON JASA GARMENT WASH",
-                Items = new List<GarmentSubconDeliveryLetterOutItemValueObject>
-                {
-                    new GarmentSubconDeliveryLetterOutItemValueObject
-                    {
-                        Product = new Product(1, "ProductCode", "ProductName"),
-                        Quantity=1,
-                        DesignColor= "ColorD",
-                        SubconDeliveryLetterOutId=Guid.NewGuid(),
-                        FabricType="test",
-                        ProductRemark="test",
-                        UENItemId=1,
-                        Uom=new Uom(1,"UomUnit"),
-                        UomOut=new Uom(1,"UomUnit"),
-                        ContractQuantity=1,
-                        SubconId=subconGuid,
-                        RONo="ro",
-                        POSerialNumber="aa",
-                        SubconNo="no"
-                    }
-                },
-            };
-            UpdateGarmentSubconDeliveryLetterOutCommand.SetIdentity(SubconDeliveryLetterOutGuid);
+        //[Fact]
+        //public async Task Handle_StateUnderTest_ExpectedBehavior_JS_SEWING()
+        //{
+        //    Guid SubconDeliveryLetterOutGuid = Guid.NewGuid();
+        //    Guid subconCuttingOutGuid = Guid.NewGuid();
+        //    Guid subconGuid = Guid.NewGuid();
+        //    UpdateGarmentSubconDeliveryLetterOutCommandHandler unitUnderTest = CreateUpdateGarmentSubconDeliveryLetterOutCommandHandler();
+        //    CancellationToken cancellationToken = CancellationToken.None;
+        //    UpdateGarmentSubconDeliveryLetterOutCommand UpdateGarmentSubconDeliveryLetterOutCommand = new UpdateGarmentSubconDeliveryLetterOutCommand()
+        //    {
+        //        EPOId = 1,
+        //        EPONo = "EPO",
+        //        ContractType = "SUBCON JASA",
+        //        DLDate = DateTimeOffset.Now,
+        //        DLType = "RE PROSES",
+        //        EPOItemId = 1,
+        //        IsUsed = false,
+        //        PONo = "test",
+        //        Remark = "test",
+        //        TotalQty = 10,
+        //        UsedQty = 10,
+        //        UENId = 1,
+        //        UENNo = "test",
+        //        ServiceType = "SUBCON JASA GARMENT WASH",
+        //        Items = new List<GarmentSubconDeliveryLetterOutItemValueObject>
+        //        {
+        //            new GarmentSubconDeliveryLetterOutItemValueObject
+        //            {
+        //                Product = new Product(1, "ProductCode", "ProductName"),
+        //                Quantity=1,
+        //                DesignColor= "ColorD",
+        //                SubconDeliveryLetterOutId=Guid.NewGuid(),
+        //                FabricType="test",
+        //                ProductRemark="test",
+        //                UENItemId=1,
+        //                Uom=new Uom(1,"UomUnit"),
+        //                UomOut=new Uom(1,"UomUnit"),
+        //                ContractQuantity=1,
+        //                SubconId=subconGuid,
+        //                RONo="ro",
+        //                POSerialNumber="aa",
+        //                SubconNo="no",
+        //                QtyPacking = 1,
+        //                UomSatuanUnit = ""
+        //            }
+        //        },
+        //    };
+        //    UpdateGarmentSubconDeliveryLetterOutCommand.SetIdentity(SubconDeliveryLetterOutGuid);
 
-            _mockSubconDeliveryLetterOutRepository
-               .Setup(s => s.Query)
-               .Returns(new List<GarmentSubconDeliveryLetterOutReadModel>()
-               {
-                    new GarmentSubconDeliveryLetterOut(SubconDeliveryLetterOutGuid,"","",Guid.NewGuid(),"","SUBCON JASA",DateTimeOffset.Now,1,"","",1,"",false,"SUBCON JASA KOMPONEN","").GetReadModel()
-               }.AsQueryable());
-            _mockSubconDeliveryLetterOutItemRepository
-                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconDeliveryLetterOutItemReadModel, bool>>>()))
-                .Returns(new List<GarmentSubconDeliveryLetterOutItem>()
-                {
-                    new GarmentSubconDeliveryLetterOutItem(Guid.Empty,SubconDeliveryLetterOutGuid,1,new ProductId(1),"code","name","remark","color",1,new UomId(1),"unit",new UomId(1),"unit","fabType",subconCuttingOutGuid,"","","")
-                });
+        //    _mockSubconDeliveryLetterOutRepository
+        //       .Setup(s => s.Query)
+        //       .Returns(new List<GarmentSubconDeliveryLetterOutReadModel>()
+        //       {
+        //            new GarmentSubconDeliveryLetterOut(SubconDeliveryLetterOutGuid,"","","SUBCON JASA",DateTimeOffset.Now,1,"","",1,"",false,"SUBCON JASA KOMPONEN","",1,"",1,"").GetReadModel()
+        //       }.AsQueryable());
+        //    _mockSubconDeliveryLetterOutItemRepository
+        //        .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconDeliveryLetterOutItemReadModel, bool>>>()))
+        //        .Returns(new List<GarmentSubconDeliveryLetterOutItem>()
+        //        {
+        //            new GarmentSubconDeliveryLetterOutItem(Guid.Empty,SubconDeliveryLetterOutGuid,1,new ProductId(1),"code","name","remark","color",1,new UomId(1),"unit",new UomId(1),"unit","fabType",subconCuttingOutGuid,"","","",1,"")
+        //        });
 
-            GarmentServiceSubconCutting garmentSubconCutting = new GarmentServiceSubconCutting(subconGuid, "no", "BORDIR", new UnitDepartmentId(1), "", "", DateTimeOffset.Now, false, new BuyerId(1), "", "");
+        //    GarmentServiceSubconCutting garmentSubconCutting = new GarmentServiceSubconCutting(subconGuid, "no", "BORDIR", new UnitDepartmentId(1), "", "", DateTimeOffset.Now, false, new BuyerId(1), "", "",new UomId(1), "", 1);
 
-            _mockSubconCuttingRepository
-                .Setup(s => s.Query)
-                .Returns(new List<GarmentServiceSubconCuttingReadModel>
-                {
-                    garmentSubconCutting.GetReadModel()
-                }.AsQueryable());
+        //    _mockSubconCuttingRepository
+        //        .Setup(s => s.Query)
+        //        .Returns(new List<GarmentServiceSubconCuttingReadModel>
+        //        {
+        //            garmentSubconCutting.GetReadModel()
+        //        }.AsQueryable());
 
-            _mockSubconCuttingRepository
-                .Setup(s => s.Update(It.IsAny<GarmentServiceSubconCutting>()))
-                .Returns(Task.FromResult(It.IsAny<GarmentServiceSubconCutting>()));
-
-
-            _mockSubconDeliveryLetterOutRepository
-                .Setup(s => s.Update(It.IsAny<GarmentSubconDeliveryLetterOut>()))
-                .Returns(Task.FromResult(It.IsAny<GarmentSubconDeliveryLetterOut>()));
-            _mockSubconDeliveryLetterOutItemRepository
-                .Setup(s => s.Update(It.IsAny<GarmentSubconDeliveryLetterOutItem>()))
-                .Returns(Task.FromResult(It.IsAny<GarmentSubconDeliveryLetterOutItem>()));
-
-            _MockStorage
-                .Setup(x => x.Save())
-                .Verifiable();
-
-            // Act
-            var result = await unitUnderTest.Handle(UpdateGarmentSubconDeliveryLetterOutCommand, cancellationToken);
-
-            // Assert
-            result.Should().NotBeNull();
-        }
-
-        /*[Fact]
-        public async Task Handle_StateUnderTest_ExpectedBehavior_JS_SEWING()
-        {
-            Guid SubconDeliveryLetterOutGuid = Guid.NewGuid();
-            Guid subconCuttingOutGuid = Guid.NewGuid();
-            Guid subconGuid = Guid.NewGuid();
-            UpdateGarmentSubconDeliveryLetterOutCommandHandler unitUnderTest = CreateUpdateGarmentSubconDeliveryLetterOutCommandHandler();
-            CancellationToken cancellationToken = CancellationToken.None;
-            UpdateGarmentSubconDeliveryLetterOutCommand UpdateGarmentSubconDeliveryLetterOutCommand = new UpdateGarmentSubconDeliveryLetterOutCommand()
-            {
-                ContractNo = "test",
-                ContractType = "SUBCON JASA",
-                DLDate = DateTimeOffset.Now,
-                DLType = "RE PROSES",
-                EPOItemId = 1,
-                IsUsed = false,
-                PONo = "test",
-                Remark = "test",
-                TotalQty = 10,
-                UsedQty = 10,
-                SubconContractId = new Guid(),
-                UENId = 1,
-                UENNo = "test",
-                ServiceType = "SUBCON JASA GARMENT WASH",
-                Items = new List<GarmentSubconDeliveryLetterOutItemValueObject>
-                {
-                    new GarmentSubconDeliveryLetterOutItemValueObject
-                    {
-                        Product = new Product(1, "ProductCode", "ProductName"),
-                        Quantity=1,
-                        DesignColor= "ColorD",
-                        SubconDeliveryLetterOutId=Guid.NewGuid(),
-                        FabricType="test",
-                        ProductRemark="test",
-                        UENItemId=1,
-                        Uom=new Uom(1,"UomUnit"),
-                        UomOut=new Uom(1,"UomUnit"),
-                        ContractQuantity=1,
-                        SubconId=subconGuid,
-                        RONo="ro",
-                        POSerialNumber="aa",
-                        SubconNo="no"
-                    }
-                },
-            };
-            UpdateGarmentSubconDeliveryLetterOutCommand.SetIdentity(SubconDeliveryLetterOutGuid);
-
-            _mockSubconDeliveryLetterOutRepository
-               .Setup(s => s.Query)
-               .Returns(new List<GarmentSubconDeliveryLetterOutReadModel>()
-               {
-                    new GarmentSubconDeliveryLetterOut(SubconDeliveryLetterOutGuid,"","",Guid.NewGuid(),"","SUBCON JASA",DateTimeOffset.Now,1,"","",1,"",false,"SUBCON JASA KOMPONEN").GetReadModel()
-               }.AsQueryable());
-            _mockSubconDeliveryLetterOutItemRepository
-                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconDeliveryLetterOutItemReadModel, bool>>>()))
-                .Returns(new List<GarmentSubconDeliveryLetterOutItem>()
-                {
-                    new GarmentSubconDeliveryLetterOutItem(Guid.Empty,SubconDeliveryLetterOutGuid,1,new ProductId(1),"code","name","remark","color",1,new UomId(1),"unit",new UomId(1),"unit","fabType",subconCuttingOutGuid,"","","")
-                });
-
-            GarmentServiceSubconSewing garmentSubconSewing = new GarmentServiceSubconSewing(subconGuid, "no", DateTimeOffset.Now, false, new BuyerId(1), "", "");
-
-            _mockSubconSewingRepository
-                .Setup(s => s.Query)
-                .Returns(new List<GarmentServiceSubconSewingReadModel>
-                {
-                    garmentSubconSewing.GetReadModel()
-                }.AsQueryable());
-
-            _mockSubconSewingRepository
-                .Setup(s => s.Update(It.IsAny<GarmentServiceSubconSewing>()))
-                .Returns(Task.FromResult(It.IsAny<GarmentServiceSubconSewing>()));
+        //    _mockSubconCuttingRepository
+        //        .Setup(s => s.Update(It.IsAny<GarmentServiceSubconCutting>()))
+        //        .Returns(Task.FromResult(It.IsAny<GarmentServiceSubconCutting>()));
 
 
-            _mockSubconDeliveryLetterOutRepository
-                .Setup(s => s.Update(It.IsAny<GarmentSubconDeliveryLetterOut>()))
-                .Returns(Task.FromResult(It.IsAny<GarmentSubconDeliveryLetterOut>()));
-            _mockSubconDeliveryLetterOutItemRepository
-                .Setup(s => s.Update(It.IsAny<GarmentSubconDeliveryLetterOutItem>()))
-                .Returns(Task.FromResult(It.IsAny<GarmentSubconDeliveryLetterOutItem>()));
+        //    _mockSubconDeliveryLetterOutRepository
+        //        .Setup(s => s.Update(It.IsAny<GarmentSubconDeliveryLetterOut>()))
+        //        .Returns(Task.FromResult(It.IsAny<GarmentSubconDeliveryLetterOut>()));
+        //    _mockSubconDeliveryLetterOutItemRepository
+        //        .Setup(s => s.Update(It.IsAny<GarmentSubconDeliveryLetterOutItem>()))
+        //        .Returns(Task.FromResult(It.IsAny<GarmentSubconDeliveryLetterOutItem>()));
 
-            _MockStorage
-                .Setup(x => x.Save())
-                .Verifiable();
+        //    _MockStorage
+        //        .Setup(x => x.Save())
+        //        .Verifiable();
 
-            // Act
-            var result = await unitUnderTest.Handle(UpdateGarmentSubconDeliveryLetterOutCommand, cancellationToken);
+        //    // Act
+        //    var result = await unitUnderTest.Handle(UpdateGarmentSubconDeliveryLetterOutCommand, cancellationToken);
 
-            // Assert
-            result.Should().NotBeNull();
-        }*/
+        //    // Assert
+        //    result.Should().NotBeNull();
+        //}
 
-        /*[Fact]
-        public async Task Handle_StateUnderTest_ExpectedBehavior_JS_FABRIC()
-        {
-            Guid SubconDeliveryLetterOutGuid = Guid.NewGuid();
-            Guid subconCuttingOutGuid = Guid.NewGuid();
-            Guid subconGuid = Guid.NewGuid();
-            UpdateGarmentSubconDeliveryLetterOutCommandHandler unitUnderTest = CreateUpdateGarmentSubconDeliveryLetterOutCommandHandler();
-            CancellationToken cancellationToken = CancellationToken.None;
-            UpdateGarmentSubconDeliveryLetterOutCommand UpdateGarmentSubconDeliveryLetterOutCommand = new UpdateGarmentSubconDeliveryLetterOutCommand()
-            {
-                ContractNo = "test",
-                ContractType = "SUBCON JASA",
-                DLDate = DateTimeOffset.Now,
-                DLType = "RE PROSES",
-                EPOItemId = 1,
-                IsUsed = false,
-                PONo = "test",
-                Remark = "test",
-                TotalQty = 10,
-                UsedQty = 10,
-                SubconContractId = new Guid(),
-                UENId = 1,
-                UENNo = "test",
-                ServiceType = "SUBCON JASA FABRIC WASH",
-                Items = new List<GarmentSubconDeliveryLetterOutItemValueObject>
-                {
-                    new GarmentSubconDeliveryLetterOutItemValueObject
-                    {
-                        Product = new Product(1, "ProductCode", "ProductName"),
-                        Quantity=1,
-                        DesignColor= "ColorD",
-                        SubconDeliveryLetterOutId=Guid.NewGuid(),
-                        FabricType="test",
-                        ProductRemark="test",
-                        UENItemId=1,
-                        Uom=new Uom(1,"UomUnit"),
-                        UomOut=new Uom(1,"UomUnit"),
-                        ContractQuantity=1,
-                        SubconId=subconGuid,
-                        RONo="ro",
-                        POSerialNumber="aa",
-                        SubconNo="no"
-                    }
-                },
-            };
-            UpdateGarmentSubconDeliveryLetterOutCommand.SetIdentity(SubconDeliveryLetterOutGuid);
+        //[Fact]
+        //public async Task Handle_StateUnderTest_ExpectedBehavior_JS_SEWING()
+        //{
+        //    Guid SubconDeliveryLetterOutGuid = Guid.NewGuid();
+        //    Guid subconCuttingOutGuid = Guid.NewGuid();
+        //    Guid subconGuid = Guid.NewGuid();
+        //    UpdateGarmentSubconDeliveryLetterOutCommandHandler unitUnderTest = CreateUpdateGarmentSubconDeliveryLetterOutCommandHandler();
+        //    CancellationToken cancellationToken = CancellationToken.None;
+        //    UpdateGarmentSubconDeliveryLetterOutCommand UpdateGarmentSubconDeliveryLetterOutCommand = new UpdateGarmentSubconDeliveryLetterOutCommand()
+        //    {
+        //        ContractNo = "test",
+        //        ContractType = "SUBCON JASA",
+        //        DLDate = DateTimeOffset.Now,
+        //        DLType = "RE PROSES",
+        //        EPOItemId = 1,
+        //        IsUsed = false,
+        //        PONo = "test",
+        //        Remark = "test",
+        //        TotalQty = 10,
+        //        UsedQty = 10,
+        //        SubconContractId = new Guid(),
+        //        UENId = 1,
+        //        UENNo = "test",
+        //        ServiceType = "SUBCON JASA GARMENT WASH",
+        //        Items = new List<GarmentSubconDeliveryLetterOutItemValueObject>
+        //        {
+        //            new GarmentSubconDeliveryLetterOutItemValueObject
+        //            {
+        //                Product = new Product(1, "ProductCode", "ProductName"),
+        //                Quantity=1,
+        //                DesignColor= "ColorD",
+        //                SubconDeliveryLetterOutId=Guid.NewGuid(),
+        //                FabricType="test",
+        //                ProductRemark="test",
+        //                UENItemId=1,
+        //                Uom=new Uom(1,"UomUnit"),
+        //                UomOut=new Uom(1,"UomUnit"),
+        //                ContractQuantity=1,
+        //                SubconId=subconGuid,
+        //                RONo="ro",
+        //                POSerialNumber="aa",
+        //                SubconNo="no"
+        //            }
+        //        },
+        //    };
+        //    UpdateGarmentSubconDeliveryLetterOutCommand.SetIdentity(SubconDeliveryLetterOutGuid);
 
-            _mockSubconDeliveryLetterOutRepository
-               .Setup(s => s.Query)
-               .Returns(new List<GarmentSubconDeliveryLetterOutReadModel>()
-               {
-                    new GarmentSubconDeliveryLetterOut(SubconDeliveryLetterOutGuid,"","",Guid.NewGuid(),"","SUBCON JASA",DateTimeOffset.Now,1,"","",1,"",false,"SUBCON JASA KOMPONEN").GetReadModel()
-               }.AsQueryable());
-            _mockSubconDeliveryLetterOutItemRepository
-                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconDeliveryLetterOutItemReadModel, bool>>>()))
-                .Returns(new List<GarmentSubconDeliveryLetterOutItem>()
-                {
-                    new GarmentSubconDeliveryLetterOutItem(Guid.Empty,SubconDeliveryLetterOutGuid,1,new ProductId(1),"code","name","remark","color",1,new UomId(1),"unit",new UomId(1),"unit","fabType",subconGuid,"","","")
-                });
+        //    _mockSubconDeliveryLetterOutRepository
+        //       .Setup(s => s.Query)
+        //       .Returns(new List<GarmentSubconDeliveryLetterOutReadModel>()
+        //       {
+        //            new GarmentSubconDeliveryLetterOut(SubconDeliveryLetterOutGuid,"","","SUBCON JASA",DateTimeOffset.Now,1,"","",1,"",false,"SUBCON JASA KOMPONEN","",1,"",1,"").GetReadModel()
+        //       }.AsQueryable());
+        //    _mockSubconDeliveryLetterOutItemRepository
+        //        .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconDeliveryLetterOutItemReadModel, bool>>>()))
+        //        .Returns(new List<GarmentSubconDeliveryLetterOutItem>()
+        //        {
+        //            new GarmentSubconDeliveryLetterOutItem(Guid.Empty,SubconDeliveryLetterOutGuid,1,new ProductId(1),"code","name","remark","color",1,new UomId(1),"unit",new UomId(1),"unit","fabType",subconCuttingOutGuid,"","","",1,"")
+        //        });
 
-            GarmentServiceSubconFabricWash garmentSubconFabric = new GarmentServiceSubconFabricWash(subconGuid, "", DateTimeOffset.Now, false);
+        //    GarmentServiceSubconSewing garmentSubconSewing = new GarmentServiceSubconSewing(subconGuid, "no", DateTimeOffset.Now, false, new BuyerId(1), "", "",1,"");
 
-            _mockServiceSubconFabricWashRepository
-                .Setup(s => s.Query)
-                .Returns(new List<GarmentServiceSubconFabricWashReadModel>
-                {
-                    garmentSubconFabric.GetReadModel()
-                }.AsQueryable());
+        //    _mockSubconSewingRepository
+        //        .Setup(s => s.Query)
+        //        .Returns(new List<GarmentServiceSubconSewingReadModel>
+        //        {
+        //            garmentSubconSewing.GetReadModel()
+        //        }.AsQueryable());
 
-            _mockServiceSubconFabricWashRepository
-                .Setup(s => s.Update(It.IsAny<GarmentServiceSubconFabricWash>()))
-                .Returns(Task.FromResult(It.IsAny<GarmentServiceSubconFabricWash>()));
-
-
-            _mockSubconDeliveryLetterOutRepository
-                .Setup(s => s.Update(It.IsAny<GarmentSubconDeliveryLetterOut>()))
-                .Returns(Task.FromResult(It.IsAny<GarmentSubconDeliveryLetterOut>()));
-            _mockSubconDeliveryLetterOutItemRepository
-                .Setup(s => s.Update(It.IsAny<GarmentSubconDeliveryLetterOutItem>()))
-                .Returns(Task.FromResult(It.IsAny<GarmentSubconDeliveryLetterOutItem>()));
-
-            _MockStorage
-                .Setup(x => x.Save())
-                .Verifiable();
-
-            // Act
-            var result = await unitUnderTest.Handle(UpdateGarmentSubconDeliveryLetterOutCommand, cancellationToken);
-
-            // Assert
-            result.Should().NotBeNull();
-        }*/
-
-        /*[Fact]
-        public async Task Handle_StateUnderTest_ExpectedBehavior_JS_SHRINKAGE()
-        {
-            Guid SubconDeliveryLetterOutGuid = Guid.NewGuid();
-            Guid subconCuttingOutGuid = Guid.NewGuid();
-            Guid subconGuid = Guid.NewGuid();
-            UpdateGarmentSubconDeliveryLetterOutCommandHandler unitUnderTest = CreateUpdateGarmentSubconDeliveryLetterOutCommandHandler();
-            CancellationToken cancellationToken = CancellationToken.None;
-            UpdateGarmentSubconDeliveryLetterOutCommand UpdateGarmentSubconDeliveryLetterOutCommand = new UpdateGarmentSubconDeliveryLetterOutCommand()
-            {
-                ContractNo = "test",
-                ContractType = "SUBCON JASA",
-                DLDate = DateTimeOffset.Now,
-                DLType = "RE PROSES",
-                EPOItemId = 1,
-                IsUsed = false,
-                PONo = "test",
-                Remark = "test",
-                TotalQty = 10,
-                UsedQty = 10,
-                SubconContractId = new Guid(),
-                UENId = 1,
-                UENNo = "test",
-                ServiceType = "SUBCON JASA SHRINKAGE PANEL",
-                Items = new List<GarmentSubconDeliveryLetterOutItemValueObject>
-                {
-                    new GarmentSubconDeliveryLetterOutItemValueObject
-                    {
-                        Product = new Product(1, "ProductCode", "ProductName"),
-                        Quantity=1,
-                        DesignColor= "ColorD",
-                        SubconDeliveryLetterOutId=Guid.NewGuid(),
-                        FabricType="test",
-                        ProductRemark="test",
-                        UENItemId=1,
-                        Uom=new Uom(1,"UomUnit"),
-                        UomOut=new Uom(1,"UomUnit"),
-                        ContractQuantity=1,
-                        SubconId=subconGuid,
-                        RONo="ro",
-                        POSerialNumber="aa",
-                        SubconNo="no"
-                    }
-                },
-            };
-            UpdateGarmentSubconDeliveryLetterOutCommand.SetIdentity(SubconDeliveryLetterOutGuid);
-
-            _mockSubconDeliveryLetterOutRepository
-               .Setup(s => s.Query)
-               .Returns(new List<GarmentSubconDeliveryLetterOutReadModel>()
-               {
-                    new GarmentSubconDeliveryLetterOut(SubconDeliveryLetterOutGuid,"","",Guid.NewGuid(),"","SUBCON JASA",DateTimeOffset.Now,1,"","",1,"",false,"SUBCON JASA KOMPONEN").GetReadModel()
-               }.AsQueryable());
-            _mockSubconDeliveryLetterOutItemRepository
-                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconDeliveryLetterOutItemReadModel, bool>>>()))
-                .Returns(new List<GarmentSubconDeliveryLetterOutItem>()
-                {
-                    new GarmentSubconDeliveryLetterOutItem(Guid.Empty,SubconDeliveryLetterOutGuid,1,new ProductId(1),"code","name","remark","color",1,new UomId(1),"unit",new UomId(1),"unit","fabType",subconGuid,"","","")
-                });
-
-            GarmentServiceSubconShrinkagePanel garmentSubconShrinkage = new GarmentServiceSubconShrinkagePanel(subconGuid, "", DateTimeOffset.Now, null, false);
-
-            _mockServiceSubconShrinkagePanelRepository
-                .Setup(s => s.Query)
-                .Returns(new List<GarmentServiceSubconShrinkagePanelReadModel>
-                {
-                    garmentSubconShrinkage.GetReadModel()
-                }.AsQueryable());
-
-            _mockServiceSubconShrinkagePanelRepository
-                .Setup(s => s.Update(It.IsAny<GarmentServiceSubconShrinkagePanel>()))
-                .Returns(Task.FromResult(It.IsAny<GarmentServiceSubconShrinkagePanel>()));
+        //    _mockSubconSewingRepository
+        //        .Setup(s => s.Update(It.IsAny<GarmentServiceSubconSewing>()))
+        //        .Returns(Task.FromResult(It.IsAny<GarmentServiceSubconSewing>()));
 
 
-            _mockSubconDeliveryLetterOutRepository
-                .Setup(s => s.Update(It.IsAny<GarmentSubconDeliveryLetterOut>()))
-                .Returns(Task.FromResult(It.IsAny<GarmentSubconDeliveryLetterOut>()));
-            _mockSubconDeliveryLetterOutItemRepository
-                .Setup(s => s.Update(It.IsAny<GarmentSubconDeliveryLetterOutItem>()))
-                .Returns(Task.FromResult(It.IsAny<GarmentSubconDeliveryLetterOutItem>()));
+        //    _mockSubconDeliveryLetterOutRepository
+        //        .Setup(s => s.Update(It.IsAny<GarmentSubconDeliveryLetterOut>()))
+        //        .Returns(Task.FromResult(It.IsAny<GarmentSubconDeliveryLetterOut>()));
+        //    _mockSubconDeliveryLetterOutItemRepository
+        //        .Setup(s => s.Update(It.IsAny<GarmentSubconDeliveryLetterOutItem>()))
+        //        .Returns(Task.FromResult(It.IsAny<GarmentSubconDeliveryLetterOutItem>()));
 
-            _MockStorage
-                .Setup(x => x.Save())
-                .Verifiable();
+        //    _MockStorage
+        //        .Setup(x => x.Save())
+        //        .Verifiable();
 
-            // Act
-            var result = await unitUnderTest.Handle(UpdateGarmentSubconDeliveryLetterOutCommand, cancellationToken);
+        //    // Act
+        //    var result = await unitUnderTest.Handle(UpdateGarmentSubconDeliveryLetterOutCommand, cancellationToken);
 
-            // Assert
-            result.Should().NotBeNull();
-        }*/
+        //    // Assert
+        //    result.Should().NotBeNull();
+        //}
+
+        //    [Fact]
+        //    public async Task Handle_StateUnderTest_ExpectedBehavior_JS_FABRIC()
+        //    {
+        //        Guid SubconDeliveryLetterOutGuid = Guid.NewGuid();
+        //        Guid subconCuttingOutGuid = Guid.NewGuid();
+        //        Guid subconGuid = Guid.NewGuid();
+        //        UpdateGarmentSubconDeliveryLetterOutCommandHandler unitUnderTest = CreateUpdateGarmentSubconDeliveryLetterOutCommandHandler();
+        //        CancellationToken cancellationToken = CancellationToken.None;
+        //        UpdateGarmentSubconDeliveryLetterOutCommand UpdateGarmentSubconDeliveryLetterOutCommand = new UpdateGarmentSubconDeliveryLetterOutCommand()
+        //        {
+        //            EPOId = 1,
+        //            EPONo = "EPO",
+        //            ContractType = "SUBCON JASA",
+        //            DLDate = DateTimeOffset.Now,
+        //            DLType = "RE PROSES",
+        //            EPOItemId = 1,
+        //            IsUsed = false,
+        //            PONo = "test",
+        //            Remark = "test",
+        //            TotalQty = 10,
+        //            UsedQty = 10,
+        //            UENId = 1,
+        //            UENNo = "test",
+        //            ServiceType = "SUBCON JASA FABRIC WASH",
+        //            Items = new List<GarmentSubconDeliveryLetterOutItemValueObject>
+        //            {
+        //                new GarmentSubconDeliveryLetterOutItemValueObject
+        //                {
+        //                    Product = new Product(1, "ProductCode", "ProductName"),
+        //                    Quantity=1,
+        //                    DesignColor= "ColorD",
+        //                    SubconDeliveryLetterOutId=Guid.NewGuid(),
+        //                    FabricType="test",
+        //                    ProductRemark="test",
+        //                    UENItemId=1,
+        //                    Uom=new Uom(1,"UomUnit"),
+        //                    UomOut=new Uom(1,"UomUnit"),
+        //                    ContractQuantity=1,
+        //                    SubconId=subconGuid,
+        //                    RONo="ro",
+        //                    POSerialNumber="aa",
+        //                    SubconNo="no",
+        //                    QtyPacking = 1,
+        //                    UomSatuanUnit = ""
+        //                }
+        //            },
+        //        };
+        //        UpdateGarmentSubconDeliveryLetterOutCommand.SetIdentity(SubconDeliveryLetterOutGuid);
+
+        //        _mockSubconDeliveryLetterOutRepository
+        //           .Setup(s => s.Query)
+        //           .Returns(new List<GarmentSubconDeliveryLetterOutReadModel>()
+        //           {
+        //                new GarmentSubconDeliveryLetterOut(SubconDeliveryLetterOutGuid,"","","SUBCON JASA",DateTimeOffset.Now,1,"","",1,"",false,"SUBCON JASA KOMPONEN","",1,"",1,"").GetReadModel()
+        //           }.AsQueryable());
+        //        _mockSubconDeliveryLetterOutItemRepository
+        //            .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconDeliveryLetterOutItemReadModel, bool>>>()))
+        //            .Returns(new List<GarmentSubconDeliveryLetterOutItem>()
+        //            {
+        //                new GarmentSubconDeliveryLetterOutItem(Guid.Empty,SubconDeliveryLetterOutGuid,1,new ProductId(1),"code","name","remark","color",1,new UomId(1),"unit",new UomId(1),"unit","fabType",subconGuid,"","","",1,"")
+        //            });
+
+        //        GarmentServiceSubconFabricWash garmentSubconFabric = new GarmentServiceSubconFabricWash(subconGuid, "", DateTimeOffset.Now,"", false,1,"");
+
+        //        _mockServiceSubconFabricWashRepository
+        //            .Setup(s => s.Query)
+        //            .Returns(new List<GarmentServiceSubconFabricWashReadModel>
+        //            {
+        //                garmentSubconFabric.GetReadModel()
+        //            }.AsQueryable());
+
+        //        _mockServiceSubconFabricWashRepository
+        //            .Setup(s => s.Update(It.IsAny<GarmentServiceSubconFabricWash>()))
+        //            .Returns(Task.FromResult(It.IsAny<GarmentServiceSubconFabricWash>()));
+
+
+        //        _mockSubconDeliveryLetterOutRepository
+        //            .Setup(s => s.Update(It.IsAny<GarmentSubconDeliveryLetterOut>()))
+        //            .Returns(Task.FromResult(It.IsAny<GarmentSubconDeliveryLetterOut>()));
+        //        _mockSubconDeliveryLetterOutItemRepository
+        //            .Setup(s => s.Update(It.IsAny<GarmentSubconDeliveryLetterOutItem>()))
+        //            .Returns(Task.FromResult(It.IsAny<GarmentSubconDeliveryLetterOutItem>()));
+
+        //        _MockStorage
+        //            .Setup(x => x.Save())
+        //            .Verifiable();
+
+        //        // Act
+        //        var result = await unitUnderTest.Handle(UpdateGarmentSubconDeliveryLetterOutCommand, cancellationToken);
+
+        //        // Assert
+        //        result.Should().NotBeNull();
+        //    }
+
+        //    [Fact]
+        //    public async Task Handle_StateUnderTest_ExpectedBehavior_JS_SHRINKAGE()
+        //    {
+        //        Guid SubconDeliveryLetterOutGuid = Guid.NewGuid();
+        //        Guid subconCuttingOutGuid = Guid.NewGuid();
+        //        Guid subconGuid = Guid.NewGuid();
+        //        UpdateGarmentSubconDeliveryLetterOutCommandHandler unitUnderTest = CreateUpdateGarmentSubconDeliveryLetterOutCommandHandler();
+        //        CancellationToken cancellationToken = CancellationToken.None;
+        //        UpdateGarmentSubconDeliveryLetterOutCommand UpdateGarmentSubconDeliveryLetterOutCommand = new UpdateGarmentSubconDeliveryLetterOutCommand()
+        //        {
+        //            EPOId = 1,
+        //            EPONo = "EPO",
+        //            ContractType = "SUBCON JASA",
+        //            DLDate = DateTimeOffset.Now,
+        //            DLType = "RE PROSES",
+        //            EPOItemId = 1,
+        //            IsUsed = false,
+        //            PONo = "test",
+        //            Remark = "test",
+        //            TotalQty = 10,
+        //            UsedQty = 10,
+        //            UENId = 1,
+        //            UENNo = "test",
+        //            ServiceType = "SUBCON JASA SHRINKAGE PANEL",
+        //            Items = new List<GarmentSubconDeliveryLetterOutItemValueObject>
+        //            {
+        //                new GarmentSubconDeliveryLetterOutItemValueObject
+        //                {
+        //                    Product = new Product(1, "ProductCode", "ProductName"),
+        //                    Quantity=1,
+        //                    DesignColor= "ColorD",
+        //                    SubconDeliveryLetterOutId=Guid.NewGuid(),
+        //                    FabricType="test",
+        //                    ProductRemark="test",
+        //                    UENItemId=1,
+        //                    Uom=new Uom(1,"UomUnit"),
+        //                    UomOut=new Uom(1,"UomUnit"),
+        //                    ContractQuantity=1,
+        //                    SubconId=subconGuid,
+        //                    RONo="ro",
+        //                    POSerialNumber="aa",
+        //                    SubconNo="no",
+        //                    QtyPacking = 1,
+        //                    UomSatuanUnit = ""
+        //                }
+        //            },
+        //        };
+        //        UpdateGarmentSubconDeliveryLetterOutCommand.SetIdentity(SubconDeliveryLetterOutGuid);
+
+        //        _mockSubconDeliveryLetterOutRepository
+        //           .Setup(s => s.Query)
+        //           .Returns(new List<GarmentSubconDeliveryLetterOutReadModel>()
+        //           {
+        //                new GarmentSubconDeliveryLetterOut(SubconDeliveryLetterOutGuid,"","","SUBCON JASA",DateTimeOffset.Now,1,"","",1,"",false,"SUBCON JASA KOMPONEN","",1,"",1,"").GetReadModel()
+        //           }.AsQueryable());
+        //        _mockSubconDeliveryLetterOutItemRepository
+        //            .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconDeliveryLetterOutItemReadModel, bool>>>()))
+        //            .Returns(new List<GarmentSubconDeliveryLetterOutItem>()
+        //            {
+        //                new GarmentSubconDeliveryLetterOutItem(Guid.Empty,SubconDeliveryLetterOutGuid,1,new ProductId(1),"code","name","remark","color",1,new UomId(1),"unit",new UomId(1),"unit","fabType",subconGuid,"","","",1,"")
+        //            });
+
+        //        GarmentServiceSubconShrinkagePanel garmentSubconShrinkage = new GarmentServiceSubconShrinkagePanel(subconGuid, "", DateTimeOffset.Now, null, false,1,"");
+
+        //        _mockServiceSubconShrinkagePanelRepository
+        //            .Setup(s => s.Query)
+        //            .Returns(new List<GarmentServiceSubconShrinkagePanelReadModel>
+        //            {
+        //                garmentSubconShrinkage.GetReadModel()
+        //            }.AsQueryable());
+
+        //        _mockServiceSubconShrinkagePanelRepository
+        //            .Setup(s => s.Update(It.IsAny<GarmentServiceSubconShrinkagePanel>()))
+        //            .Returns(Task.FromResult(It.IsAny<GarmentServiceSubconShrinkagePanel>()));
+
+
+        //        _mockSubconDeliveryLetterOutRepository
+        //            .Setup(s => s.Update(It.IsAny<GarmentSubconDeliveryLetterOut>()))
+        //            .Returns(Task.FromResult(It.IsAny<GarmentSubconDeliveryLetterOut>()));
+        //        _mockSubconDeliveryLetterOutItemRepository
+        //            .Setup(s => s.Update(It.IsAny<GarmentSubconDeliveryLetterOutItem>()))
+        //            .Returns(Task.FromResult(It.IsAny<GarmentSubconDeliveryLetterOutItem>()));
+
+        //        _MockStorage
+        //            .Setup(x => x.Save())
+        //            .Verifiable();
+
+        //        // Act
+        //        var result = await unitUnderTest.Handle(UpdateGarmentSubconDeliveryLetterOutCommand, cancellationToken);
+
+        //        // Assert
+        //        result.Should().NotBeNull();
+        //    }
+        //}
     }
 }
