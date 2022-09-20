@@ -20,7 +20,6 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationEx
         public double Penyesuaian { get; internal set; }
         public double StockOpname { get; internal set; }
         public double Selisih { get; internal set; }
-        public string Storage { get; internal set; }
 
 
         public GarmentMutationExpenditureGoodDto(GarmentMutationExpenditureGoodDto garmentMutation)
@@ -36,7 +35,6 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationEx
             Penyesuaian = garmentMutation.Penyesuaian;
             StockOpname = garmentMutation.StockOpname;
             Selisih = garmentMutation.Selisih;
-            Storage = garmentMutation.Storage;
         }
     }
 }

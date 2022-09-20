@@ -1,4 +1,4 @@
-using Barebone.Tests;
+﻿using Barebone.Tests;
 using Manufactures.Controllers.Api.GarmentSubcon;
 using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts;
 using Manufactures.Domain.GarmentSubcon.SubconDeliveryLetterOuts.Commands;
@@ -92,7 +92,6 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
             controller.ControllerContext.HttpContext.Request.Path = new PathString("/v1/unit-test");
             return controller;
         }
-
 
         [Fact]
         public async Task Get_StateUnderTest_ExpectedBehavior()

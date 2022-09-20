@@ -302,7 +302,7 @@ namespace Manufactures.Tests.Controllers.Api
                 .ReturnsAsync(new GarmentMonitoringExpenditureGoodListViewModel());
 
             // Act
-            var result = await unitUnderTest.GetMonitoring(DateTime.Now.AddDays(-1),DateTime.Now.AddDays(1),1,25,"{}");
+            var result = await unitUnderTest.GetMonitoring(1,DateTime.Now.AddDays(-1),DateTime.Now.AddDays(1),1,25,"{}");
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(result));
@@ -371,7 +371,7 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Send(It.IsAny<GetXlsExpenditureGoodQuery>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new MemoryStream());
 
-            var result = await unitUnderTest.GetXls( DateTime.Now, DateTime.Now, "", 1, 25, "{}");
+            var result = await unitUnderTest.GetXls(1, DateTime.Now, DateTime.Now, "", 1, 25, "{}");
             Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.GetType().GetProperty("ContentType").GetValue(result, null));
         }
 
@@ -384,7 +384,7 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Send(It.IsAny<GetXlsExpenditureGoodQuery>(), It.IsAny<CancellationToken>()))
                 .Throws(new Exception());
 
-            var result = await unitUnderTest.GetXls( DateTime.Now, DateTime.Now, "", 1, 25, "{}");
+            var result = await unitUnderTest.GetXls(1, DateTime.Now, DateTime.Now, "", 1, 25, "{}");
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(result));
         }
 
