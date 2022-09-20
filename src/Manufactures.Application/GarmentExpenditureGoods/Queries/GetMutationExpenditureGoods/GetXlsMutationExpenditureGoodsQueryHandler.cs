@@ -77,6 +77,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationEx
             public double QtyExpend { get; internal set; }
             //public string Comodity { get; internal set; }
             public string ComodityCode { get; internal set; }
+            public string ComodityName { get; internal set; }
         }
 
         public async Task<MemoryStream> Handle(GetXlsMutationExpenditureGoodsQuery request, CancellationToken cancellationToken)
@@ -100,6 +101,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationEx
                                    SaldoQtyFin = a.BeginingBalanceExpenditureGood,
                                    AdjFin = 0,
                                    //Comodity = a.Comodity,
+                                   ComodityName = a.Comodity,
                                    ComodityCode = b.ComodityCode,
                                    QtyExpend = 0,
                                    QtyFin = 0,
@@ -116,6 +118,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationEx
                              SaldoQtyFin = a.AdjustmentDate < dateFrom && a.AdjustmentDate > dateBalance ? b.Quantity : 0,
                              AdjFin = a.AdjustmentDate >= dateFrom ? b.Quantity : 0,
                              ComodityCode = a.ComodityCode,
+                             ComodityName = a.ComodityName,
                              QtyExpend = 0,
                              QtyFin = 0,
                              Retur = 0,
@@ -129,6 +132,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationEx
                                   SaldoQtyFin = a.ReturDate < dateFrom && a.ReturDate > dateBalance ? b.Quantity : 0,
                                   AdjFin = 0,
                                   ComodityCode = a.ComodityCode,
+                                  ComodityName = a.ComodityName,
                                   QtyExpend = 0,
                                   QtyFin = 0,
                                   Retur = a.ReturDate >= dateFrom ? b.Quantity : 0
@@ -143,6 +147,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationEx
                                           SaldoQtyFin = a.FinishingOutDate.Date < dateFrom.Date && a.FinishingOutDate > dateBalance ? b.Quantity : 0,
                                           AdjFin = 0,
                                           ComodityCode = a.ComodityCode,
+                                          ComodityName = a.ComodityName,
                                           QtyExpend = 0,
                                           QtyFin = a.FinishingOutDate >= dateFrom ? b.Quantity : 0,
                                           Retur = 0,
@@ -157,6 +162,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationEx
                                  SaldoQtyFin = a.ExpenditureDate < dateFrom && a.ExpenditureDate > dateBalance ? -b.Quantity : 0,
                                  AdjFin = 0,
                                  ComodityCode = a.ComodityCode,
+                                 ComodityName = a.ComodityName,
                                  QtyExpend = a.ExpenditureDate >= dateFrom ? b.Quantity : 0,
                                  QtyFin = 0,
                                  Retur = 0,
@@ -171,6 +177,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationEx
                                     SaldoQtyFin = a.CuttingOutDate < dateFrom && a.CuttingOutDate > dateBalanceSample ? b.TotalCuttingOut : 0,
                                     AdjFin = 0,
                                     ComodityCode = a.ComodityCode,
+                                    ComodityName = a.ComodityName,
                                     QtyExpend = a.CuttingOutDate >= dateFrom ? b.TotalCuttingOut : 0,
                                     QtyFin = 0,
                                     Retur = 0,
@@ -186,6 +193,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationEx
                                       SaldoQtyFin = a.FinishingOutDate < dateFrom && a.FinishingOutDate > dateBalanceSample ? b.Quantity : 0,
                                       AdjFin = 0,
                                       ComodityCode = a.ComodityCode,
+                                      ComodityName = a.ComodityName,
                                       QtyExpend = 0,
                                       QtyFin = a.FinishingOutDate >= dateFrom ? b.Quantity : 0,
                                       Retur = 0,
@@ -200,6 +208,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationEx
                                             SaldoQtyFin = a.ExpenditureDate < dateFrom && a.ExpenditureDate > dateBalanceSample ? -b.Quantity : 0,
                                             AdjFin = 0,
                                             ComodityCode = a.ComodityCode,
+                                            ComodityName = a.ComodityName,
                                             QtyExpend = a.ExpenditureDate >= dateFrom ? b.Quantity : 0,
                                             QtyFin = 0,
                                             Retur = 0,
@@ -207,40 +216,43 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationEx
 
             var queryNow = adjust.Union(querybalance).Union(returexpend).Union(finishingbarangjadi).Union(factexpend).Union(cuttingSample).Union(finishingSample).Union(expenditureGoodSample).AsEnumerable();
 
-            var mutationTemp = queryNow.GroupBy(x => new { x.ComodityCode }, (key, group) => new
+            var mutationTemp = queryNow.GroupBy(x => new { x.ComodityCode,x.ComodityName }, (key, group) => new
             {
                 kodeBarang = key.ComodityCode,
+                namaBarang = key.ComodityName,
                 //namaBarang = group.FirstOrDefault().Comodity,
                 pemasukan = group.Sum(x => x.Retur + x.QtyFin),
                 pengeluaran = group.Sum(x => x.QtyExpend),
                 penyesuaian = 0,
                 saldoAwal = group.Sum(x => x.SaldoQtyFin),
-                saldoBuku = group.Sum(x => x.SaldoQtyFin) + group.Sum(x => x.Retur + x.QtyFin) - group.Sum(x => x.QtyExpend),
-                selisih = 0,
-                stockOpname = 0,
-                unitQtyName = "PCS"
+                //saldoBuku = group.Sum(x => x.SaldoQtyFin) + group.Sum(x => x.Retur + x.QtyFin) - group.Sum(x => x.QtyExpend),
+                selisih = group.Sum(x => x.Retur + x.QtyFin) - group.Sum(x => x.QtyExpend),
+                //stockOpname = 0,
+                unitQtyName = "PCS",
+                storage = "Gudang AG2"
 
 
             });
 
-            foreach (var i in mutationTemp.Where(x => x.saldoAwal != 0 || x.pemasukan != 0 || x.pengeluaran != 0 || x.penyesuaian != 0 || x.stockOpname != 0 || x.saldoBuku != 0))
+            foreach (var i in mutationTemp.Where(x => x.saldoAwal != 0 || x.pemasukan != 0 || x.pengeluaran != 0 || x.penyesuaian != 0 ))
             {
-                var comodity = (from a in garmentCuttingOutRepository.Query
-                                where a.ComodityCode == i.kodeBarang
-                                select a.ComodityName).FirstOrDefault();
+                //var comodity = (from a in garmentCuttingOutRepository.Query
+                //                where a.ComodityCode == i.kodeBarang
+                //                select a.ComodityName).FirstOrDefault();
 
                 GarmentMutationExpenditureGoodDto dto = new GarmentMutationExpenditureGoodDto
                 {
                     KodeBarang = i.kodeBarang,
-                    NamaBarang = comodity,
+                    NamaBarang = i.namaBarang,
                     Pemasukan = i.pemasukan,
                     Pengeluaran = i.pengeluaran,
-                    Penyesuaian = i.penyesuaian,
+                    //Penyesuaian = i.penyesuaian,
                     SaldoAwal = i.saldoAwal,
-                    SaldoBuku = i.saldoBuku,
+                    //SaldoBuku = i.saldoBuku,
                     Selisih = i.selisih,
-                    StockOpname = i.stockOpname,
-                    UnitQtyName = i.unitQtyName
+                    //StockOpname = i.stockOpname,
+                    UnitQtyName = i.unitQtyName,
+                    Storage = i.storage
                 };
 
                 mutationExpenditureGoodDto.Add(dto);
@@ -256,14 +268,17 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationEx
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Saldo Awal", DataType = typeof(double) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Pemasukan", DataType = typeof(double) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Pengeluaran", DataType = typeof(double) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Penyesuaian", DataType = typeof(double) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Saldo Buku", DataType = typeof(double) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Stock Opname", DataType = typeof(double) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Selisih", DataType = typeof(double) });
+            //reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Penyesuaian", DataType = typeof(double) });
+            //reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Saldo Buku", DataType = typeof(double) });
+            //reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Stock Opname", DataType = typeof(double) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Saldo Akhir", DataType = typeof(double) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Gudang", DataType = typeof(string) });
             int counter = 1;
             foreach (var report in expenditureGoodListViewModel.garmentMutations)
             {
-                reportDataTable.Rows.Add(counter, report.KodeBarang, report.NamaBarang, report.UnitQtyName, report.SaldoAwal, report.Pemasukan, report.Pengeluaran, report.Penyesuaian, report.SaldoBuku, report.StockOpname, report.Selisih);
+                //reportDataTable.Rows.Add(counter, report.KodeBarang, report.NamaBarang, report.UnitQtyName, report.SaldoAwal, report.Pemasukan, report.Pengeluaran, report.Penyesuaian, report.SaldoBuku, report.StockOpname, report.Selisih);
+                reportDataTable.Rows.Add(counter, report.KodeBarang, report.NamaBarang, report.UnitQtyName, report.SaldoAwal, report.Pemasukan, report.Pengeluaran, report.Selisih,report.Storage);
+
                 counter++;
             }
 
