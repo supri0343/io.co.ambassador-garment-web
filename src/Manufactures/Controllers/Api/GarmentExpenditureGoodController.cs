@@ -224,10 +224,10 @@ namespace Manufactures.Controllers.Api
 
         }
 		[HttpGet("monitoring")]
-		public async Task<IActionResult> GetMonitoring(DateTime dateFrom, DateTime dateTo, int page = 1, int size = 25, string Order = "{}")
+		public async Task<IActionResult> GetMonitoring(int unit, DateTime dateFrom, DateTime dateTo, int page = 1, int size = 25, string Order = "{}")
 		{
 			VerifyUser();
-			GetMonitoringExpenditureGoodQuery query = new GetMonitoringExpenditureGoodQuery(page, size, Order, dateFrom, dateTo, WorkContext.Token);
+			GetMonitoringExpenditureGoodQuery query = new GetMonitoringExpenditureGoodQuery(page, size, Order, unit, dateFrom, dateTo, WorkContext.Token);
 			var viewModel = await Mediator.Send(query);
 
 			return Ok(viewModel.garmentMonitorings, info: new
@@ -237,7 +237,7 @@ namespace Manufactures.Controllers.Api
 				viewModel.count
 			});
 		}
-        [HttpGet("complete")]
+		[HttpGet("complete")]
         public async Task<IActionResult> GetComplete(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")]List<string> select = null, string keyword = null, string filter = "{}")
         {
             VerifyUser();
@@ -323,17 +323,17 @@ namespace Manufactures.Controllers.Api
         }
         //
         [HttpGet("download")]
-		public async Task<IActionResult> GetXls(DateTime dateFrom, DateTime dateTo, string type,int page = 1, int size = 25, string Order = "{}")
+		public async Task<IActionResult> GetXls(int unit, DateTime dateFrom, DateTime dateTo, string type,int page = 1, int size = 25, string Order = "{}")
 		{
 			try
 			{
 				VerifyUser();
-				GetXlsExpenditureGoodQuery query = new GetXlsExpenditureGoodQuery(page, size, Order, dateFrom, dateTo,type, WorkContext.Token);
+				GetXlsExpenditureGoodQuery query = new GetXlsExpenditureGoodQuery(page, size, Order, unit, dateFrom, dateTo,type, WorkContext.Token);
 				byte[] xlsInBytes;
 
 				var xls = await Mediator.Send(query);
 
-				string filename = "Laporan Pengeluaran Hasil Produksi " ;
+				string filename = "Laporan Pengiriman Barang Jadi " ;
 
 				if (dateFrom != null) filename += " " + ((DateTime)dateFrom).ToString("dd-MM-yyyy");
 
@@ -423,7 +423,7 @@ namespace Manufactures.Controllers.Api
 
                 var xls = await Mediator.Send(query);
 
-                string filename = "Laporan Mutasi Hasil Produksi";
+                string filename = "Laporan Pertanggungjawaban Mutasi Barang Jadi ";
 
                 if (dateFrom != null) filename += " " + ((DateTime)dateFrom).ToString("dd-MM-yyyy");
 
