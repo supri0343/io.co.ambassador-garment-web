@@ -80,10 +80,9 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOCompone
                           join d in garmentServiceSubconCuttingItemRepository.Query on c.Identity equals d.ServiceSubconCuttingId
                           join e in garmentServiceSubconCuttingDetailRepository.Query on d.Identity equals e.ServiceSubconCuttingItemId
                           join f in garmentServiceSubconCuttingSizeRepository.Query on e.Identity equals f.ServiceSubconCuttingDetailId
-                          //where a.Deleted == false && b.Deleted == false && c.Deleted == false
-                          //&& d.Deleted == false && e.Deleted == false && f.Deleted == false
-                          where
-                          a.DLDate.AddHours(7).Date >= request.dateFrom
+                          where a.Deleted == false && b.Deleted == false && c.Deleted == false
+                          && d.Deleted == false && e.Deleted == false && f.Deleted == false
+                          && a.DLDate.AddHours(7).Date >= request.dateFrom
                           && a.DLDate.AddHours(7).Date <= request.dateTo.Date
                           && a.ContractType == "SUBCON JASA" && a.SubconCategory == "SUBCON JASA KOMPONEN"
 
@@ -92,6 +91,7 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOCompone
                               DLType = a.DLType,
                               DLNo = a.DLNo,
                               DLDate = a.DLDate,
+                              ContractNo= a.EPONo,
                               ContractType = a.ContractType,
                               SubConCategory = a.SubconCategory,
                               SubConNo = b.SubconNo,
@@ -154,7 +154,7 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOCompone
                               colour = key.Colour,
                               quantity = group.Sum(x => x.Quantity),
                               uomUnit = key.UomUnit
-                          }).ToList();
+                          }).ToList().OrderBy(x => x.dlNo).ThenBy(x => x.subConNo);
 
 
             GarmentSubconDLOComponentServiceReportListViewModel listViewModel = new GarmentSubconDLOComponentServiceReportListViewModel();
@@ -195,13 +195,13 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOCompone
             DataTable reportDataTable = new DataTable();
 
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Jenis SJ SubCon", DataType = typeof(string) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Jenis SubCon Contract", DataType = typeof(string) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Jenis SubCon", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Kategori SubCon", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "No SJ SubCon", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Tgl SJ SubCon", DataType = typeof(string) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "No Contract", DataType = typeof(string) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "No SubCon Contract", DataType = typeof(string) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Tgl SubCon Contract", DataType = typeof(string) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "No PO External", DataType = typeof(string) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "No SubCon", DataType = typeof(string) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Tgl SubCon", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Tipe SubCon", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Nama Unit", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Kode Buyer", DataType = typeof(string) });
