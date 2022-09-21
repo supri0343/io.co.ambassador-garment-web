@@ -82,8 +82,8 @@ namespace Manufactures.Tests.Queries.GarmentExpenditureGoods
                 }
             };
 
-			_mockhttpService.Setup(x => x.SendAsync(It.IsAny<HttpMethod>(), It.Is<string>(s => s.Contains("cost-calculation-garments/data")), It.IsAny<string>(), It.IsAny<HttpContent>()))
-				.ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("{\"data\": " + JsonConvert.SerializeObject(costCalViewModels) + "}") });
+			//_mockhttpService.Setup(x => x.SendAsync(It.IsAny<HttpMethod>(), It.Is<string>(s => s.Contains("cost-calculation-garments/data")), It.IsAny<string>(), It.IsAny<HttpContent>()))
+			//	.ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("{\"data\": " + JsonConvert.SerializeObject(costCalViewModels) + "}") });
 
               _mockhttpService.Setup(x => x.SendAsync(It.IsAny<HttpMethod>(), It.Is<string>(s => s.Contains("customs-reports/getPEB")), It.IsAny<string>(), It.IsAny<HttpContent>()))
                 .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("{\"data\": " + JsonConvert.SerializeObject(pEBResultViews) + "}") });
@@ -112,28 +112,28 @@ namespace Manufactures.Tests.Queries.GarmentExpenditureGoods
             Guid guidPrepare = Guid.NewGuid();
             Guid guidPrepareItem = Guid.NewGuid();
 
-            GetMonitoringExpenditureGoodQuery getMonitoring = new GetMonitoringExpenditureGoodQuery(1, 25, "{}", 1, DateTime.Now, DateTime.Now.AddDays(2), "token");
+            GetMonitoringExpenditureGoodQuery getMonitoring = new GetMonitoringExpenditureGoodQuery(1, 25, "{}", DateTime.Now, DateTime.Now.AddDays(2), "token");
 
-            _mockGarmentCuttingInItemRepository
-                .Setup(s => s.Query)
-                .Returns(new List<GarmentCuttingInItemReadModel>
-                {
-                    new GarmentCuttingInItem(guidCuttingInItem,guidCuttingIn,guidPrepare,1,"uENNo",Guid.Empty,"sewingOutNo").GetReadModel()
-                }.AsQueryable());
+            //_mockGarmentCuttingInItemRepository
+            //    .Setup(s => s.Query)
+            //    .Returns(new List<GarmentCuttingInItemReadModel>
+            //    {
+            //        new GarmentCuttingInItem(guidCuttingInItem,guidCuttingIn,guidPrepare,1,"uENNo",Guid.Empty,"sewingOutNo").GetReadModel()
+            //    }.AsQueryable());
 
-            _mockGarmentCuttingInRepository
-                .Setup(s => s.Query)
-                .Returns(new List<GarmentCuttingInReadModel>
-                {
-                    new GarmentCuttingIn(guidCuttingIn,"cutInNo","Main Fabric","cuttingFrom","ro","article",new UnitDepartmentId(1),"unitCode","unitName",DateTimeOffset.Now,4.5).GetReadModel()
-                }.AsQueryable());
+            //_mockGarmentCuttingInRepository
+            //    .Setup(s => s.Query)
+            //    .Returns(new List<GarmentCuttingInReadModel>
+            //    {
+            //        new GarmentCuttingIn(guidCuttingIn,"cutInNo","Main Fabric","cuttingFrom","ro","article",new UnitDepartmentId(1),"unitCode","unitName",DateTimeOffset.Now,4.5).GetReadModel()
+            //    }.AsQueryable());
 
-            _mockGarmentCuttingInDetailRepository
-                .Setup(s => s.Query)
-                .Returns(new List<GarmentCuttingInDetailReadModel>
-                {
-                    new GarmentCuttingInDetail(guidCuttingInDetail,guidCuttingInItem,guidPrepareItem,Guid.Empty,Guid.Empty,new Domain.Shared.ValueObjects.ProductId(1),"productCode","productName","designColor","fabricType",9,new Domain.Shared.ValueObjects.UomId(1),"",4,new Domain.Shared.ValueObjects.UomId(1),"",1,100,100,5.5,null).GetReadModel()
-                }.AsQueryable());
+            //_mockGarmentCuttingInDetailRepository
+            //    .Setup(s => s.Query)
+            //    .Returns(new List<GarmentCuttingInDetailReadModel>
+            //    {
+            //        new GarmentCuttingInDetail(guidCuttingInDetail,guidCuttingInItem,guidPrepareItem,Guid.Empty,Guid.Empty,new Domain.Shared.ValueObjects.ProductId(1),"productCode","productName","designColor","fabricType",9,new Domain.Shared.ValueObjects.UomId(1),"",4,new Domain.Shared.ValueObjects.UomId(1),"",1,100,100,5.5,null).GetReadModel()
+            //    }.AsQueryable());
 
             _mockGarmentExpenditureGoodItemRepository
 				.Setup(s => s.Query)
@@ -150,12 +150,12 @@ namespace Manufactures.Tests.Queries.GarmentExpenditureGoods
 				}.AsQueryable());
 
 		 
-			_mockGarmentPreparingRepository
-				.Setup(s => s.Query)
-				.Returns(new List<GarmentPreparingReadModel>
-				{
-					new GarmentPreparing(guidPrepare,1,"uenNo",new Domain.GarmentPreparings.ValueObjects.UnitDepartmentId(1),"unitCode","unitName",DateTimeOffset.Now,"roNo","article",true, new BuyerId(1), null, null).GetReadModel()
-				}.AsQueryable());
+			//_mockGarmentPreparingRepository
+			//	.Setup(s => s.Query)
+			//	.Returns(new List<GarmentPreparingReadModel>
+			//	{
+			//		new GarmentPreparing(guidPrepare,1,"uenNo",new Domain.GarmentPreparings.ValueObjects.UnitDepartmentId(1),"unitCode","unitName",DateTimeOffset.Now,"roNo","article",true, new BuyerId(1), null, null).GetReadModel()
+			//	}.AsQueryable());
 
 			 
 			_mockGarmentPreparingItemRepository
