@@ -59,20 +59,23 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 		{
 			public string expenditureGoodNo { get; internal set; }
 			public string expenditureGoodType { get; internal set; }
+			public string buyerCode { get; internal set; }
 			public DateTimeOffset expenditureDate { get; internal set; }
-			public string buyer { get; internal set; }
 			public string roNo { get; internal set; }
 			public string buyerArticle { get; internal set; }
 			public string colour { get; internal set; }
 			public string name { get; internal set; }
-            public string unitname { get; internal set; }
+			public string unitname { get; internal set; }
+			public string comodityCode { get; internal set; }
+			public string comodityName { get; internal set; }
+			public string uomUnit { get; internal set; }
 			public double qty { get; internal set; }
 			public string invoice { get; internal set; }
 			public decimal price { get; internal set; }
-			public double fc { get; set; }
+			public double fc { get; internal set; }
 		}
 
-        public async Task<PEBResult> GetDataPEB(List<string> invoice, string token)
+		public async Task<PEBResult> GetDataPEB(List<string> invoice, string token)
         {
             PEBResult pEB = new PEBResult();
 
@@ -163,97 +166,142 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 			dateTo = dateTo.AddHours(7);
 
 
-			var QueryRo = (from a in garmentExpenditureGoodRepository.Query
-						   where a.UnitId == (request.unit == 0 ? a.UnitId : request.unit) && a.ExpenditureDate >= dateFrom && a.ExpenditureDate <= dateTo
-						   select a.RONo).Distinct().ToList();
+			//var QueryRo = (from a in garmentExpenditureGoodRepository.Query
+			//						where a.UnitId == (request.unit == 0 ? a.UnitId : request.unit) && a.ExpenditureDate  >= dateFrom && a.ExpenditureDate <= dateTo
+			//						select a.RONo).Distinct();
 
-			List<string> _ro = new List<string>();
-			foreach (var item in QueryRo)
-			{
-				_ro.Add(item);
-			}
-			var _unitName = (from a in garmentPreparingRepository.Query
-							 where a.UnitId == request.unit
-							 select a.UnitName).FirstOrDefault();
-			CostCalculationGarmentDataProductionReport costCalculation = await GetDataCostCal(_ro, request.token);
+			//List<string> _ro = new List<string>();
+			//foreach (var item in QueryRo)
+			//{
+			//	_ro.Add(item);
+			//}
+			//CostCalculationGarmentDataProductionReport costCalculation = await GetDataCostCal(_ro, request.token);
 			GarmentMonitoringExpenditureGoodListViewModel listViewModel = new GarmentMonitoringExpenditureGoodListViewModel();
 			List<GarmentMonitoringExpenditureGoodDto> monitoringDtos = new List<GarmentMonitoringExpenditureGoodDto>();
-			var sumbasicPrice = (from a in garmentPreparingRepository.Query
-								 join b in garmentPreparingItemRepository.Query on a.Identity equals b.GarmentPreparingId
-								 where /*(request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) &&*/
-								 a.UnitId == (request.unit == 0 ? a.UnitId : request.unit)
-                                 select new { a.RONo, b.BasicPrice })
-						.GroupBy(x => new { x.RONo }, (key, group) => new ViewBasicPrices
-						{
-							RO = key.RONo,
-							BasicPrice = Convert.ToDecimal(group.Sum(s => s.BasicPrice)),
-							Count = group.Count()
-						});
+			//var sumbasicPrice = (from a in garmentPreparingRepository.Query
+			//					 join b in garmentPreparingItemRepository.Query on a.Identity equals b.GarmentPreparingId
+			//					 where /*(request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) &&*/
+			//					 a.UnitId == (request.unit == 0 ? a.UnitId : request.unit)
+			//					 select new { a.RONo, b.BasicPrice })
+			//			.GroupBy(x => new { x.RONo }, (key, group) => new ViewBasicPrices
+			//			{
+			//				RO = key.RONo,
+			//				BasicPrice = Convert.ToDecimal(group.Sum(s => s.BasicPrice)),
+			//				Count = group.Count(),
+			//				AvgBasicPrice = (double)(Convert.ToDecimal(group.Sum(s => s.BasicPrice)) / group.Count())
+			//                     });
 
-			var sumFCs = (from a in garmentCuttingInRepository.Query
-						  where /*(request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) && */ a.CuttingType == "Main Fabric" &&
-						 a.UnitId == (request.unit == 0 ? a.UnitId : request.unit) && a.CuttingInDate <= dateTo
-                          join b in garmentCuttingInItemRepository.Query on a.Identity equals b.CutInId
-                          join c in garmentCuttingInDetailRepository.Query on b.Identity equals c.CutInItemId
-                          select new { a.FC, a.RONo, FCs = Convert.ToDouble(c.CuttingInQuantity * a.FC), c.CuttingInQuantity })
-                       .GroupBy(x => new { x.RONo }, (key, group) => new ViewFC
-                       {
-                           RO = key.RONo,
-                           FC = group.Sum(s => (s.FCs)),
-                           Count = group.Sum(s => s.CuttingInQuantity)
-                       });
-            var Query = from a in (from aa in garmentExpenditureGoodRepository.Query
-								   where aa.UnitId == (request.unit == 0 ? aa.UnitId : request.unit) && aa.ExpenditureDate >= dateFrom && aa.ExpenditureDate <= dateTo
+			//var sumFCs = (from a in garmentCuttingInRepository.Query
+			//			  where /*(request.ro == null || (request.ro != null && request.ro != "" && a.RONo == request.ro)) && */ a.CuttingType == "Main Fabric" &&
+			//			 a.UnitId == (request.unit == 0 ? a.UnitId : request.unit) && a.CuttingInDate <= dateTo
+			//			  join b in garmentCuttingInItemRepository.Query on a.Identity equals b.CutInId
+			//			  join c in garmentCuttingInDetailRepository.Query on b.Identity equals c.CutInItemId
+			//			  select new { a.FC, a.RONo, FCs = Convert.ToDouble(c.CuttingInQuantity * a.FC), c.CuttingInQuantity })
+			//		   .GroupBy(x => new { x.RONo }, (key, group) => new ViewFC
+			//		   {
+			//			   RO = key.RONo,
+			//			   FC = group.Sum(s => (s.FCs)),
+			//			   Count = group.Sum(s => s.CuttingInQuantity),
+			//			   AvgFC = group.Sum(s => (s.FCs)) / group.Sum(s => s.CuttingInQuantity)
+			//		   });
+			//      var Query = from a in (from aa in garmentExpenditureGoodRepository.Query
+			//		   where aa.UnitId == (request.unit == 0 ? aa.UnitId : request.unit) && aa.ExpenditureDate >= dateFrom && aa.ExpenditureDate <= dateTo
+			//		   select aa)
+			//		   join b in garmentExpenditureGoodItemRepository.Query on a.Identity equals b.ExpenditureGoodId
+			//where a.UnitId == (request.unit == 0 ? a.UnitId : request.unit) && a.ExpenditureDate >= dateFrom && a.ExpenditureDate <= dateTo
+
+			////Enhance Jason Aug 2021
+			////select new monitoringView { fc = (from aa in sumFCs where aa.RO == a.RONo select aa.FC / aa.Count).FirstOrDefault(),
+			//select new monitoringView { fc = (from aa in sumFCs where aa.RO == a.RONo select aa.AvgFC).FirstOrDefault(),
+			//	//price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.BasicPrice / aa.Count).FirstOrDefault()),
+			//	price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.AvgBasicPrice).FirstOrDefault()),
+			//	buyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(),
+			//                      buyerArticle = a.BuyerCode + " " + a.Article, roNo = a.RONo, expenditureDate = a.ExpenditureDate, expenditureGoodNo = a.ExpenditureGoodNo,
+			//                      expenditureGoodType = a.ExpenditureType, invoice = a.Invoice, colour = b.Description, qty = b.Quantity,
+			//                      name = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault(),
+			//                      unitname = a.UnitName};
+
+			var Query = from a in (from aa in garmentExpenditureGoodRepository.Query
+								   where aa.ExpenditureDate >= dateFrom && aa.ExpenditureDate <= dateTo
 								   select aa)
 						join b in garmentExpenditureGoodItemRepository.Query on a.Identity equals b.ExpenditureGoodId
-						where a.UnitId == (request.unit == 0 ? a.UnitId : request.unit) && a.ExpenditureDate >= dateFrom && a.ExpenditureDate <= dateTo
-						select new monitoringView { fc = (from aa in sumFCs where aa.RO == a.RONo select aa.FC / aa.Count).FirstOrDefault(),
-                            price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.BasicPrice / aa.Count).FirstOrDefault()),
-                            buyer = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(), buyerArticle = a.BuyerCode + " " + a.Article,
-                            roNo = a.RONo, expenditureDate = a.ExpenditureDate, expenditureGoodNo = a.ExpenditureGoodNo, expenditureGoodType = a.ExpenditureType, invoice = a.Invoice,
-                            colour = b.Description, qty = b.Quantity, name = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault(), unitname = a.UnitName };
+						where a.ExpenditureDate >= dateFrom && a.ExpenditureDate <= dateTo
 
 
+						//select new monitoringView { fc = (from aa in sumFCs where aa.RO == a.RONo select aa.FC / aa.Count).FirstOrDefault(),
+						select new monitoringView
+						{
+							//fc = (from aa in sumFCs where aa.RO == a.RONo select aa.AvgFC).FirstOrDefault(),
+							//price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.BasicPrice / aa.Count).FirstOrDefault()),
+							//price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.AvgBasicPrice).FirstOrDefault()),
+							//buyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(),
+							expenditureDate = a.ExpenditureDate,
+							expenditureGoodNo = a.ExpenditureGoodNo,
+							//buyerArticle = a.BuyerCode + " " + a.Article,
+							comodityCode = a.ComodityCode,
+							comodityName = a.ComodityName,
+							uomUnit = b.UomUnit,
+							//itemCode = 
+							//roNo = a.RONo,
+							//expenditureGoodType = a.ExpenditureType,
+							invoice = a.Invoice,
+							//colour = b.Description,
+							qty = b.Quantity,
+							//name = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault(),
+							//unitname = a.UnitName
+						};
 
-			var querySum = Query.ToList().GroupBy(x => new { x.fc, x.buyer, x.buyerArticle, x.roNo, x.expenditureDate, x.expenditureGoodNo, x.expenditureGoodType, x.invoice, x.colour, x.name, x.unitname }, (key, group) => new
+			var querySum = Query.ToList().GroupBy(x => new { x.expenditureDate, x.expenditureGoodNo, x.invoice, x.comodityCode, x.comodityName, x.uomUnit }, (key, group) => new
 			{
-				ros = key.roNo,
-				buyer = key.buyerArticle,
+				//ros = key.roNo,
+				//buyer = key.buyerArticle,
 				expenditureDates = key.expenditureDate,
 				qty = group.Sum(s => s.qty),
 				expendituregoodNo = key.expenditureGoodNo,
-				expendituregoodTypes = key.expenditureGoodType,
-				color = key.colour,
-				price = group.Sum(s => s.price),
-				buyerC = key.buyer,
-				names = key.name,
-                unitname = key.unitname,
+				//expendituregoodTypes = key.expenditureGoodType,
+				//color = key.colour,
+				//price= group.Sum(s=>s.price),
+				//buyerC= key.buyerCode,
+				//names = key.name,
+				//            unitname = key.unitname,
 				invoices = key.invoice,
-				fcs = key.fc
+				//fcs = key.fc
+				comodityCode = key.comodityCode,
+				comodityName = key.comodityName,
+				uomUnit = key.uomUnit,
 
 			}).OrderBy(s => s.expendituregoodNo);
 
-            var Pebs = await GetDataPEB(querySum.Select(x => x.invoices).ToList(), request.token);
+			var Pebs = await GetDataPEB(querySum.Select(x => x.invoices).ToList(), request.token);
 
-            foreach (var item in querySum)
+			foreach (var item in querySum)
 			{
-                var peb = Pebs.data.FirstOrDefault(x => x.BonNo.Trim() == item.invoices);
-                GarmentMonitoringExpenditureGoodDto dto = new GarmentMonitoringExpenditureGoodDto
+				var peb = Pebs.data.FirstOrDefault(x => x.BonNo.Trim() == item.invoices);
+				//DateTime? non = null;
+
+				GarmentMonitoringExpenditureGoodDto dto = new GarmentMonitoringExpenditureGoodDto
 				{
-					roNo = item.ros,
-					buyerArticle = item.buyer,
-					expenditureGoodType = item.expendituregoodTypes,
+					//roNo = item.ros,
+					//buyerArticle = item.buyer,
+					//expenditureGoodType = item.expendituregoodTypes,
+					pebDate = peb == null ? "-" : peb.BCDate.ToString("dd MMM yyyy"),
+					pebNo = peb == null ? "-" : peb.BCNo,
+					buyerName = peb == null ? "-" : peb.BuyerName,
+					country = peb == null ? "-" : peb.Country,
+					currencyCode = peb == null ? "-" : peb.CurrencyCode,
 					expenditureGoodNo = item.expendituregoodNo,
 					expenditureDate = item.expenditureDates,
-                    pebDate = peb == null ? new DateTime(1970,1,1) : peb.BCDate,
-                    qty = item.qty,
-					colour = item.color,
-					name = item.names,
-                    unitname = item.unitname,
+					qty = item.qty,
+					comodityCode = item.comodityCode,
+					comodityName = item.comodityName,
+					uomUnit = item.uomUnit,
+					price = (decimal)((peb == null ? 0 : peb.Nominal) * (peb == null ? 0 : peb.Quantity)),
+					//colour = item.color,
+					//name = item.names,
+					//unitname = item.unitname,
 					invoice = item.invoices,
-					price = Math.Round(Convert.ToDecimal(Convert.ToDouble(Math.Round(item.price, 2)) * Math.Round(item.fcs, 2)), 2),
-					buyerCode = item.buyerC,
-					nominal = Math.Round( Convert.ToDecimal(item.qty) * Convert.ToDecimal(Convert.ToDouble(Math.Round(item.price, 2)) * Math.Round(item.fcs, 2)),2)
+					//price= Math.Round(Convert.ToDecimal(Convert.ToDouble( Math.Round(item.price,2)) * Math.Round(item.fcs,2)),2),
+					//buyerCode=item.buyerC
 
 				};
 				monitoringDtos.Add(dto);
@@ -285,35 +333,37 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 				invoice = "",
 				price = 0,
 				buyerCode = "",
-				nominal = nominal
+				//nominal = nominal
 
 			};
 			monitoringDtos.Add(dtos);
 			listViewModel.garmentMonitorings = monitoringDtos;
 			var reportDataTable = new DataTable();
-			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "NO BON", DataType = typeof(string) });
-			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "TIPE PENGELUARAN", DataType = typeof(string) });
-			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "TGL", DataType = typeof(string) });
+			//reportDataTable.Columns.Add(new DataColumn() { ColumnName = "NO", DataType = typeof(int) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "NO PEB", DataType = typeof(string) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "TGL PEB", DataType = typeof(string) });
-			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "RO", DataType = typeof(string) });
-			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "BUYER & ARTICLE", DataType = typeof(string) });
-			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "COLOUR", DataType = typeof(string) });
-			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "NAMA", DataType = typeof(string) });
-			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "UNIT", DataType = typeof(string) });
-			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "HARGA (PCS)", DataType = typeof(decimal) });
-			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "QTY", DataType = typeof(double) });
-			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "NOMINAL", DataType = typeof(double) });
-			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "INVOICE", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "NO KELUAR", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "TGL KELUAR", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "PEMBELI / PENERIMA", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "NEGARA TUJUAN", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "KODE BARANG", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "NAMA BARANG", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "SATUAN", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "JUMLAH", DataType = typeof(double) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "MATA UANG", DataType = typeof(string) });
+			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "NILAI BARANG", DataType = typeof(decimal) });
 			int counter = 5;
+			int index = 1;
 			if (listViewModel.garmentMonitorings.Count > 0)
 			{
 				foreach (var report in listViewModel.garmentMonitorings)
 				{
                     
-                    string pebDate = report.pebDate.GetValueOrDefault() == new DateTime(1970, 1, 1) || report.pebDate.GetValueOrDefault().ToString("dd MMM yyyy") == "01 Jan 0001" ? "-" : report.pebDate.GetValueOrDefault().ToString("dd MMM yyy");
-                    //Console.WriteLine(pebDate);
-                    reportDataTable.Rows.Add(report.expenditureGoodNo, report.expenditureGoodType, report.expenditureDate.GetValueOrDefault().ToOffset(new TimeSpan(7,0,0)).ToString("dd MMM yyy"), pebDate,
-                    report.roNo, report.buyerArticle, report.colour, report.name, report.unitname, report.price, report.qty,report.nominal, report.invoice);
+                    //string pebDate = report.pebDate == null ? "-" : report.pebDate.Value.ToString("dd MM yyyy");
+					string ExpenDate = report.expenditureDate == null ? "-" : report.expenditureDate.Value.ToString("dd MM yyyy");
+					//Console.WriteLine(pebDate);
+					reportDataTable.Rows.Add(report.pebNo,report.pebDate, report.expenditureGoodNo,ExpenDate, report.buyerName, report.country, report.comodityCode,
+						report.comodityName, report.uomUnit, report.qty, report.currencyCode, report.price);
 					counter++;
                     //Console.WriteLine(counter);
                 }
@@ -322,9 +372,9 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 			{
 				var worksheet = package.Workbook.Worksheets.Add("Sheet 1");
 				worksheet.Cells["A" + 5 + ":L" + 5 + ""].Style.Font.Bold = true;
-				worksheet.Cells["A1"].Value = "Report Barang Jadi "; worksheet.Cells["A" + 1 + ":L" + 1 + ""].Merge = true;
+				worksheet.Cells["A1"].Value = "LAPORAN PENGELUARAN HASIL PRODUKSI "; worksheet.Cells["A" + 1 + ":L" + 1 + ""].Merge = true;
 				worksheet.Cells["A2"].Value = "Periode " + dateFrom.ToString("dd-MM-yyyy") + " s/d " + dateTo.ToString("dd-MM-yyyy");
-				worksheet.Cells["A3"].Value = "Konfeksi " + _unitName;
+				//worksheet.Cells["A3"].Value = "Konfeksi " + _unitName;
 				worksheet.Cells["A" + 1 + ":L" + 1 + ""].Merge = true;
 				worksheet.Cells["A" + 2 + ":L" + 2 + ""].Merge = true;
 				worksheet.Cells["A" + 3 + ":L" + 3 + ""].Merge = true;
