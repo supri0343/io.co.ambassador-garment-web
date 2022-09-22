@@ -18,8 +18,10 @@ namespace Manufactures.Dtos
             UnitFrom = new UnitDepartment(garmentFinishingIn.UnitFromId.Value, garmentFinishingIn.UnitFromCode, garmentFinishingIn.UnitFromName);
             FinishingInDate = garmentFinishingIn.FinishingInDate;
             FinishingInType = garmentFinishingIn.FinishingInType;
+            
             Comodity = new GarmentComodity(garmentFinishingIn.ComodityId.Value, garmentFinishingIn.ComodityCode, garmentFinishingIn.ComodityName);
             CreatedBy = garmentFinishingIn.AuditTrail.CreatedBy;
+            SubconType = garmentFinishingIn.SubconType;
         }
 
         public Guid Id { get; internal set; }
@@ -36,5 +38,6 @@ namespace Manufactures.Dtos
         public double TotalFinishingInQuantity { get; set; }
 
         public List<string> Products { get; set; }
+        public string SubconType { get; set; }
     }
 }
