@@ -100,26 +100,62 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
             // Arrange
             var unitUnderTest = CreateGarmentSubconDeliveryLetterOutController();
 
+            //_mockGarmentSubconDeliveryLetterOutRepository
+            //    .Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+            //    .Returns(new List<GarmentSubconDeliveryLetterOutReadModel>().AsQueryable());
+
+            //Guid SubconDeliveryLetterOutGuid = Guid.NewGuid();
+            //_mockGarmentSubconDeliveryLetterOutRepository
+            //    .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSubconDeliveryLetterOutReadModel>>()))
+            //    .Returns(new List<GarmentSubconDeliveryLetterOut>()
+            //    {
+            //        new GarmentSubconDeliveryLetterOut(SubconDeliveryLetterOutGuid, null,null,new Guid(),"","",DateTimeOffset.Now,1,"","",1,"", false,"","")
+            //    });
+
+            ////Guid SubconDeliveryLetterOutItemGuid = Guid.NewGuid();
+            ////GarmentSubconDeliveryLetterOutItem garmentSubconDeliveryLetterOutItem = new GarmentSubconDeliveryLetterOutItem(Guid.Empty, new Guid(), 1, new Domain.Shared.ValueObjects.ProductId(1), "code", "name", "remark", 
+            ////    "color", 1, new Domain.Shared.ValueObjects.UomId(1), "uomUnit", new Domain.Shared.ValueObjects.UomId(1), "UomOutUnit", "fabType", new Guid(), "roNo", "poSerialNumber", "subconNo");
+            ////_mockGarmentSubconDeliveryLetterOutItemRepository
+            ////    .Setup(s => s.Query)
+            ////    .Returns(new List<GarmentSubconDeliveryLetterOutItemReadModel>()
+            ////    {
+            ////        garmentSubconDeliveryLetterOutItem.GetReadModel()
+            ////    }.AsQueryable());
+            //Guid SubconDeliveryLetterOutItemGuid = Guid.NewGuid();
+            //_mockGarmentSubconDeliveryLetterOutItemRepository
+            //    .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconDeliveryLetterOutItemReadModel, bool>>>()))
+            //    .Returns(new List<GarmentSubconDeliveryLetterOutItem>()
+            //    {
+            //        new GarmentSubconDeliveryLetterOutItem(Guid.NewGuid(),new Guid(),1,new Domain.Shared.ValueObjects.ProductId(1),"code","name","remark","color",1,new Domain.Shared.ValueObjects.UomId(1),"unit",new Domain.Shared.ValueObjects.UomId(1),"unit","fabType",new Guid(),"","","")
+            //    });
+
             _mockGarmentSubconDeliveryLetterOutRepository
-                .Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(new List<GarmentSubconDeliveryLetterOutReadModel>().AsQueryable());
+               .Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+               .Returns(new List<GarmentSubconDeliveryLetterOutReadModel>().AsQueryable());
 
             Guid SubconDeliveryLetterOutGuid = Guid.NewGuid();
             _mockGarmentSubconDeliveryLetterOutRepository
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSubconDeliveryLetterOutReadModel>>()))
                 .Returns(new List<GarmentSubconDeliveryLetterOut>()
                 {
-                    new GarmentSubconDeliveryLetterOut(SubconDeliveryLetterOutGuid, null,null,"",DateTimeOffset.Now,1,"","",1,"", false,"","",It.IsAny<int>(),"",It.IsAny<int>(),"")
+                    new GarmentSubconDeliveryLetterOut(SubconDeliveryLetterOutGuid, null,"","",DateTimeOffset.Now,1,"","",1,"", false,"","",1,"",1,"")
                 });
 
             Guid SubconDeliveryLetterOutItemGuid = Guid.NewGuid();
-            //GarmentSubconDeliveryLetterOutItem garmentSubconDeliveryLetterOutItem = new GarmentSubconDeliveryLetterOutItem(Guid.Empty,new Guid(), 1, new Domain.Shared.ValueObjects.ProductId(1), "code", "name", "remark", "color", 1, new Domain.Shared.ValueObjects.UomId(1), "unit", "fabType");
-            //_mockGarmentSubconDeliveryLetterOutItemRepository
-            //    .Setup(s => s.Query)
-            //    .Returns(new List<GarmentSubconDeliveryLetterOutItemReadModel>()
-            //    {
-            //        garmentSubconDeliveryLetterOutItem.GetReadModel()
-            //    }.AsQueryable());
+            GarmentSubconDeliveryLetterOutItem garmentSubconDeliveryLetterOutItem = new GarmentSubconDeliveryLetterOutItem(Guid.NewGuid(), SubconDeliveryLetterOutGuid, 1, new Domain.Shared.ValueObjects.ProductId(1), "code", "name", "remark", "color", 1, new Domain.Shared.ValueObjects.UomId(1), "unit", new Domain.Shared.ValueObjects.UomId(1), "unit", "fabType", new Guid(), "", "", "",1,"");
+
+            _mockGarmentSubconDeliveryLetterOutItemRepository
+                .Setup(s => s.Query)
+                .Returns(new List<GarmentSubconDeliveryLetterOutItemReadModel>() {
+                    garmentSubconDeliveryLetterOutItem.GetReadModel()
+                }.AsQueryable());
+
+            _mockGarmentSubconDeliveryLetterOutItemRepository
+                .Setup(s => s.Find(It.IsAny<IQueryable<GarmentSubconDeliveryLetterOutItemReadModel>>()))
+                .Returns(new List<GarmentSubconDeliveryLetterOutItem>()
+                {
+                    new GarmentSubconDeliveryLetterOutItem(Guid.NewGuid(),SubconDeliveryLetterOutGuid,1,new Domain.Shared.ValueObjects.ProductId(1),"code","name","remark","color",1,new Domain.Shared.ValueObjects.UomId(1),"unit",new Domain.Shared.ValueObjects.UomId(1),"unit","fabType",new Guid(),"","","",1,"")
+                });
 
             // Act
             var result = await unitUnderTest.Get();
@@ -293,24 +329,25 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconDeliveryLetterOutReadModel, bool>>>()))
                 .Returns(new List<GarmentSubconDeliveryLetterOut>()
                 {
-                    new GarmentSubconDeliveryLetterOut(SubconDeliveryLetterOutGuid, null,null,"",DateTimeOffset.Now,1,"","",1,"", false,"","",It.IsAny<int>(),"",It.IsAny<int>(),"")
+                    new GarmentSubconDeliveryLetterOut(SubconDeliveryLetterOutGuid, null,"","",DateTimeOffset.Now,1,"","",1,"", false,"","SUBCON CUTTING SEWING",1,"",1,"")
                 });
 
             Guid SubconDeliveryLetterOutItemGuid = Guid.NewGuid();
-            
+
             _mockGarmentSubconDeliveryLetterOutItemRepository
                  .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconDeliveryLetterOutItemReadModel, bool>>>()))
                  .Returns(new List<GarmentSubconDeliveryLetterOutItem>()
                  {
-                    new GarmentSubconDeliveryLetterOutItem(SubconDeliveryLetterOutItemGuid,SubconDeliveryLetterOutGuid,1,new Domain.Shared.ValueObjects.ProductId(1),"code","name","remark","color",1,new Domain.Shared.ValueObjects.UomId(1),"unit",new Domain.Shared.ValueObjects.UomId(1),"unit","fabType",SubconCuttingGuid,"","","", It.IsAny<int>(),"")
+                    new GarmentSubconDeliveryLetterOutItem(SubconDeliveryLetterOutItemGuid,SubconDeliveryLetterOutGuid,1,new Domain.Shared.ValueObjects.ProductId(1),"code","name","remark","color",1,new Domain.Shared.ValueObjects.UomId(1),"unit",new Domain.Shared.ValueObjects.UomId(1),"unit","fabType",SubconCuttingGuid,"","","", 1,"")
                  });
 
-            _mockGarmentSubconContractRepository
-                .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconContractReadModel, bool>>>()))
-                .Returns(new List<GarmentSubconContract>()
-                {
-                    new GarmentSubconContract(SubconContractGuid, "","","", new SupplierId(1),"","","","","",1,DateTimeOffset.Now,DateTimeOffset.Now,false,new BuyerId(1),"","","",new UomId(1),"","",DateTimeOffset.Now, 1)
-                });
+            //_mockGarmentSubconContractRepository
+            //    .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentSubconContractReadModel, bool>>>()))
+            //    .Returns(new List<GarmentSubconContract>()
+            //    {
+            //        new GarmentSubconContract(SubconContractGuid, "","","", new SupplierId(1),"","","","","",1,DateTimeOffset.Now,DateTimeOffset.Now,false,new BuyerId(1),"","","",new UomId(1),"","",DateTimeOffset.Now,1)
+
+            //    });
 
 
             _mockSubconCuttingOutRepository

@@ -50,6 +50,7 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentSubconDeliveryLett
                 TotalQty = 1,
                 UENNo = "test",
                 UsedQty = 1,
+                EPONo = "test",
                 Items = new List<GarmentSubconDeliveryLetterOutItemValueObject>()
                 {
                     new GarmentSubconDeliveryLetterOutItemValueObject()
@@ -207,6 +208,7 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentSubconDeliveryLett
                 Remark = "test",
                 TotalQty = 1,
                 UsedQty = 1,
+                EPONo ="test",
                 Items = new List<GarmentSubconDeliveryLetterOutItemValueObject>()
                 {
                     new GarmentSubconDeliveryLetterOutItemValueObject()
