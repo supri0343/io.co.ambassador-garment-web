@@ -1,4 +1,4 @@
-﻿using Infrastructure.External.DanLirisClient.Microservice.HttpClientService;
+using Infrastructure.External.DanLirisClient.Microservice.HttpClientService;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -77,10 +77,12 @@ namespace Manufactures.Tests.Queries.GarmentExpenditureGoods
 				}
 			};
 
+
 			//_mockhttpService.Setup(x => x.SendAsync(It.IsAny<HttpMethod>(), It.Is<string>(s => s.Contains("cost-calculation-garments/data")), It.IsAny<string>(), It.IsAny<HttpContent>()))
 			//	.ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("{\"data\": " + JsonConvert.SerializeObject(costCalViewModels) + "}") });
 
-			_mockhttpService.Setup(x => x.SendAsync(It.IsAny<HttpMethod>(), It.Is<string>(s => s.Contains("customs-reports/getPEB")), It.IsAny<string>(), It.IsAny<HttpContent>()))
+
+            _mockhttpService.Setup(x => x.SendAsync(It.IsAny<HttpMethod>(), It.Is<string>(s => s.Contains("customs-reports/getPEB")), It.IsAny<string>(), It.IsAny<HttpContent>()))
 			  .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("{\"data\": " + JsonConvert.SerializeObject(pEBResultViews) + "}") });
 
 			serviceProviderMock.Setup(x => x.GetService(typeof(IHttpClientService))).Returns(_mockhttpService.Object);
@@ -102,11 +104,12 @@ namespace Manufactures.Tests.Queries.GarmentExpenditureGoods
 			Guid guidExpenditureGoodItem = Guid.NewGuid();
 			Guid guidSewingOut = Guid.NewGuid();
 			Guid guidSewingOutItem = Guid.NewGuid();
-            Guid guidCuttingIn = Guid.NewGuid();
-            Guid guidCuttingInItem = Guid.NewGuid();
-            Guid guidCuttingInDetail = Guid.NewGuid();
-            Guid guidPrepare = Guid.NewGuid();
-            Guid guidPrepareItem = Guid.NewGuid();
+			Guid guidCuttingIn = Guid.NewGuid();
+			Guid guidCuttingInItem = Guid.NewGuid();
+			Guid guidCuttingInDetail = Guid.NewGuid();
+			Guid guidPrepare = Guid.NewGuid();
+			Guid guidPrepareItem = Guid.NewGuid();
+
 
             GetXlsExpenditureGoodQuery getMonitoring = new GetXlsExpenditureGoodQuery(1, 25, "{}", DateTime.Now, DateTime.Now.AddDays(2),"", "token");
 
@@ -131,6 +134,7 @@ namespace Manufactures.Tests.Queries.GarmentExpenditureGoods
 			//		new GarmentCuttingInDetail(guidCuttingInDetail,guidCuttingInItem,guidPrepareItem,Guid.Empty,Guid.Empty,new Domain.Shared.ValueObjects.ProductId(1),"productCode","productName","designColor","fabricType",9,new Domain.Shared.ValueObjects.UomId(1),"",4,new Domain.Shared.ValueObjects.UomId(1),"",1,100,100,5.5,null).GetReadModel()
 			//	}.AsQueryable());
 
+
 			_mockGarmentExpenditureGoodItemRepository
 				.Setup(s => s.Query)
 				.Returns(new List<GarmentExpenditureGoodItemReadModel>
@@ -154,14 +158,13 @@ namespace Manufactures.Tests.Queries.GarmentExpenditureGoods
 			//	}.AsQueryable());
 
 
+
 			//_mockGarmentPreparingItemRepository
 			//	.Setup(s => s.Query)
 			//	.Returns(new List<GarmentPreparingItemReadModel>
 			//	{
 			//		new GarmentPreparingItem(guidPrepareItem,1,new Domain.GarmentPreparings.ValueObjects.ProductId(1),"productCode","productName","designColor",1,new Domain.GarmentPreparings.ValueObjects.UomId(1),"uomUnit","fabricType",1,1,guidPrepare,null,"fasilitas").GetReadModel()
 			//	}.AsQueryable());
-
-
 
 			// Act
 			var result = await unitUnderTest.Handle(getMonitoring, cancellationToken);
@@ -239,6 +242,7 @@ namespace Manufactures.Tests.Queries.GarmentExpenditureGoods
 			//	{
 			//		new GarmentPreparingItem(guidPrepareItem,1,new Domain.GarmentPreparings.ValueObjects.ProductId(1),"productCode","productName","designColor",1,new Domain.GarmentPreparings.ValueObjects.UomId(1),"uomUnit","fabricType",1,1,guidPrepare,null,"fasilitas").GetReadModel()
 			//	}.AsQueryable());
+
 			// Act
 			var result = await unitUnderTest.Handle(getMonitoring, cancellationToken);
 

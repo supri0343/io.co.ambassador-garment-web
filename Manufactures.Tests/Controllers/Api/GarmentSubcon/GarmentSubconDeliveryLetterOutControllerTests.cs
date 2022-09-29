@@ -142,6 +142,7 @@ namespace Manufactures.Tests.Controllers.Api.GarmentSubcon
                 });
 
             Guid SubconDeliveryLetterOutItemGuid = Guid.NewGuid();
+
             GarmentSubconDeliveryLetterOutItem garmentSubconDeliveryLetterOutItem = new GarmentSubconDeliveryLetterOutItem(Guid.NewGuid(), SubconDeliveryLetterOutGuid, 1, new Domain.Shared.ValueObjects.ProductId(1), "code", "name", "remark", "color", 1, new Domain.Shared.ValueObjects.UomId(1), "unit", new Domain.Shared.ValueObjects.UomId(1), "unit", "fabType", new Guid(), "", "", "",1,"");
 
             _mockGarmentSubconDeliveryLetterOutItemRepository
