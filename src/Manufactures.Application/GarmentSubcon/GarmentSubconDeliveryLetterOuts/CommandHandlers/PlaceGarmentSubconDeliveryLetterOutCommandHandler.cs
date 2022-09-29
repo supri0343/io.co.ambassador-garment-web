@@ -58,8 +58,6 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
                 Guid.NewGuid(),
                 GenerateNo(request),
                 request.DLType,
-                request.SubconContractId,
-                request.ContractNo,
                 request.ContractType,
                 request.DLDate,
                 request.UENId,
@@ -69,7 +67,11 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
                 request.Remark,
                 request.IsUsed,
                 request.ServiceType,
-                request.SubconCategory
+                request.SubconCategory,
+                request.EPOId,
+                request.EPONo,
+                request.QtyPacking,
+                request.UomUnit
             );
 
             foreach (var item in request.Items)
@@ -92,7 +94,9 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
                     item.SubconId,
                     item.RONo,
                     item.POSerialNumber,
-                    item.SubconNo
+                    item.SubconNo,
+                    item.QtyPacking,
+                    item.UomSatuanUnit
                 );
                 if(request.SubconCategory=="SUBCON SEWING")
                 {
@@ -139,11 +143,11 @@ namespace Manufactures.Application.GarmentSubcon.GarmentSubconDeliveryLetterOuts
                 await _garmentSubconDeliveryLetterOutItemRepository.Update(garmentSubconDeliveryLetterOutItem);
             }
 
-            var subconContract = _garmentSubconContractRepository.Query.Where(x => x.Identity == garmentSubconDeliveryLetterOut.SubconContractId).Select(s => new GarmentSubconContract(s)).Single();
-            subconContract.SetIsUsed(true);
-            subconContract.Modify();
+            //var subconContract = _garmentSubconContractRepository.Query.Where(x => x.Identity == garmentSubconDeliveryLetterOut.SubconContractId).Select(s => new GarmentSubconContract(s)).Single();
+            //subconContract.SetIsUsed(true);
+            //subconContract.Modify();
 
-            await _garmentSubconContractRepository.Update(subconContract);
+            //await _garmentSubconContractRepository.Update(subconContract);
 
             await _garmentSubconDeliveryLetterOutRepository.Update(garmentSubconDeliveryLetterOut);
 

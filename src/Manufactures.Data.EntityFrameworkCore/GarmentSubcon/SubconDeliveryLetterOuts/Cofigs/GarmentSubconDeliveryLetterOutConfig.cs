@@ -14,7 +14,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSubcon.SubconDeliveryLett
             builder.ToTable("GarmentSubconDeliveryLetterOuts");
             builder.HasKey(e => e.Identity);
 
-            builder.Property(p => p.ContractNo).HasMaxLength(25);
+            builder.Property(p => p.EPONo).HasMaxLength(50);
             builder.Property(p => p.DLNo).HasMaxLength(25);
             builder.Property(p => p.PONo).HasMaxLength(25);
             builder.Property(p => p.UENNo).HasMaxLength(25);
@@ -23,6 +23,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSubcon.SubconDeliveryLett
             builder.HasIndex(i => i.DLNo).IsUnique().HasFilter("[Deleted]=(0)");
             builder.Property(p => p.ServiceType).HasMaxLength(50);
             builder.Property(p => p.SubconCategory).HasMaxLength(50);
+            builder.Property(p => p.UomUnit).HasMaxLength(10);
 
             builder.ApplyAuditTrail();
             builder.ApplySoftDelete();

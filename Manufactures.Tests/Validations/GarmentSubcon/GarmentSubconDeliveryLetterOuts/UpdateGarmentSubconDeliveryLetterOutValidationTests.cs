@@ -40,7 +40,6 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentSubconDeliveryLett
             var unitUnderTest = new UpdateGarmentSubconDeliveryLetterOutCommand()
             {
                 IsUsed = true,
-                ContractNo = "test",
                 ContractType = "test",
                 DLDate = DateTimeOffset.Now,
                 DLType = "test",
@@ -48,10 +47,10 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentSubconDeliveryLett
                 PONo = "test",
                 Remark = "test",
                 UENId = 1,
-                SubconContractId = new Guid(),
                 TotalQty = 1,
                 UENNo = "test",
                 UsedQty = 1,
+                EPONo = "test",
                 Items = new List<GarmentSubconDeliveryLetterOutItemValueObject>()
                 {
                     new GarmentSubconDeliveryLetterOutItemValueObject()

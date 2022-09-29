@@ -109,10 +109,9 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOCutting
         public async Task<MemoryStream> Handle(GetXlsGarmentSubconDLOCuttingSewingReportQuery request, CancellationToken cancellationToken)
         {
             var QueryUEN = (from a in garmentSubconDeliveryLetterOutRepository.Query
-                           join b in garmentSubconDeliveryLetterOutItemRepository.Query on a.Identity equals b.SubconDeliveryLetterOutId
-                            //where a.Deleted == false && b.Deleted == false
-                            where
-                            a.DLDate.AddHours(7).Date >= request.dateFrom
+                            join b in garmentSubconDeliveryLetterOutItemRepository.Query on a.Identity equals b.SubconDeliveryLetterOutId
+                            where a.Deleted == false && b.Deleted == false
+                            && a.DLDate.AddHours(7).Date >= request.dateFrom
                             && a.DLDate.AddHours(7).Date <= request.dateTo.Date && a.UENId != null
                             && a.ContractType == "SUBCON GARMENT" && a.SubconCategory == "SUBCON CUTTING SEWING"
                            select a.UENId).Distinct();
@@ -135,7 +134,7 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOCutting
                              DLType = a.DLType,
                              DLNo = a.DLNo,
                              DLDate = a.DLDate,
-                             ContractNo = a.ContractNo,
+                             ContractNo = a.EPONo,
                              ContractType = a.ContractType,
                              SubConCategory = a.SubconCategory,
                              UENNo = a.UENNo,
@@ -152,7 +151,7 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOCutting
                              FabricType = (from UEN in gmtExpNoteReport.data where UEN.UENId == a.UENId select UEN.FabricType).FirstOrDefault(),
                              QtyUEN = (from UEN in gmtExpNoteReport.data where UEN.UENId == a.UENId select UEN.Quntity).FirstOrDefault(),
                              UomUEN = (from UEN in gmtExpNoteReport.data where UEN.UENId == a.UENId select UEN.UOMUnit).FirstOrDefault(),
-                         }).ToList();
+                         }).ToList().OrderBy(x => x.DLNo).ThenBy(x => x.UENNo);
 
                           //.GroupBy(x => new {
                           //    x.DLType,
@@ -235,11 +234,11 @@ namespace Manufactures.Application.GarmentSubcon.Queries.GarmentSubconDLOCutting
             DataTable reportDataTable = new DataTable();
 
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Jenis SJ SubCon", DataType = typeof(string) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Jenis SubCon Contract", DataType = typeof(string) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Jenis SubCon", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Kategori SubCon", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "No SJ SubCon", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Tgl SJ SubCon", DataType = typeof(string) });
-            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "No Contract", DataType = typeof(string) });
+            reportDataTable.Columns.Add(new DataColumn() { ColumnName = "No PO External", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "No Bon Keluar", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "Tgl Bon Keluar", DataType = typeof(string) });
             reportDataTable.Columns.Add(new DataColumn() { ColumnName = "RO No", DataType = typeof(string) });
