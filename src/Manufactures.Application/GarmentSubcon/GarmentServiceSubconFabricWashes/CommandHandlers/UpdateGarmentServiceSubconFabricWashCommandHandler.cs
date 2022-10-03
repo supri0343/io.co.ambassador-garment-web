@@ -42,6 +42,43 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconFabricWashe
             var newitem = request.Items.Where(x => !existingItem.Select(o => o.UnitExpenditureNo).Contains(x.UnitExpenditureNo)).ToList();
             var removeItem = existingItem.Where(x => !request.Items.Select(o => o.UnitExpenditureNo).Contains(x.UnitExpenditureNo)).ToList();
 
+            _garmentServiceSubconFabricWashItemRepository.Find(o => o.ServiceSubconFabricWashId == serviceSubconFabricWash.Identity).ForEach(async subconFabricWashItem =>
+            {
+                var item = request.Items.Where(o => o.Id == subconFabricWashItem.Identity).SingleOrDefault();
+
+                if (item == null)
+                {
+                    _garmentServiceSubconFabricWashDetailRepository.Find(i => i.ServiceSubconFabricWashItemId == subconFabricWashItem.Identity).ForEach(async subconFabricWashDetail =>
+                    {
+                        subconFabricWashDetail.Remove();
+                        await _garmentServiceSubconFabricWashDetailRepository.Update(subconFabricWashDetail);
+                    });
+                    subconFabricWashItem.Remove();
+
+                }
+                else
+                {
+                    _garmentServiceSubconFabricWashDetailRepository.Find(i => i.ServiceSubconFabricWashItemId == subconFabricWashItem.Identity).ForEach(async subconFabricWashDetail =>
+                    {
+                        var detail = item.Details.Where(o => o.Id == subconFabricWashDetail.Identity).Single();
+                        if (!detail.IsSave)
+                        {
+                            subconFabricWashDetail.Remove();
+                        }
+                        else
+                        {
+                            subconFabricWashDetail.SetQuantity(detail.Quantity);
+                            subconFabricWashDetail.Modify();
+                        }
+                        await _garmentServiceSubconFabricWashDetailRepository.Update(subconFabricWashDetail);
+                    });
+                    subconFabricWashItem.Modify();
+                }
+
+
+                await _garmentServiceSubconFabricWashItemRepository.Update(subconFabricWashItem);
+            });
+
             if (newitem.Count() > 0)
             {
                 foreach (var item in newitem)
