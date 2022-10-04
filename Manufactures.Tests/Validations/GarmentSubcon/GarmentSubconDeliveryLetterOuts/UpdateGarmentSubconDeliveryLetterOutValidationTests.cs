@@ -44,6 +44,7 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentSubconDeliveryLett
                 DLDate = DateTimeOffset.Now,
                 DLType = "test",
                 EPOItemId = 1,
+                EPONo = "test",
                 PONo = "test",
                 Remark = "test",
                 UENId = 1,
