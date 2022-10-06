@@ -40,6 +40,15 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings
             Quantity = readModel.Quantity;
         }
 
+        public void SetDesignColor(string DesignColor)
+        {
+            if (this.DesignColor != DesignColor)
+            {
+                this.DesignColor = DesignColor;
+                ReadModel.DesignColor = DesignColor;
+            }
+        }
+
         public void SetQuantity(double Quantity)
         {
             if (this.Quantity != Quantity)
