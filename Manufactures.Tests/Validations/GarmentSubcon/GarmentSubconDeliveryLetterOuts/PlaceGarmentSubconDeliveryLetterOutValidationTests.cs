@@ -201,9 +201,12 @@ namespace Manufactures.Tests.Validations.GarmentSubcon.GarmentSubconDeliveryLett
             {
                 IsUsed = true,
                 ContractType = "SUBCON CUTTING",
+                DLNo = "test",
                 DLDate = DateTimeOffset.Now,
                 DLType = "test",
                 EPOItemId = 1,
+                EPOId = 1,
+                EPONo = "test",
                 PONo = "test",
                 Remark = "test",
                 TotalQty = 1,
