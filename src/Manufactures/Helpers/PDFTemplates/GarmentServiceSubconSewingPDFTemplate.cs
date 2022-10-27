@@ -102,7 +102,7 @@ namespace Manufactures.Helpers.PDFTemplates
 
             #region content
 
-            PdfPTable tableContent = new PdfPTable(9);
+            PdfPTable tableContent = new PdfPTable(10);
             List<float> widths = new List<float>();
             widths.Add(4f);
             widths.Add(4f);
