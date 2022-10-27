@@ -75,7 +75,7 @@ namespace Manufactures.Helpers.PDFTemplates
             {
                 foreach (var detail in item.Details)
                 {
-                    var data = itemData.FirstOrDefault(x =>x.RoNo == item.RONo&& x.DesignColor == detail.DesignColor);
+                    var data = itemData.FirstOrDefault(x => x.RoNo == item.RONo && x.DesignColor == detail.DesignColor && x.Color == detail.Color);
 
                     GarmentSubconSewingItemVM garmentSubconSewingItemVM = new GarmentSubconSewingItemVM();
                     garmentSubconSewingItemVM.RoNo = item.RONo;
@@ -109,6 +109,7 @@ namespace Manufactures.Helpers.PDFTemplates
             widths.Add(4f);
             widths.Add(6f);
             widths.Add(4f);
+            widths.Add(4f);
             widths.Add(3f);
             widths.Add(3f);
             widths.Add(3f);
@@ -129,6 +130,9 @@ namespace Manufactures.Helpers.PDFTemplates
             cellCenter.Rowspan = 1;
             tableContent.AddCell(cellCenter);
             cellCenter.Phrase = new Phrase("Warna", bold_font);
+            cellCenter.Rowspan = 1;
+            tableContent.AddCell(cellCenter);
+            cellCenter.Phrase = new Phrase("Design Warna", bold_font);
             cellCenter.Rowspan = 1;
             tableContent.AddCell(cellCenter);
             cellCenter.Phrase = new Phrase("Unit", bold_font);
@@ -160,6 +164,9 @@ namespace Manufactures.Helpers.PDFTemplates
                 cellCenter.Rowspan = 1;
                 tableContent.AddCell(cellCenter);
                 cellCenter.Phrase = new Phrase(i.Color, normal_font);
+                cellCenter.Rowspan = 1;
+                tableContent.AddCell(cellCenter);
+                cellCenter.Phrase = new Phrase(i.DesignColor, normal_font);
                 cellCenter.Rowspan = 1;
                 tableContent.AddCell(cellCenter);
                 cellCenter.Phrase = new Phrase(i.Unit, normal_font);
