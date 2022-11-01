@@ -10,7 +10,7 @@ using Xunit;
 
 namespace Manufactures.Tests.Helpers
 {
- public   class GarmentFinishingOutPDFTemplateTest
+    public class GarmentFinishingOutPDFTemplateTest
     {
         [Fact]
         public void Generate_Return_Success()
@@ -21,8 +21,8 @@ namespace Manufactures.Tests.Helpers
 
             GarmentFinishingOutDto dto = new GarmentFinishingOutDto(garmentFinishingOut)
             {
-               CreatedBy = "CreatedBy",
-               
+                CreatedBy = "CreatedBy",
+
             };
             var finishingOutItem = new GarmentFinishingOutItemDto(new GarmentFinishingOutItem(id, id, id, id, new ProductId(1), "productCode", "productName", "designColor", new SizeId(1), "sizeName", 1, new UomId(1), "uomUnit", "color", 1, 1, 1));
             finishingOutItem.Details = new List<GarmentFinishingOutDetailDto>()
@@ -35,11 +35,11 @@ namespace Manufactures.Tests.Helpers
                finishingOutItem
             };
             dto.GetType().GetProperty("Items").SetValue(dto, items);
-           
+
 
             var result = GarmentFinishingOutPDFTemplate.Generate(dto, "Buyer");
             Assert.NotNull(result);
         }
-       
+
     }
 }
