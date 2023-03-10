@@ -16,7 +16,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentAvalComponents.Configs
             builder.Property(p => p.UnitName).HasMaxLength(100);
             builder.Property(p => p.AvalComponentType).HasMaxLength(25);
             builder.Property(p => p.RONo).HasMaxLength(25);
-            builder.Property(p => p.Article).HasMaxLength(50);
+            builder.Property(p => p.Article).HasMaxLength(100);
             builder.Property(p => p.ComodityCode).HasMaxLength(25);
             builder.Property(p => p.ComodityName).HasMaxLength(100);
 
