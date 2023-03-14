@@ -15,7 +15,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentDeliveryReturns.Config
             builder.Property(a => a.RONo)
                .HasMaxLength(100);
             builder.Property(a => a.Article)
-               .HasMaxLength(100);
+               .HasMaxLength(1000);
             builder.Property(a => a.UnitDONo)
                .HasMaxLength(100);
             builder.Property(a => a.ReturnType)
