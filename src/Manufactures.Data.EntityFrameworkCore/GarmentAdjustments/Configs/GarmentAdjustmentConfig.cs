@@ -17,7 +17,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentAdjustments.Configs
             builder.Property(p => p.AdjustmentNo).HasMaxLength(25);
             builder.Property(p => p.AdjustmentType).HasMaxLength(25);
             builder.Property(p => p.RONo).HasMaxLength(25);
-            builder.Property(p => p.Article).HasMaxLength(50);
+            builder.Property(p => p.Article).HasMaxLength(1000);
             builder.Property(p => p.UnitCode).HasMaxLength(25);
             builder.Property(p => p.UnitName).HasMaxLength(100);
             builder.Property(p => p.ComodityName).HasMaxLength(500);
