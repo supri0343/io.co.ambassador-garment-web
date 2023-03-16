@@ -40,6 +40,8 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 			garmentCuttingInRepository = storage.GetRepository<IGarmentCuttingInRepository>();
             garmentCuttingInItemRepository = storage.GetRepository<IGarmentCuttingInItemRepository>();
             garmentCuttingInDetailRepository = storage.GetRepository<IGarmentCuttingInDetailRepository>();
+            garmentPreparingRepository = storage.GetRepository<IGarmentPreparingRepository>();
+            garmentPreparingItemRepository = storage.GetRepository<IGarmentPreparingItemRepository>();
             _http = serviceProvider.GetService<IHttpClientService>();
 		}
  
@@ -155,9 +157,9 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 		public async Task<GarmentMonitoringExpenditureGoodListViewModel> Handle(GetMonitoringExpenditureGoodQuery request, CancellationToken cancellationToken)
 		{
 			DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom);
-			dateFrom.AddHours(7);
+			//dateFrom.AddHours(7);
 			DateTimeOffset dateTo = new DateTimeOffset(request.dateTo);
-			dateTo = dateTo.AddHours(7);
+			//dateTo = dateTo.AddHours(7);
 
 
             //var QueryRo = (from a in garmentExpenditureGoodRepository.Query
@@ -221,7 +223,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
                         join b in garmentExpenditureGoodItemRepository.Query on a.Identity equals b.ExpenditureGoodId
                         join c in garmentPreparingRepository.Query on a.RONo equals c.RONo
                         join d in garmentPreparingItemRepository.Query on c.Identity equals d.GarmentPreparingId
-                        where d.CustomsCategory == "FASILITAS" && a.ExpenditureDate >= dateFrom && a.ExpenditureDate <= dateTo                 
+                        where d.CustomsCategory == "FASILITAS" && a.ExpenditureDate.AddHours(7) >= dateFrom && a.ExpenditureDate.AddHours(7) <= dateTo                 
                         //select new monitoringView { fc = (from aa in sumFCs where aa.RO == a.RONo select aa.FC / aa.Count).FirstOrDefault(),
                         select new monitoringView
                         {
