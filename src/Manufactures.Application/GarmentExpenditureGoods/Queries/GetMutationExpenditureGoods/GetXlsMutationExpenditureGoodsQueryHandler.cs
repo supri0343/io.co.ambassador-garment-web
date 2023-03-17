@@ -23,6 +23,7 @@ using OfficeOpenXml;
 using Manufactures.Domain.GarmentSample.SampleCuttingOuts.Repositories;
 using Manufactures.Domain.GarmentSample.SampleFinishingOuts.Repositories;
 using Manufactures.Domain.GarmentSample.SampleExpenditureGoods.Repositories;
+using Manufactures.Domain.GarmentPreparings.Repositories;
 
 namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationExpenditureGoods
 {
@@ -45,6 +46,8 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationEx
         private readonly IGarmentSampleFinishingOutItemRepository garmentSampleFinishingOutItemRepository;
         private readonly IGarmentSampleExpenditureGoodRepository garmentSampleExpenditureGoodRepository;
         private readonly IGarmentSampleExpenditureGoodItemRepository garmentSampleExpenditureGoodItemRepository;
+        private readonly IGarmentPreparingRepository garmentPreparingRepository;
+        private readonly IGarmentPreparingItemRepository garmentPreparingItemRepository;
 
         public GetXlsMutationExpenditureGoodsQueryHandler(IStorage storage, IServiceProvider serviceProvider)
         {
@@ -65,6 +68,8 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationEx
             garmentSampleFinishingOutItemRepository = storage.GetRepository<IGarmentSampleFinishingOutItemRepository>();
             garmentSampleExpenditureGoodRepository = storage.GetRepository<IGarmentSampleExpenditureGoodRepository>();
             garmentSampleExpenditureGoodItemRepository = storage.GetRepository<IGarmentSampleExpenditureGoodItemRepository>();
+            garmentPreparingRepository = storage.GetRepository<IGarmentPreparingRepository>();
+            garmentPreparingItemRepository = storage.GetRepository<IGarmentPreparingItemRepository>();
 
         }
 
@@ -113,20 +118,26 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationEx
                                     && aa.AdjustmentType == "FINISHING"
                                     select aa)
                          join b in garmentAdjustmentItemRepository.Query on a.Identity equals b.AdjustmentId
+                         join c in garmentPreparingRepository.Query on a.RONo equals c.RONo
+                         join d in garmentPreparingItemRepository.Query on c.Identity equals d.GarmentPreparingId
+                         where d.CustomsCategory == "FASILITAS"
                          select new mutationView
                          {
                              SaldoQtyFin = a.AdjustmentDate < dateFrom && a.AdjustmentDate > dateBalance ? b.Quantity : 0,
-                             AdjFin = a.AdjustmentDate >= dateFrom ? b.Quantity : 0,
+                             //AdjFin = a.AdjustmentDate >= dateFrom ? b.Quantity : 0,
                              ComodityCode = a.ComodityCode,
                              ComodityName = a.ComodityName,
                              QtyExpend = 0,
-                             QtyFin = 0,
+                             QtyFin = a.AdjustmentDate >= dateFrom ? b.Quantity : 0,
                              Retur = 0,
                          };
             var returexpend = from a in (from aa in garmentExpenditureGoodReturnRepository.Query
                                          where aa.ReturDate >= dateBalance && aa.ReturDate <= dateTo //&& aa.ComodityCode == "BR"
                                          select aa)
                               join b in garmentExpenditureGoodReturnItemRepository.Query on a.Identity equals b.ReturId
+                              join c in garmentPreparingRepository.Query on a.RONo equals c.RONo
+                              join d in garmentPreparingItemRepository.Query on c.Identity equals d.GarmentPreparingId
+                              where d.CustomsCategory == "FASILITAS"
                               select new mutationView
                               {
                                   SaldoQtyFin = a.ReturDate < dateFrom && a.ReturDate > dateBalance ? b.Quantity : 0,
@@ -142,6 +153,9 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationEx
                                                  && aa.FinishingTo == "GUDANG JADI" //&& aa.ComodityCode == "BR"
                                                  select aa)
                                       join b in garmentFinishingOutItemRepository.Query on a.Identity equals b.FinishingOutId
+                                      join c in garmentPreparingRepository.Query on a.RONo equals c.RONo
+                                      join d in garmentPreparingItemRepository.Query on c.Identity equals d.GarmentPreparingId
+                                      where d.CustomsCategory == "FASILITAS"
                                       select new mutationView
                                       {
                                           SaldoQtyFin = a.FinishingOutDate.Date < dateFrom.Date && a.FinishingOutDate > dateBalance ? b.Quantity : 0,
@@ -157,6 +171,9 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationEx
                                         where aa.ExpenditureDate >= dateBalance && aa.ExpenditureDate <= dateTo //&& aa.ComodityCode == "BR"
                                         select aa)
                              join b in garmentExpenditureGoodItemRepository.Query on a.Identity equals b.ExpenditureGoodId
+                             join c in garmentPreparingRepository.Query on a.RONo equals c.RONo
+                             join d in garmentPreparingItemRepository.Query on c.Identity equals d.GarmentPreparingId
+                             where d.CustomsCategory == "FASILITAS"
                              select new mutationView
                              {
                                  SaldoQtyFin = a.ExpenditureDate < dateFrom && a.ExpenditureDate > dateBalance ? -b.Quantity : 0,
@@ -168,26 +185,29 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationEx
                                  Retur = 0,
                              };
 
-            var cuttingSample = from a in (from aa in garmentSampleCuttingOutRepository.Query
-                                           where aa.CuttingOutDate >= dateBalanceSample && aa.CuttingOutDate <= dateTo
-                                           select aa)
-                                join b in garmentSampleCuttingOutItemRepository.Query on a.Identity equals b.CuttingOutId
-                                select new mutationView
-                                {
-                                    SaldoQtyFin = a.CuttingOutDate < dateFrom && a.CuttingOutDate > dateBalanceSample ? b.TotalCuttingOut : 0,
-                                    AdjFin = 0,
-                                    ComodityCode = a.ComodityCode,
-                                    ComodityName = a.ComodityName,
-                                    QtyExpend = a.CuttingOutDate >= dateFrom ? b.TotalCuttingOut : 0,
-                                    QtyFin = 0,
-                                    Retur = 0,
-                                };
+            //var cuttingSample = from a in (from aa in garmentSampleCuttingOutRepository.Query
+            //                               where aa.CuttingOutDate >= dateBalanceSample && aa.CuttingOutDate <= dateTo
+            //                               select aa)
+            //                    join b in garmentSampleCuttingOutItemRepository.Query on a.Identity equals b.CuttingOutId
+            //                    select new mutationView
+            //                    {
+            //                        SaldoQtyFin = a.CuttingOutDate < dateFrom && a.CuttingOutDate > dateBalanceSample ? b.TotalCuttingOut : 0,
+            //                        AdjFin = 0,
+            //                        ComodityCode = a.ComodityCode,
+            //                        ComodityName = a.ComodityName,
+            //                        QtyExpend = a.CuttingOutDate >= dateFrom ? b.TotalCuttingOut : 0,
+            //                        QtyFin = 0,
+            //                        Retur = 0,
+            //                    };
 
             var finishingSample = from a in (from aa in garmentSampleFinishingOutRepository.Query
                                              where aa.FinishingOutDate >= dateBalanceSample && aa.FinishingOutDate <= dateTo
                                              && aa.FinishingTo == "GUDANG JADI"
                                              select aa)
                                   join b in garmentSampleFinishingOutItemRepository.Query on a.Identity equals b.FinishingOutId
+                                  join c in garmentPreparingRepository.Query on a.RONo equals c.RONo
+                                  join d in garmentPreparingItemRepository.Query on c.Identity equals d.GarmentPreparingId
+                                  where d.CustomsCategory == "FASILITAS"
                                   select new mutationView
                                   {
                                       SaldoQtyFin = a.FinishingOutDate < dateFrom && a.FinishingOutDate > dateBalanceSample ? b.Quantity : 0,
@@ -203,6 +223,9 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationEx
                                                    where aa.ExpenditureDate >= dateBalanceSample && aa.ExpenditureDate <= dateTo
                                                    select aa)
                                         join b in garmentSampleExpenditureGoodItemRepository.Query on a.Identity equals b.ExpenditureGoodId
+                                        join c in garmentPreparingRepository.Query on a.RONo equals c.RONo
+                                        join d in garmentPreparingItemRepository.Query on c.Identity equals d.GarmentPreparingId
+                                        where d.CustomsCategory == "FASILITAS"
                                         select new mutationView
                                         {
                                             SaldoQtyFin = a.ExpenditureDate < dateFrom && a.ExpenditureDate > dateBalanceSample ? -b.Quantity : 0,
@@ -214,7 +237,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationEx
                                             Retur = 0,
                                         };
 
-            var queryNow = adjust.Union(querybalance).Union(returexpend).Union(finishingbarangjadi).Union(factexpend).Union(cuttingSample).Union(finishingSample).Union(expenditureGoodSample).AsEnumerable();
+            var queryNow = adjust.Union(querybalance).Union(returexpend).Union(finishingbarangjadi).Union(factexpend).Union(finishingSample).Union(expenditureGoodSample).AsEnumerable();
 
             var mutationTemp = queryNow.GroupBy(x => new { x.ComodityCode,x.ComodityName }, (key, group) => new
             {
@@ -226,7 +249,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationEx
                 penyesuaian = 0,
                 saldoAwal = group.Sum(x => x.SaldoQtyFin),
                 //saldoBuku = group.Sum(x => x.SaldoQtyFin) + group.Sum(x => x.Retur + x.QtyFin) - group.Sum(x => x.QtyExpend),
-                selisih = group.Sum(x => x.Retur + x.QtyFin) - group.Sum(x => x.QtyExpend),
+                selisih = group.Sum(x => x.Retur + x.QtyFin+ x.SaldoQtyFin) - group.Sum(x => x.QtyExpend),
                 //stockOpname = 0,
                 unitQtyName = "PCS",
                 storage = "Gudang AG2"
