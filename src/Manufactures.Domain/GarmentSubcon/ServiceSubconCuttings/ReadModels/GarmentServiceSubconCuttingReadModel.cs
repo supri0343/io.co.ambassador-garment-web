@@ -22,6 +22,9 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings.ReadModels
         public int BuyerId { get; internal set; }
         public string BuyerCode { get; internal set; }
         public string BuyerName { get; internal set; }
+        public int BuyerBrandId { get; internal set; }
+        public string BuyerBrandCode { get; internal set; }
+        public string BuyerBrandName { get; internal set; }
         public int UomId { get; internal set; }
         public string UomUnit { get; internal set; }
         public int QtyPacking { get; internal set; }

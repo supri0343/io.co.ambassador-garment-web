@@ -4,6 +4,7 @@ using Manufactures.Domain.GarmentCuttingIns;
 using Manufactures.Domain.GarmentCuttingIns.ReadModels;
 using Manufactures.Domain.GarmentCuttingIns.Repositories;
 using Manufactures.Domain.GarmentPreparings.ReadModels;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
