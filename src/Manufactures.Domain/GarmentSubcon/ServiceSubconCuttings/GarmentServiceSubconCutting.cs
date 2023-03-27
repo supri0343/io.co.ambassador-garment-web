@@ -22,46 +22,13 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings
         public BuyerId BuyerId { get; private set; }
         public string BuyerCode { get; private set; }
         public string BuyerName { get; private set; }
+        public BuyerBrandId BuyerBrandId { get; private set; }
+        public string BuyerBrandCode { get; private set; }
+        public string BuyerBrandName { get; private set; }
         public UomId UomId { get; private set; }
         public string UomUnit { get; private set; }
         public int QtyPacking { get; private set; }
 
-        public GarmentServiceSubconCutting(Guid identity, string subconNo, string subconType, UnitDepartmentId unitId, string unitCode, string unitName, DateTimeOffset subconDate, bool isUsed, BuyerId buyerId, string buyerCode, string buyerName, UomId uomId, string uomUnit, int qtyPacking) : base(identity)
-        {
-            Identity = identity;
-            SubconNo = subconNo;
-            SubconType = subconType;
-            UnitId = unitId;
-            UnitCode = unitCode;
-            UnitName = unitName;
-            SubconDate = subconDate;
-            IsUsed = isUsed;
-            BuyerId = buyerId;
-            BuyerCode = buyerCode;
-            BuyerName = buyerName;
-            UomId = uomId;
-            UomUnit = uomUnit;
-            QtyPacking = qtyPacking;
-
-            ReadModel = new GarmentServiceSubconCuttingReadModel(Identity)
-            {
-                SubconDate = SubconDate,
-                SubconNo = SubconNo,
-                SubconType = SubconType,
-                UnitCode = UnitCode,
-                UnitId = UnitId.Value,
-                UnitName = UnitName,
-                IsUsed= isUsed,
-                BuyerId = BuyerId.Value,
-                BuyerCode = BuyerCode,
-                BuyerName = BuyerName,
-                UomId = UomId.Value,
-                UomUnit = UomUnit,
-                QtyPacking = QtyPacking
-            };
-
-            ReadModel.AddDomainEvent(new OnServiceSubconCuttingPlaced(Identity));
-        }
 
         public GarmentServiceSubconCutting(GarmentServiceSubconCuttingReadModel readModel) : base(readModel)
         {
@@ -76,9 +43,55 @@ namespace Manufactures.Domain.GarmentSubcon.ServiceSubconCuttings
             BuyerId = new BuyerId(readModel.BuyerId);
             BuyerCode = readModel.BuyerCode;
             BuyerName = readModel.BuyerName;
+            BuyerBrandId = new BuyerBrandId(readModel.BuyerBrandId);
+            BuyerBrandCode = readModel.BuyerBrandCode;
+            BuyerBrandName = readModel.BuyerBrandName;
             UomId = new UomId(readModel.UomId);
             UomUnit = readModel.UomUnit;
             QtyPacking = readModel.QtyPacking;
+        }
+
+        public GarmentServiceSubconCutting(Guid identity,string subconNo, string subconType, UnitDepartmentId unitId, string unitCode, string unitName, DateTimeOffset subconDate, bool isUsed, BuyerId buyerId, string buyerCode, string buyerName, BuyerBrandId buyerBrandId, string buyerBrandCode, string buyerBrandName, UomId uomId, string uomUnit, int qtyPacking) : base(identity)
+        {
+            Identity = identity;
+            SubconNo = subconNo;
+            SubconType = subconType;
+            UnitId = unitId;
+            UnitCode = unitCode;
+            UnitName = unitName;
+            SubconDate = subconDate;
+            IsUsed = isUsed;
+            BuyerId = buyerId;
+            BuyerCode = buyerCode;
+            BuyerName = buyerName;
+            BuyerBrandId = buyerBrandId;
+            BuyerBrandCode = buyerBrandCode;
+            BuyerBrandName = buyerBrandName;
+            UomId = uomId;
+            UomUnit = uomUnit;
+            QtyPacking = qtyPacking;
+
+            ReadModel = new GarmentServiceSubconCuttingReadModel(Identity)
+            {
+                SubconDate = SubconDate,
+                SubconNo = SubconNo,
+                SubconType = SubconType,
+                UnitCode = UnitCode,
+                UnitId = UnitId.Value,
+                UnitName = UnitName,
+                IsUsed = isUsed,
+                BuyerId = BuyerId.Value,
+                BuyerCode = BuyerCode,
+                BuyerName = BuyerName,
+                BuyerBrandId = BuyerBrandId.Value,
+                BuyerBrandCode = BuyerBrandCode,
+                BuyerBrandName = BuyerBrandName,
+                UomId = UomId.Value,
+                UomUnit = UomUnit,
+                QtyPacking = QtyPacking
+            };
+
+            ReadModel.AddDomainEvent(new OnServiceSubconCuttingPlaced(Identity));
         }
 
         public void SetDate(DateTimeOffset subconDate)
