@@ -61,6 +61,9 @@ namespace Manufactures.Application.GarmentSubcon.GarmentServiceSubconCuttings.Co
                 new BuyerId(request.Buyer.Id),
                 request.Buyer.Code,
                 request.Buyer.Name,
+                new BuyerBrandId(request.BuyerBrand.Id),
+                request.BuyerBrand.Code,
+                request.BuyerBrand.Name,
                 new UomId(request.Uom.Id),
                 request.Uom.Unit,
                 request.QtyPacking
