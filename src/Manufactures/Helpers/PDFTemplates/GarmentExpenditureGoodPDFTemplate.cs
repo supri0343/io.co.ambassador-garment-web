@@ -13,7 +13,7 @@ namespace Manufactures.Helpers.PDFTemplates
     {
         public static MemoryStream Generate(GarmentExpenditureGoodDto exGood, string buyer)
         {
-            Document document = new Document(PageSize.A5.Rotate(), 10, 10, 10, 10);
+            Document document = new Document(PageSize.A5, 10, 10, 10, 10);
             MemoryStream stream = new MemoryStream();
             PdfWriter writer = PdfWriter.GetInstance(document, stream);
             document.Open();
@@ -200,44 +200,44 @@ namespace Manufactures.Helpers.PDFTemplates
 
             #region TableSignature
 
-            PdfPTable tableSignature = new PdfPTable(5);
+            PdfPTable tableSignature = new PdfPTable(3);
 
             cellLeftNoBorder.Phrase = new Paragraph($"{exGood.Description}", normal_font);
-            cellLeftNoBorder.Colspan = 3;
+            cellLeftNoBorder.Colspan = 2;
             tableSignature.AddCell(cellLeftNoBorder);
-            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            //cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
             cellLeftNoBorder.Colspan = 1;
-            tableSignature.AddCell(cellLeftNoBorder);
+            //tableSignature.AddCell(cellLeftNoBorder);
             cellLeftNoBorder.Phrase = new Paragraph($"TTL CTNS : {exGood.Carton.ToString()}", normal_font);
             tableSignature.AddCell(cellLeftNoBorder);
 
             cellLeftNoBorder.Phrase = new Paragraph($"No. Inv : {exGood.Invoice}", normal_font);
             tableSignature.AddCell(cellLeftNoBorder);
-            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
-            tableSignature.AddCell(cellLeftNoBorder);
+            //cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            //tableSignature.AddCell(cellLeftNoBorder);
             cellLeftNoBorder.Phrase = new Paragraph($"No. R/O : {exGood.RONo}", normal_font);
             tableSignature.AddCell(cellLeftNoBorder);
-            cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
-            tableSignature.AddCell(cellLeftNoBorder);
+            //cellLeftNoBorder.Phrase = new Paragraph("", normal_font);
+            //tableSignature.AddCell(cellLeftNoBorder);
             cellLeftNoBorder.Phrase = new Paragraph($"{exGood.ContractNo}", normal_font);
             tableSignature.AddCell(cellLeftNoBorder);
 
 
             cellCenterTopNoBorder.Phrase = new Paragraph("\n\n", normal_font);
-            cellCenterTopNoBorder.Colspan = 5;
+            cellCenterTopNoBorder.Colspan = 3;
             tableSignature.AddCell(cellCenterTopNoBorder);
 
 
-            cellCenterTopNoBorder.Phrase = new Paragraph("Expedisi\n\n\n\n\n\n\n\n(                                   )", normal_font);
+            cellCenterTopNoBorder.Phrase = new Paragraph("Expedisi\n\n\n\n\n\n\n\n(                             )", normal_font);
             cellCenterTopNoBorder.Colspan = 1;
             tableSignature.AddCell(cellCenterTopNoBorder);
-            cellCenterTopNoBorder.Phrase = new Paragraph("\n\n\n\n\n\n\n\n                                   ", normal_font);
+            //cellCenterTopNoBorder.Phrase = new Paragraph("\n\n\n\n\n\n\n\n                                   ", normal_font);
+            //tableSignature.AddCell(cellCenterTopNoBorder);
+            cellCenterTopNoBorder.Phrase = new Paragraph("Kasie\n\n\n\n\n\n\n\n(                             )", normal_font);
             tableSignature.AddCell(cellCenterTopNoBorder);
-            cellCenterTopNoBorder.Phrase = new Paragraph("Kasie\n\n\n\n\n\n\n\n(                                   )", normal_font);
-            tableSignature.AddCell(cellCenterTopNoBorder);
-            cellCenterTopNoBorder.Phrase = new Paragraph("\n\n\n\n\n\n\n\n                                   ", normal_font);
-            tableSignature.AddCell(cellCenterTopNoBorder);
-            cellCenterTopNoBorder.Phrase = new Paragraph("Bag. Gudang\n\n\n\n\n\n\n\n(                                   )", normal_font);
+            //cellCenterTopNoBorder.Phrase = new Paragraph("\n\n\n\n\n\n\n\n                                   ", normal_font);
+            //tableSignature.AddCell(cellCenterTopNoBorder);
+            cellCenterTopNoBorder.Phrase = new Paragraph("Bag. Gudang\n\n\n\n\n\n\n\n(                             )", normal_font);
             tableSignature.AddCell(cellCenterTopNoBorder);
 
 
@@ -247,10 +247,10 @@ namespace Manufactures.Helpers.PDFTemplates
             cellCenterTopNoBorder.Phrase = new Paragraph("", normal_font);
             cellCenterTopNoBorder.Colspan = 1;
             tableSignature.AddCell(cellCenterTopNoBorder);
-            cellCenterTopNoBorder.Phrase = new Paragraph("", normal_font);
-            tableSignature.AddCell(cellCenterTopNoBorder);
-            cellCenterTopNoBorder.Phrase = new Paragraph("", normal_font);
-            tableSignature.AddCell(cellCenterTopNoBorder);
+            //cellCenterTopNoBorder.Phrase = new Paragraph("", normal_font);
+            //tableSignature.AddCell(cellCenterTopNoBorder);
+            //cellCenterTopNoBorder.Phrase = new Paragraph("", normal_font);
+            //tableSignature.AddCell(cellCenterTopNoBorder);
 
             PdfPCell cellSignature = new PdfPCell(tableSignature);
             tableSignature.ExtendLastRow = false;
