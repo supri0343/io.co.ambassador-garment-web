@@ -1,6 +1,7 @@
 ﻿using Infrastructure.Data.EntityFrameworkCore.Utilities;
 using Infrastructure.External.DanLirisClient.Microservice.Cache;
 using Infrastructure.External.DanLirisClient.Microservice.MasterResult;
+using Manufactures.Application.GarmentPreparings.Queries.GetCustomsByRO;
 using Manufactures.Application.GarmentPreparings.Queries.GetMonitoringPrepare;
 using Manufactures.Application.GarmentPreparings.Queries.GetPrepareTraceable;
 using Manufactures.Application.GarmentPreparings.Queries.GetWIP;
@@ -454,6 +455,17 @@ namespace Manufactures.Controllers.Api
             var viewModel = await Mediator.Send(query);
 
             return Ok(viewModel.getPrepareTraceableDtos);
+        }
+        [HttpGet("customs-byRONO")]
+        public async Task<IActionResult> GetpreparingCustomsbyRONO([FromBody] string RO)
+        {
+
+            VerifyUser();
+
+            GetCustomsByROQuery query = new GetCustomsByROQuery(RO, WorkContext.Token);
+            var viewModel = await Mediator.Send(query);
+
+            return Ok(viewModel.getCustomsByRO);
         }
     }
 }
