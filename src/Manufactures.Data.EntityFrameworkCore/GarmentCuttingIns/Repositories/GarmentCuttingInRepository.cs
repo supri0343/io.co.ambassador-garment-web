@@ -58,7 +58,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentCuttingIns.Repositories
 
             //data = data.Skip((page - 1) * size).Take(size);
 
-            return data;
+            return data.Include(a=>a.Items).ThenInclude(a=>a.Details);
         }
 
         protected override GarmentCuttingIn Map(GarmentCuttingInReadModel readModel)
