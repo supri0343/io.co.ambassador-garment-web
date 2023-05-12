@@ -160,6 +160,7 @@ namespace Manufactures.Controllers.Api
             var rOs = _garmentCuttingInRepository.Find(query)
                 .Select(o => new { o.RONo, o.Article }).Distinct().ToList();
 
+
             await Task.Yield();
 
             return Ok(rOs);
