@@ -230,5 +230,23 @@ namespace Manufactures.Controllers.Api
 
             return Ok();
         }
+
+        [HttpGet("by-roNo-Subcon")]
+        public async Task<IActionResult> GetLoaderByROSubcon(string keyword, string filter = "{}")
+        {
+            var query = _garmentCuttingInRepository.Read(1, int.MaxValue, "{}", "", filter);
+
+            if(!string.IsNullOrWhiteSpace(keyword)){
+                query = query.Where(o => o.RONo.Contains(keyword));
+            }
+
+            var rOs = _garmentCuttingInRepository.Find(query)
+                .Select(o => new { o.RONo, o.Article }).Distinct().ToList();
+
+
+            await Task.Yield();
+
+            return Ok(rOs);
+        }
     }
 }
