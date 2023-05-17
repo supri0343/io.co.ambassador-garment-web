@@ -15,7 +15,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSubcon.GarmentServiceSubc
             builder.HasKey(e => e.Identity);
 
             builder.Property(p => p.RONo).HasMaxLength(25);
-            builder.Property(p => p.Article).HasMaxLength(50);
+            builder.Property(p => p.Article).HasMaxLength(1000);
             builder.Property(p => p.ComodityName).HasMaxLength(500);
             builder.Property(p => p.ComodityCode).HasMaxLength(255);
             builder.HasOne(w => w.GarmentServiceSubconCutting)

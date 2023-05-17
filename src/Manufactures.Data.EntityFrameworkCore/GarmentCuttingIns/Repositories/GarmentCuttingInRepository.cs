@@ -4,6 +4,7 @@ using Manufactures.Domain.GarmentCuttingIns;
 using Manufactures.Domain.GarmentCuttingIns.ReadModels;
 using Manufactures.Domain.GarmentCuttingIns.Repositories;
 using Manufactures.Domain.GarmentPreparings.ReadModels;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -57,7 +58,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentCuttingIns.Repositories
 
             //data = data.Skip((page - 1) * size).Take(size);
 
-            return data;
+            return data.Include(a=>a.Items).ThenInclude(a=>a.Details);
         }
 
         protected override GarmentCuttingIn Map(GarmentCuttingInReadModel readModel)
