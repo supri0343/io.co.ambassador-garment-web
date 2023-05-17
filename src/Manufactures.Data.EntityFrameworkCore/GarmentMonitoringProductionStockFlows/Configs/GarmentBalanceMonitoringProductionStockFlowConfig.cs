@@ -15,7 +15,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentMonitoringProductionStock
             builder.HasKey(e => e.Identity);
 
             builder.Property(a => a.Ro).HasMaxLength(25);
-            builder.Property(a => a.Article).HasMaxLength(100);
+            builder.Property(a => a.Article).HasMaxLength(1000);
             builder.Property(a => a.BuyerCode).HasMaxLength(50);
             builder.Property(a => a.Comodity).HasMaxLength(50);
            

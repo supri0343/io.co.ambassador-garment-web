@@ -21,6 +21,8 @@ namespace Manufactures.Dtos.GarmentSubcon
             Uom = new Uom(garmentServiceSubconCutting.UomId.Value, garmentServiceSubconCutting.UomUnit);
             QtyPacking = garmentServiceSubconCutting.QtyPacking;
             Items = new List<GarmentServiceSubconCuttingItemDto>();
+            BuyerBrand = new BuyerBrand(garmentServiceSubconCutting.BuyerBrandId.Value, garmentServiceSubconCutting.BuyerBrandCode, garmentServiceSubconCutting.BuyerBrandName);
+
         }
 
         public Guid Id { get; set; }
@@ -31,6 +33,7 @@ namespace Manufactures.Dtos.GarmentSubcon
         public UnitDepartment Unit { get; set; }
         public bool IsUsed { get; set; }
         public Buyer Buyer { get; set; }
+        public BuyerBrand BuyerBrand { get; set; }
         public Uom Uom { get; set; }
         public int QtyPacking {get; set;}
         public List<GarmentServiceSubconCuttingItemDto> Items { get; set; }
