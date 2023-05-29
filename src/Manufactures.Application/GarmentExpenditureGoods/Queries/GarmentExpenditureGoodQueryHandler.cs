@@ -300,7 +300,11 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 					//buyerCode=item.buyerC
 
 				};
-				monitoringDtos.Add(dto);
+
+                if(dto.pebNo != "-")
+                {
+                    monitoringDtos.Add(dto);
+                }
 			}
 			listViewModel.garmentMonitorings = monitoringDtos;
 			return listViewModel;
