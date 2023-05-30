@@ -291,7 +291,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
                     comodityCode = item.comodityCode,
                     comodityName = item.comodityName,
                     uomUnit = item.uomUnit,
-                    price = (decimal)((peb == null ? 0 : peb.Nominal) * (peb == null ? 0 : peb.Quantity)),
+                    price =(decimal) (peb == null ? 0 : peb.Nominal) ,
                     //colour = item.color,
                     //name = item.names,
                     //unitname = item.unitname,
