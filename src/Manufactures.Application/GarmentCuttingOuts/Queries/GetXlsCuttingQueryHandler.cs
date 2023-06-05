@@ -149,9 +149,9 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
                              select a.UnitName).FirstOrDefault();
 
 			DateTimeOffset dateFrom = new DateTimeOffset(request.dateFrom);
-			dateFrom.AddHours(7);
+			//dateFrom.AddHours(7);
 			DateTimeOffset dateTo = new DateTimeOffset(request.dateTo);
-			dateTo = dateTo.AddHours(7);
+			//dateTo = dateTo.AddHours(7);
 			DateTimeOffset dateBalance = (from a in garmentBalanceCuttingRepository.Query.OrderByDescending(s => s.CreatedDate)
 										  select a.CreatedDate).FirstOrDefault();
 
@@ -225,7 +225,7 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 			//		   });
 			var sumFCs = (from a in (from cut in garmentCuttingInRepository.Query
 									 where cut.CuttingType == "Main Fabric" &&
-									cut.UnitId == request.unit && cut.CuttingInDate <= dateTo 
+									cut.UnitId == request.unit && cut.CuttingInDate.AddHours(7) <= dateTo 
 									select new {
 										cut.Identity,
 										cut.FC,
@@ -297,7 +297,7 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 
 			//NEW QUERY
 			var QueryCuttingIn = from a in (from aa in garmentCuttingInRepository.Query
-											where aa.UnitId == request.unit && aa.CuttingInDate <= dateTo && aa.CuttingType == "Main Fabric"
+											where aa.UnitId == request.unit && aa.CuttingInDate.AddHours(7) <= dateTo && aa.CuttingType == "Main Fabric"
 											select new { 
 												aa.Identity, 
 												aa.RONo, 
@@ -312,8 +312,8 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 									 fc = (from cost in sumFCs where cost.RO == a.RONo select cost.Total).FirstOrDefault(), 
 									 cuttingQtyMeter = 0, 
 									 remainQty = 0, 
-									 stock = a.CuttingInDate < dateFrom && a.CuttingInDate > dateBalance ? c.CuttingInQuantity : 0, 
-									 cuttingQtyPcs = a.CuttingInDate >= dateFrom ? c.CuttingInQuantity : 0, 
+									 stock = a.CuttingInDate.AddHours(7) < dateFrom && a.CuttingInDate.AddHours(7) > dateBalance ? c.CuttingInQuantity : 0, 
+									 cuttingQtyPcs = a.CuttingInDate.AddHours(7) >= dateFrom ? c.CuttingInQuantity : 0, 
 									 roJob = a.RONo, 
 									 article = a.Article, 
 									 style = (from buyer in garmentCuttingOutRepository.Query where buyer.RONo == a.RONo select buyer.ComodityName).FirstOrDefault(), 
@@ -332,7 +332,7 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 			
 			//NEW QUERY
 			var QueryCuttingOut = from a in (from aa in garmentCuttingOutRepository.Query
-											 where aa.UnitFromId == request.unit && aa.CuttingOutDate <= dateTo
+											 where aa.UnitFromId == request.unit && aa.CuttingOutDate.AddHours(7) <= dateTo
 											 select new { 
 												 aa.Identity, 
 												 aa.RONo.Length, 
@@ -348,12 +348,12 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 									  fc = (from cost in sumFCs where cost.RO == a.RONo select cost.Total).FirstOrDefault(), 
 									  cuttingQtyMeter = 0, 
 									  remainQty = 0, 
-									  stock = a.CuttingOutDate < dateFrom && a.CuttingOutDate > dateBalance ? -b.TotalCuttingOut : 0, 
+									  stock = a.CuttingOutDate.AddHours(7) < dateFrom && a.CuttingOutDate.AddHours(7) > dateBalance ? -b.TotalCuttingOut : 0, 
 									  cuttingQtyPcs = 0, 
 									  roJob = a.RONo, 
 									  article = a.Article, 
 									  style = a.ComodityName, 
-									  expenditure = a.CuttingOutDate >= dateFrom ? b.TotalCuttingOut : 0 
+									  expenditure = a.CuttingOutDate.AddHours(7) >= dateFrom ? b.TotalCuttingOut : 0 
 								  };
 
 			//OLD QUERY
@@ -365,7 +365,7 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 			
 			//NEW QUERY
 			var QueryAvalComp = from a in (from aa in garmentAvalComponentRepository.Query
-										   where aa.UnitId == request.unit && aa.Date <= dateTo
+										   where aa.UnitId == request.unit && aa.Date.AddHours(7) <= dateTo
 										   select new { 
 											   aa.Identity, 
 											   aa.RONo, 
@@ -378,12 +378,12 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 									buyerCode = (from buyer in garmentPreparingRepository.Query where buyer.RONo == a.RONo select buyer.BuyerCode).FirstOrDefault(), 
 									price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.Total).FirstOrDefault()), 
 									fc = (from cost in sumFCs where cost.RO == a.RONo select cost.Total).FirstOrDefault(), cuttingQtyMeter = 0, remainQty = 0, 
-									stock = a.Date < dateFrom && a.Date > dateBalance ? -b.Quantity : 0, 
+									stock = a.Date.AddHours(7) < dateFrom && a.Date.AddHours(7) > dateBalance ? -b.Quantity : 0, 
 									cuttingQtyPcs = 0, 
 									roJob = a.RONo, 
 									article = a.Article, 
 									style = a.ComodityName, 
-									expenditure = a.Date >= dateFrom ? b.Quantity : 0 
+									expenditure = a.Date.AddHours(7) >= dateFrom ? b.Quantity : 0 
 								};
 
 			var queryNow = queryBalanceCutting.Union(QueryCuttingIn).Union(QueryCuttingOut).Union(QueryAvalComp);
@@ -462,7 +462,8 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 					fc = Math.Round(item.Fc, 2),
 					cuttingQtyMeter = Math.Round(item.Fc * item.CuttingQtyPcs, 2),
 					price = Math.Round(Convert.ToDecimal(item.bPrice), 2) * Convert.ToDecimal(Math.Round(item.Fc, 2)),
-					buyerCode = item.buyer
+					buyerCode = item.buyer,
+					
 
 				};
 				monitoringCuttingDtos.Add(cuttingDto);
@@ -476,10 +477,12 @@ namespace Manufactures.Application.GarmentCuttingOuts.Queries
 			decimal nominals = 0;
 			foreach (var item in data)
 			{
+				item.nominal = Math.Round(Math.Round(Convert.ToDecimal(item.price), 2) * Math.Round(Convert.ToDecimal(item.remainQty), 2));
 				stocks += item.stock;
 				cuttingQtyPcs += item.cuttingQtyPcs;
 				expenditure += item.expenditure;
 				nominals += item.nominal;
+				
 			}
 			monitoringCuttingDtos = data.ToList();
 			GarmentMonitoringCuttingDto cuttingDtos = new GarmentMonitoringCuttingDto
