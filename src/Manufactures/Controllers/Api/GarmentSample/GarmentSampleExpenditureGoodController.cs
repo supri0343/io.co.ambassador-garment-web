@@ -5,6 +5,7 @@ using Manufactures.Application.GarmentSample.SampleExpenditureGoods.Queries.Arch
 using Manufactures.Domain.GarmentExpenditureGoods.Commands;
 using Manufactures.Domain.GarmentSample.SampleExpenditureGoods.Commands;
 using Manufactures.Domain.GarmentSample.SampleExpenditureGoods.Repositories;
+using Manufactures.Domain.GarmentSampleExpenditureGoods.Commands;
 using Manufactures.Dtos.GarmentSample.SampleExpenditureGoods;
 using Manufactures.Helpers.PDFTemplates.GarmentSample;
 using Microsoft.AspNetCore.Authorization;
@@ -238,7 +239,7 @@ namespace Manufactures.Controllers.Api.GarmentSample
 
             VerifyUser();
 
-            UpdateIsReceivedGarmentExpenditureGoodCommand command = new UpdateIsReceivedGarmentExpenditureGoodCommand(guid, isReceived);
+            UpdateIsReceivedGarmentSampleExpenditureGoodCommand command = new UpdateIsReceivedGarmentSampleExpenditureGoodCommand(guid, isReceived);
             var order = await Mediator.Send(command);
 
             return Ok(order.Identity);
