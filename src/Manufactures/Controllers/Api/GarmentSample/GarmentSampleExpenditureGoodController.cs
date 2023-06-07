@@ -2,6 +2,7 @@
 using Infrastructure.Data.EntityFrameworkCore.Utilities;
 using Manufactures.Application.GarmentSample.SampleExpenditureGoods.Queries;
 using Manufactures.Application.GarmentSample.SampleExpenditureGoods.Queries.ArchiveMonitoring;
+using Manufactures.Domain.GarmentExpenditureGoods.Commands;
 using Manufactures.Domain.GarmentSample.SampleExpenditureGoods.Commands;
 using Manufactures.Domain.GarmentSample.SampleExpenditureGoods.Repositories;
 using Manufactures.Dtos.GarmentSample.SampleExpenditureGoods;
@@ -229,19 +230,19 @@ namespace Manufactures.Controllers.Api.GarmentSample
             return Ok(order.Identity);
         }
 
-        //[HttpPut("update-received/{id}")]
-        //public async Task<IActionResult> Patch(string id, [FromBody]bool isReceived)
-        //{
-        //    Guid guid = Guid.Parse(id);
+        [HttpPut("update-received/{id}")]
+        public async Task<IActionResult> Patch(string id, [FromBody] bool isReceived)
+        {
+            Guid guid = Guid.Parse(id);
 
 
-        //    VerifyUser();
+            VerifyUser();
 
-        //    UpdateIsReceivedGarmentSampleExpenditureGoodCommand command = new UpdateIsReceivedGarmentSampleExpenditureGoodCommand(guid, isReceived);
-        //    var order = await Mediator.Send(command);
+            UpdateIsReceivedGarmentExpenditureGoodCommand command = new UpdateIsReceivedGarmentExpenditureGoodCommand(guid, isReceived);
+            var order = await Mediator.Send(command);
 
-        //    return Ok(order.Identity);
-        //}
+            return Ok(order.Identity);
+        }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
