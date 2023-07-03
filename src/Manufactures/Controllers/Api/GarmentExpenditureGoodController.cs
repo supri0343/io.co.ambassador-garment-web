@@ -1,6 +1,7 @@
 ﻿using Barebone.Controllers;
 using Infrastructure.Data.EntityFrameworkCore.Utilities;
 using Manufactures.Application.GarmentExpenditureGoods.Queries;
+using Manufactures.Application.GarmentExpenditureGoods.Queries.GetMonitoringForAccounting;
 using Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationExpenditureGoods;
 using Manufactures.Application.GarmentExpenditureGoods.Queries.GetReportExpenditureGoods;
 using Manufactures.Domain.GarmentDeliveryReturns.ValueObjects;
@@ -237,6 +238,49 @@ namespace Manufactures.Controllers.Api
 				viewModel.count
 			});
 		}
+        [HttpGet("for-monitoring-accounting")]
+        public async Task<IActionResult> GetMonitoringForAccounting(DateTime dateFrom, DateTime dateTo, int page = 1, int size = 25, string Order = "{}")
+        {
+            VerifyUser();
+            GetMonitoringExpenditureGoodForAccountingQuery query = new GetMonitoringExpenditureGoodForAccountingQuery(page, size, Order, dateFrom, dateTo, WorkContext.Token);
+            var viewModel = await Mediator.Send(query);
+
+            return Ok(viewModel.garmentMonitorings, info: new
+            {
+                page,
+                size,
+                viewModel.count
+            });
+        }
+
+        [HttpGet("for-monitoring-accounting/download")]
+        public async Task<IActionResult> GetXLsMonitoringForAccounting(DateTime dateFrom, DateTime dateTo,string type,int unit,string unitname, int page = 1, int size = 25, string Order = "{}")
+        {
+            try
+            {
+                VerifyUser();
+                GetXlsExpenditureGoodForAccountingQuery query = new GetXlsExpenditureGoodForAccountingQuery(page, size, Order, dateFrom, dateTo, type, unitname, unit, WorkContext.Token);
+                byte[] xlsInBytes;
+
+                var xls = await Mediator.Send(query);
+
+                string filename = "LAPORAN MONITORING BON PENGIRIMAN BARANG JADI";
+
+                if (dateFrom != null) filename += " " + ((DateTime)dateFrom).ToString("dd-MM-yyyy");
+
+                if (dateTo != null) filename += "_" + ((DateTime)dateTo).ToString("dd-MM-yyyy");
+                filename += ".xlsx";
+
+                xlsInBytes = xls.ToArray();
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                return file;
+            }
+            catch (Exception e)
+            {
+
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+            }
+        }
         [HttpGet("complete")]
         public async Task<IActionResult> GetComplete(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")]List<string> select = null, string keyword = null, string filter = "{}")
         {
