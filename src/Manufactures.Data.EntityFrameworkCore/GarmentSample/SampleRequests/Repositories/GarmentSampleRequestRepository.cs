@@ -28,6 +28,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentSample.SampleRequests.Rep
                 "BuyerCode",
                 "BuyerName",
                 "POBuyer",
+                "Remark"
             };
 
             data = QueryHelper<GarmentSampleRequestReadModel>.Search(data, SearchAttributes, keyword);
