@@ -47,7 +47,8 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
  
 		class monitoringView
 		{
-			public string expenditureGoodNo { get; internal set; }
+            public Guid expenditureGoodItemId { get; internal set; }
+            public string expenditureGoodNo { get; internal set; }
 			public string expenditureGoodType { get; internal set; }
 			public string buyerCode { get; internal set; }
 			public DateTimeOffset expenditureDate { get; internal set; }
@@ -217,13 +218,13 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
             //                      name = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault(),
             //                      unitname = a.UnitName};
 
-            var Query = from a in (from aa in garmentExpenditureGoodRepository.Query
-                                   where aa.ExpenditureDate >= dateFrom && aa.ExpenditureDate <= dateTo
+            var Query = (from a in (from aa in garmentExpenditureGoodRepository.Query
+                                   where aa.ExpenditureDate.AddHours(7).Date >= dateFrom.Date && aa.ExpenditureDate.AddHours(7).Date <= dateTo.Date
                                    select aa)
                         join b in garmentExpenditureGoodItemRepository.Query on a.Identity equals b.ExpenditureGoodId
                         join c in garmentPreparingRepository.Query on a.RONo equals c.RONo
                         join d in garmentPreparingItemRepository.Query on c.Identity equals d.GarmentPreparingId
-                        where d.CustomsCategory == "FASILITAS" && a.ExpenditureDate.AddHours(7) >= dateFrom && a.ExpenditureDate.AddHours(7) <= dateTo                 
+                        where d.CustomsCategory == "FASILITAS"              
                         //select new monitoringView { fc = (from aa in sumFCs where aa.RO == a.RONo select aa.FC / aa.Count).FirstOrDefault(),
                         select new monitoringView
                         {
@@ -233,6 +234,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
                             //buyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(),
                             expenditureDate = a.ExpenditureDate,
                             expenditureGoodNo = a.ExpenditureGoodNo,
+                            expenditureGoodItemId = b.Identity,
                             //buyerArticle = a.BuyerCode + " " + a.Article,
                             comodityCode = a.ComodityCode,
                             comodityName = a.ComodityName,
@@ -245,7 +247,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
                             qty = b.Quantity,
                             //name = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault(),
                             //unitname = a.UnitName
-                        };
+                        }).Distinct();
 
             var querySum = Query.ToList().GroupBy(x => new {x.expenditureDate, x.expenditureGoodNo, x.invoice,x.comodityCode,x.comodityName,x.uomUnit}, (key, group) => new
 			{
