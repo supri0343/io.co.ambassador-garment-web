@@ -72,6 +72,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationEx
 
         class mutationView
         {
+            public Guid ItemGuid { get; internal set; }
             public double SaldoQtyFin { get; internal set; }
             public double QtyFin { get; internal set; }
             public double AdjFin { get; internal set; }
@@ -117,7 +118,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationEx
                                    Retur = 0,
                                };
 
-            var adjust = from a in (from aa in garmentAdjustmentRepository.Query
+            var adjust = (from a in (from aa in garmentAdjustmentRepository.Query
                                            where aa.AdjustmentDate >= dateBalance && aa.AdjustmentDate <= dateTo
                                            && aa.AdjustmentType == "FINISHING"
                                            select aa)
@@ -126,16 +127,18 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationEx
                                 join d in garmentPreparingItemRepository.Query on c.Identity equals d.GarmentPreparingId
                                 where d.CustomsCategory == "FASILITAS"
                          select new mutationView
-                                {
-                                    SaldoQtyFin = a.AdjustmentDate < dateFrom && a.AdjustmentDate > dateBalance ? b.Quantity : 0,
-                                    //AdjFin = a.AdjustmentDate >= dateFrom ? b.Quantity : 0,
-                                    ComodityCode = a.ComodityCode,
-                                    ComodityName = a.ComodityName,
-                                    QtyExpend = 0,
-                                    QtyFin = a.AdjustmentDate >= dateFrom ? b.Quantity : 0,
-                                    Retur = 0,
-                                };
-            var returexpend = from a in (from aa in garmentExpenditureGoodReturnRepository.Query
+                         {
+                             ItemGuid = b.Identity,
+                             SaldoQtyFin = a.AdjustmentDate < dateFrom && a.AdjustmentDate > dateBalance ? b.Quantity : 0,
+                             //AdjFin = a.AdjustmentDate >= dateFrom ? b.Quantity : 0,
+                             ComodityCode = a.ComodityCode,
+                             ComodityName = a.ComodityName,
+                             QtyExpend = 0,
+                             QtyFin = a.AdjustmentDate >= dateFrom ? b.Quantity : 0,
+                             Retur = 0,
+
+                         }).Distinct();
+            var returexpend = (from a in (from aa in garmentExpenditureGoodReturnRepository.Query
                                          where aa.ReturDate >= dateBalance && aa.ReturDate <= dateTo //&& aa.ComodityCode == "BR"
                                          select aa)
                               join b in garmentExpenditureGoodReturnItemRepository.Query on a.Identity equals b.ReturId
@@ -150,9 +153,10 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationEx
                                   ComodityName = a.ComodityName,
                                   QtyExpend = 0,
                                   QtyFin = 0,
-                                  Retur = a.ReturDate >= dateFrom ? b.Quantity : 0
-                              };
-            var finishingbarangjadi = from a in (from aa in garmentFinishingOutRepository.Query
+                                  Retur = a.ReturDate >= dateFrom ? b.Quantity : 0,
+                                  ItemGuid = b.Identity,
+                              }).Distinct();
+            var finishingbarangjadi = (from a in (from aa in garmentFinishingOutRepository.Query
                                                  where aa.FinishingOutDate >= dateBalance && aa.FinishingOutDate <= dateTo
                                                  && aa.FinishingTo == "GUDANG JADI" //&& aa.ComodityCode == "BR"
                                                  select aa)
@@ -169,9 +173,10 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationEx
                                           QtyExpend = 0,
                                           QtyFin = a.FinishingOutDate>= dateFrom ? b.Quantity : 0,
                                           Retur = 0,
-                                      };
+                                          ItemGuid = b.Identity,
+                                      }).Distinct();
 
-            var factexpend = from a in (from aa in garmentExpenditureGoodRepository.Query
+            var factexpend = (from a in (from aa in garmentExpenditureGoodRepository.Query
                                         where aa.ExpenditureDate >= dateBalance && aa.ExpenditureDate <= dateTo //&& aa.ComodityCode == "BR"
                                         select aa)
                              join b in garmentExpenditureGoodItemRepository.Query on a.Identity equals b.ExpenditureGoodId
@@ -187,7 +192,8 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationEx
                                  QtyExpend = a.ExpenditureDate >= dateFrom ? b.Quantity : 0,
                                  QtyFin = 0,
                                  Retur = 0,
-                             };
+                                 ItemGuid = b.Identity,
+                             }).Distinct();
 
             //var cuttingSample = from a in (from aa in garmentSampleCuttingOutRepository.Query
             //                               where aa.CuttingOutDate >= dateBalanceSample && aa.CuttingOutDate <= dateTo
@@ -204,7 +210,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationEx
             //                        Retur = 0,
             //                    };
 
-            var finishingSample = from a in (from aa in garmentSampleFinishingOutRepository.Query
+            var finishingSample = (from a in (from aa in garmentSampleFinishingOutRepository.Query
                                              where aa.FinishingOutDate >= dateBalanceSample && aa.FinishingOutDate <= dateTo
                                              && aa.FinishingTo == "GUDANG JADI"
                                              select aa)
@@ -221,9 +227,10 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationEx
                                       QtyExpend = 0,
                                       QtyFin = a.FinishingOutDate >= dateFrom ? b.Quantity : 0,
                                       Retur = 0,
-                                  };
+                                      ItemGuid = b.Identity,
+                                  }).Distinct();
 
-            var expenditureGoodSample = from a in (from aa in garmentSampleExpenditureGoodRepository.Query
+            var expenditureGoodSample = (from a in (from aa in garmentSampleExpenditureGoodRepository.Query
                                                    where aa.ExpenditureDate >= dateBalanceSample && aa.ExpenditureDate <= dateTo
                                                    select aa)
                                         join b in garmentSampleExpenditureGoodItemRepository.Query on a.Identity equals b.ExpenditureGoodId
@@ -239,7 +246,8 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationEx
                                             QtyExpend = a.ExpenditureDate >= dateFrom ? b.Quantity : 0,
                                             QtyFin = 0,
                                             Retur = 0,
-                                        };
+                                            ItemGuid = b.Identity,
+                                        }).Distinct();
 
             var queryNow = adjust.Union(querybalance).Union(returexpend).Union(finishingbarangjadi).Union(factexpend).Union(finishingSample).Union(expenditureGoodSample).AsEnumerable();
 
