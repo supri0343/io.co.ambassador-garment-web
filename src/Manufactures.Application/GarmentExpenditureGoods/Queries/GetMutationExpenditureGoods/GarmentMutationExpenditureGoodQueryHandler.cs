@@ -20,6 +20,7 @@ using Manufactures.Domain.GarmentComodityPrices.Repositories;
 using Manufactures.Domain.GarmentSample.SampleCuttingOuts.Repositories;
 using Manufactures.Domain.GarmentSample.SampleFinishingOuts.Repositories;
 using Manufactures.Domain.GarmentSample.SampleExpenditureGoods.Repositories;
+using Manufactures.Domain.GarmentPreparings.Repositories;
 
 namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationExpenditureGoods
 {
@@ -42,7 +43,8 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationEx
         private readonly IGarmentSampleFinishingOutItemRepository garmentSampleFinishingOutItemRepository;
         private readonly IGarmentSampleExpenditureGoodRepository garmentSampleExpenditureGoodRepository;
         private readonly IGarmentSampleExpenditureGoodItemRepository garmentSampleExpenditureGoodItemRepository;
-
+        private readonly IGarmentPreparingRepository garmentPreparingRepository;
+        private readonly IGarmentPreparingItemRepository garmentPreparingItemRepository;
         public GarmentMutationExpenditureGoodQueryHandler(IStorage storage, IServiceProvider serviceProvider)
         {
             _storage = storage;
@@ -62,7 +64,8 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries.GetMutationEx
             garmentSampleFinishingOutItemRepository = storage.GetRepository<IGarmentSampleFinishingOutItemRepository>();
             garmentSampleExpenditureGoodRepository = storage.GetRepository<IGarmentSampleExpenditureGoodRepository>();
             garmentSampleExpenditureGoodItemRepository = storage.GetRepository<IGarmentSampleExpenditureGoodItemRepository>();
-
+            garmentPreparingRepository = storage.GetRepository<IGarmentPreparingRepository>();
+            garmentPreparingItemRepository = storage.GetRepository<IGarmentPreparingItemRepository>();
         }
 
         class mutationView

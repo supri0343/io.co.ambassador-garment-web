@@ -49,6 +49,19 @@ using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.SubconDeliveryLetterOu
 using Manufactures.Data.EntityFrameworkCore.GarmentSubconCuttingOuts.Configs;
 using Manufactures.Data.EntityFrameworkCore.GarmentSubcon.InvoicePackingList.Configs;
 using Microsoft.EntityFrameworkCore;
+using Manufactures.Data.EntityFrameworkCore.GermentReciptSubcon.GarmentPreparings.Config;
+using Manufactures.Data.EntityFrameworkCore.GermentReciptSubcon.GarmentCuttingIns.Configs;
+using Manufactures.Data.EntityFrameworkCore.GermentReciptSubcon.GarmentCuttingOuts.Configs;
+using Manufactures.Data.EntityFrameworkCore.GermentReciptSubcon.GarmentLoadings.Configs;
+using Manufactures.Data.EntityFrameworkCore.GermentReciptSubcon.GarmentLoadingOuts.Configs;
+using Manufactures.Data.EntityFrameworkCore.GermentReciptSubcon.GarmentSewingIns.Configs;
+using Manufactures.Data.EntityFrameworkCore.GermentReciptSubcon.GarmentSewingOuts.Configs;
+using Manufactures.Data.EntityFrameworkCore.GermentReciptSubcon.GarmentFinishingIns.Configs;
+using Manufactures.Data.EntityFrameworkCore.GermentReciptSubcon.GarmentFinishingOuts.Configs;
+using Manufactures.Data.EntityFrameworkCore.GermentReciptSubcon.GarmentPackingIns.Configs;
+using Manufactures.Data.EntityFrameworkCore.GarmentPackingOut.Configs;
+using Manufactures.Data.EntityFrameworkCore.GermentReciptSubcon.GarmentFinishedGoodStocks.Configs;
+using Manufactures.Data.EntityFrameworkCore.GermentReciptSubcon.GarmentExpenditureGoodReturns.Configs;
 
 namespace Manufactures.Data.EntityFrameworkCore
 {
@@ -225,6 +238,48 @@ namespace Manufactures.Data.EntityFrameworkCore
 			modelBuilder.ApplyConfiguration(new SubconInvoicePackingListConfig());
 			modelBuilder.ApplyConfiguration(new SubconInvoicePackingListItemConfig());
 
+			//Receipt Subcon
+			modelBuilder.ApplyConfiguration(new GarmentSubconPreparingConfig());
+			modelBuilder.ApplyConfiguration(new GarmentSubconPreparingItemConfig());
+
+			modelBuilder.ApplyConfiguration(new GarmentSubconCuttingInConfig());
+			modelBuilder.ApplyConfiguration(new GarmentSubconCuttingInItemConfig());
+			modelBuilder.ApplyConfiguration(new GarmentSubconCuttingInDetailConfig());
+
+			modelBuilder.ApplyConfiguration(new GarmentSubconCuttingOutConfig());
+			modelBuilder.ApplyConfiguration(new GarmentSubconCuttingOutItemConfig());
+			modelBuilder.ApplyConfiguration(new GarmentSubconCuttingOutDetailConfig());
+
+			modelBuilder.ApplyConfiguration(new GarmentSubconLoadingInConfig());
+			modelBuilder.ApplyConfiguration(new GarmentSubconLoadingInItemConfig());
+
+			modelBuilder.ApplyConfiguration(new GarmentSubconLoadingOutConfig());
+			modelBuilder.ApplyConfiguration(new GarmentSubconLoadingOutItemConfig());
+
+			modelBuilder.ApplyConfiguration(new GarmentSubconSewingInConfig());
+			modelBuilder.ApplyConfiguration(new GarmentSubconSewingInItemConfig());
+
+			modelBuilder.ApplyConfiguration(new GarmentSubconSewingOutConfig());
+			modelBuilder.ApplyConfiguration(new GarmentSubconSewingOutItemConfig());
+			modelBuilder.ApplyConfiguration(new GarmentSubconSewingOutDetailConfig());
+
+			modelBuilder.ApplyConfiguration(new GarmentSubconFinishingInConfig());
+			modelBuilder.ApplyConfiguration(new GarmentSubconFinishingInItemConfig());
+
+			modelBuilder.ApplyConfiguration(new GarmentSubconFinishingOutConfig());
+			modelBuilder.ApplyConfiguration(new GarmentSubconFinishingOutItemConfig());
+			modelBuilder.ApplyConfiguration(new GarmentSubconFinishingOutDetailConfig());
+
+			modelBuilder.ApplyConfiguration(new GarmentSubconPackingInConfig());
+			modelBuilder.ApplyConfiguration(new GarmentSubconPackingInItemConfig());
+
+			modelBuilder.ApplyConfiguration(new GarmentSubconPackingOutConfig());
+			modelBuilder.ApplyConfiguration(new GarmentSubconPackingOutItemConfig());
+
+			modelBuilder.ApplyConfiguration(new GarmentSubconFinishedGoodStockConfig());
+
+			modelBuilder.ApplyConfiguration(new GarmentSubconExpenditureGoodReturnConfig());
+			modelBuilder.ApplyConfiguration(new GarmentSubconExpenditureGoodReturnItemConfig());
 
 
 		}
