@@ -6,13 +6,13 @@ namespace DanLiris.Admin.Web.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "QtyPacking",
-                table: "GarmentServiceSubconSewings");
+            //migrationBuilder.DropColumn(
+            //    name: "QtyPacking",
+            //    table: "GarmentServiceSubconSewings");
 
-            migrationBuilder.DropColumn(
-                name: "UomUnit",
-                table: "GarmentServiceSubconSewings");
+            //migrationBuilder.DropColumn(
+            //    name: "UomUnit",
+            //    table: "GarmentServiceSubconSewings");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

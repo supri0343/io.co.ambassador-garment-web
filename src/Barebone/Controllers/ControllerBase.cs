@@ -385,6 +385,28 @@ namespace Barebone.Controllers
             return garmentComoditiesResult;
         }
 
+        protected async Task<string> PutGarmentSubconUnitExpenditureNoteCreate(int id)
+        {
+            var garmentUnitExpenditureNoteUri = PurchasingDataSettings.Endpoint + $"garment-subcon-unit-expenditure-notes/isPreparingTrue/{id}";
+            var garmentUnitExpenditureNoteResponse = await _http.PutAsync(garmentUnitExpenditureNoteUri, WorkContext.Token, new StringContent(JsonConvert.SerializeObject(new { username = PurchasingDataSettings.Username, password = PurchasingDataSettings.Password }), Encoding.UTF8, "application/json"));
+
+            return garmentUnitExpenditureNoteResponse.EnsureSuccessStatusCode().ToString();
+        }
+
+        protected async Task<string> PutGarmentSubconUnitExpenditureNoteDelete(int id)
+        {
+            var garmentUnitExpenditureNoteUri = PurchasingDataSettings.Endpoint + $"garment-subcon-unit-expenditure-notes/isPreparingFalse/{id}";
+            var garmentUnitExpenditureNoteResponse = await _http.PutAsync(garmentUnitExpenditureNoteUri, WorkContext.Token, new StringContent(JsonConvert.SerializeObject(new { username = PurchasingDataSettings.Username, password = PurchasingDataSettings.Password }), Encoding.UTF8, "application/json"));
+
+            //TokenResult tokenResult = new TokenResult();
+            //if (garmentUnitExpenditureNoteResponse.EnsureSuccessStatusCode().IsSuccessStatusCode)
+            //{
+            //    tokenResult = JsonConvert.DeserializeObject<TokenResult>(await garmentUnitExpenditureNoteResponse.Content.ReadAsStringAsync());
+
+            //}
+            return garmentUnitExpenditureNoteResponse.EnsureSuccessStatusCode().ToString();
+        }
+
         protected void VerifyUser()
         {
             WorkContext.UserName = User.Claims.ToArray().SingleOrDefault(p => p.Type.Equals("username")).Value;
