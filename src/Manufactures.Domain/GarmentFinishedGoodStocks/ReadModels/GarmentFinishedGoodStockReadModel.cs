@@ -27,6 +27,6 @@ namespace Manufactures.Domain.GarmentFinishedGoodStocks.ReadModels
         public double BasicPrice { get; internal set; }
         public double Price { get; internal set; }
 		public string UId { get; set; }
-
+		public string FinishedFrom { get; internal set; }
 	}
 }

@@ -178,7 +178,14 @@ namespace Manufactures.Application.GarmentExpenditureGoodReturns.CommandHandlers
                                         garmentExpenditureGoodReturnItem.UomUnit,
                                         garmentExpenditureGoodReturnItem.Quantity,
                                         garmentExpenditureGoodReturnItem.BasicPrice,
-                                        garmentExpenditureGoodReturnItem.Price
+                                        garmentExpenditureGoodReturnItem.Price,
+                                        Guid.Empty,
+                                        Guid.Empty,
+                                        Guid.Empty,
+                                        Guid.Empty,
+                                        Guid.Empty,
+                                        Guid.Empty,
+                                        Guid.Empty
                                     );
                 await _garmentFinishedGoodStockHistoryRepository.Update(garmentFinishedGoodStockHistory);
 
