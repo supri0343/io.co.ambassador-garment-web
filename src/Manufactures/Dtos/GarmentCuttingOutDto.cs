@@ -12,7 +12,7 @@ namespace Manufactures.Dtos
         {
             Id = garmentCuttingOut.Identity;
             CutOutNo = garmentCuttingOut.CutOutNo;
-            CuttingOutType = garmentCuttingOut.CuttingOutType;
+            CuttingOutType = garmentCuttingOut.CuttingOutType == "SEWING"?"LOADING" : garmentCuttingOut.CuttingOutType;
             UnitFrom = new UnitDepartment(garmentCuttingOut.UnitFromId.Value, garmentCuttingOut.UnitFromCode, garmentCuttingOut.UnitFromName);
             CuttingOutDate = garmentCuttingOut.CuttingOutDate;
             RONo = garmentCuttingOut.RONo;
@@ -34,5 +34,6 @@ namespace Manufactures.Dtos
         public UnitDepartment Unit { get; set; }
         public GarmentComodity Comodity { get; set; }
         public List<GarmentCuttingOutItemDto> Items { get; set; }
+        public List<bool> CanDeleted { get; set; }
     }
 }

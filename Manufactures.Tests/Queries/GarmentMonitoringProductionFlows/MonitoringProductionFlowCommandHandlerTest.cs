@@ -158,7 +158,7 @@ namespace Manufactures.Tests.Queries.GarmentMonitoringProductionFlows
 				.Setup(s => s.Query)
 				.Returns(new List<GarmentLoadingReadModel>
 				{
-					new GarmentLoading(guidLoading,"",new Guid(),"",new UnitDepartmentId(1),"","","ro","",new UnitDepartmentId(1),"","",DateTimeOffset.Now,new GarmentComodityId(1),"","").GetReadModel()
+					new GarmentLoading(guidLoading,"",new Guid(),"",new UnitDepartmentId(1),"","","ro","",new UnitDepartmentId(1),"","",DateTimeOffset.Now,new GarmentComodityId(1),"","", "SEWING").GetReadModel()
 				}.AsQueryable());
 
 			_mockGarmentCuttingOutDetailRepository

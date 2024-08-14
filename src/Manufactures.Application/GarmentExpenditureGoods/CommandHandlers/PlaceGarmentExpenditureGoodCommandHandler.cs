@@ -6,6 +6,7 @@ using Manufactures.Domain.GarmentExpenditureGoods;
 using Manufactures.Domain.GarmentExpenditureGoods.Commands;
 using Manufactures.Domain.GarmentExpenditureGoods.Repositories;
 using Manufactures.Domain.GarmentFinishedGoodStocks;
+using Manufactures.Domain.GarmentFinishedGoodStocks.ReadModels;
 using Manufactures.Domain.GarmentFinishedGoodStocks.Repositories;
 using Manufactures.Domain.Shared.ValueObjects;
 using System;
@@ -66,7 +67,8 @@ namespace Manufactures.Application.GarmentExpenditureGoods.CommandHandlers
                 request.Carton,
                 request.Description,
                 request.IsReceived,
-                request.PackingListId
+                request.PackingListId,
+                request.ExpenditureFrom
             );
 			
 
@@ -78,8 +80,10 @@ namespace Manufactures.Application.GarmentExpenditureGoods.CommandHandlers
                 if (item.isSave)
                 {
                     double StockQty = 0;
-                    var garmentFinishingGoodStock = _garmentFinishedGoodStockRepository.Query.Where(x => x.SizeId == item.Size.Id && x.UomId == item.Uom.Id && x.RONo == request.RONo && x.UnitId == request.Unit.Id && x.Quantity > 0).OrderBy(a => a.CreatedDate).ToList();
 
+                    //get data from finished good stock where RONo, Article, Size, UOM, Quantity > 0, ExpenditureFrom
+                    var garmentFinishingGoodStock = _garmentFinishedGoodStockRepository.Query.Where(x => x.SizeId == item.Size.Id && x.UomId == item.Uom.Id && x.RONo == request.RONo && x.UnitId == request.Unit.Id && x.Quantity > 0 && x.FinishedFrom == garmentExpenditureGood.ExpenditureFrom).OrderBy(a => a.CreatedDate).ToList();
+                   
                     double qty = item.Quantity;
                     foreach (var finishedGood in garmentFinishingGoodStock)
                     {
@@ -168,7 +172,14 @@ namespace Manufactures.Application.GarmentExpenditureGoods.CommandHandlers
                                             garmentExpenditureGoodItem.UomUnit,
                                             garmentExpenditureGoodItem.Quantity,
                                             garmentExpenditureGoodItem.BasicPrice,
-                                            garmentExpenditureGoodItem.Price
+                                            garmentExpenditureGoodItem.Price,
+                                            Guid.Empty,
+                                            Guid.Empty,
+                                            Guid.Empty,
+                                            Guid.Empty,
+                                            Guid.Empty,
+                                            Guid.Empty,
+                                            Guid.Empty
                                         );
                 await _garmentFinishedGoodStockHistoryRepository.Update(garmentFinishedGoodStockHistory);
 
@@ -177,10 +188,10 @@ namespace Manufactures.Application.GarmentExpenditureGoods.CommandHandlers
                 garmentFinishingGoodStockItem.Modify();
 
                 await _garmentFinishedGoodStockRepository.Update(garmentFinishingGoodStockItem);
-				
 
 
-			}
+
+            }
 
             await _garmentExpenditureGoodRepository.Update(garmentExpenditureGood);
 

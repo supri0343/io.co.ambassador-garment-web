@@ -4,14 +4,16 @@ using DanLiris.Admin.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DanLiris.Admin.Web.Migrations
 {
     [DbContext(typeof(AppStorageContext))]
-    partial class AppStorageContextModelSnapshot : ModelSnapshot
+    [Migration("20240813063252_add-Coloum-FinishedGoodStock&Histoty-for-Subcon")]
+    partial class addColoumFinishedGoodStockHistotyforSubcon
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1529,9 +1531,6 @@ namespace DanLiris.Admin.Web.Migrations
 
                     b.Property<DateTimeOffset>("ExpenditureDate");
 
-                    b.Property<string>("ExpenditureFrom")
-                        .HasMaxLength(25);
-
                     b.Property<string>("ExpenditureGoodNo")
                         .HasMaxLength(25);
 
@@ -1648,8 +1647,6 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
-
-                    b.Property<Guid>("SewingOutDetailId");
 
                     b.Property<Guid>("SewingOutId");
 
@@ -2411,9 +2408,6 @@ namespace DanLiris.Admin.Web.Migrations
                     b.Property<DateTimeOffset>("LoadingDate");
 
                     b.Property<string>("LoadingNo")
-                        .HasMaxLength(25);
-
-                    b.Property<string>("LoadingOutType")
                         .HasMaxLength(25);
 
                     b.Property<string>("ModifiedBy")

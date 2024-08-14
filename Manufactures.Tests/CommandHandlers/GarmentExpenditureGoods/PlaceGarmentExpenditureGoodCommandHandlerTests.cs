@@ -95,7 +95,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentExpenditureGoods
             GarmentFinishedGoodStock garmentFinishedGoodStock = new GarmentFinishedGoodStock(finStockGuid,
                  "no", placeGarmentExpenditureGoodCommand.RONo, "article",new UnitDepartmentId( placeGarmentExpenditureGoodCommand.Unit.Id), placeGarmentExpenditureGoodCommand.Unit.Code, placeGarmentExpenditureGoodCommand.Unit.Name,
                  new GarmentComodityId(placeGarmentExpenditureGoodCommand.Comodity.Id), placeGarmentExpenditureGoodCommand.Comodity.Code, placeGarmentExpenditureGoodCommand.Comodity.Name,
-                 new SizeId(1), null, new UomId(1), null, 1, 1, 1);
+                 new SizeId(1), null, new UomId(1), null, 1, 1, 1,"");
 
 
             _mockFinishedGoodStockRepository

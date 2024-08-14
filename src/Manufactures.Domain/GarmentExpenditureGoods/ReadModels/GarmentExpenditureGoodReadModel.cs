@@ -33,6 +33,7 @@ namespace Manufactures.Domain.GarmentExpenditureGoods.ReadModels
         public bool IsReceived { get; internal set; }
 		public string UId { get; set; }
 		public virtual List<GarmentExpenditureGoodItemReadModel> Items { get; internal set; }
+        public string ExpenditureFrom { get; internal set; }
 
 
     }
