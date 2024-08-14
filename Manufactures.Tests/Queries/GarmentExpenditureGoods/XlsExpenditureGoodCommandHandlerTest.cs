@@ -146,7 +146,7 @@ namespace Manufactures.Tests.Queries.GarmentExpenditureGoods
 				.Setup(s => s.Query)
 				.Returns(new List<GarmentExpenditureGoodReadModel>
 				{
-					new GarmentExpenditureGood(guidExpenditureGood,"","",new UnitDepartmentId(1),"","","ro","",new GarmentComodityId(1),"","",new BuyerId(1),"","",DateTimeOffset.Now,"","",10,"",true,1).GetReadModel()
+					new GarmentExpenditureGood(guidExpenditureGood,"","",new UnitDepartmentId(1),"","","ro","",new GarmentComodityId(1),"","",new BuyerId(1),"","",DateTimeOffset.Now,"","",10,"",true,1,"").GetReadModel()
 				}.AsQueryable());
 
 
@@ -224,7 +224,7 @@ namespace Manufactures.Tests.Queries.GarmentExpenditureGoods
 				.Setup(s => s.Query)
 				.Returns(new List<GarmentExpenditureGoodReadModel>
 				{
-					new GarmentExpenditureGood(guidExpenditureGood,"","",new UnitDepartmentId(1),"","","ro","",new GarmentComodityId(1),"","",new BuyerId(1),"","",DateTimeOffset.Now,"","",10,"",true,1).GetReadModel()
+					new GarmentExpenditureGood(guidExpenditureGood,"","",new UnitDepartmentId(1),"","","ro","",new GarmentComodityId(1),"","",new BuyerId(1),"","",DateTimeOffset.Now,"","",10,"",true,1,"").GetReadModel()
 				}.AsQueryable());
 
 

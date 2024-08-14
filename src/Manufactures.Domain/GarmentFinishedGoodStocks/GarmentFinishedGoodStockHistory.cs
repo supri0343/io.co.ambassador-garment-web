@@ -37,8 +37,16 @@ namespace Manufactures.Domain.GarmentFinishedGoodStocks
         public string UomUnit { get; private set; }
         public double BasicPrice { get; private set; }
         public double Price { get; private set; }
+        public Guid CuttingOutItemId { get; private set; }
+        public Guid CuttingOutDetailId { get; private set; }
+        public Guid LoadingId { get; private set; }
+        public Guid LoadingItemId { get; private set; }
+        public Guid SewingOutId { get; private set; }
+        public Guid SewingOutItemId { get; private set; }
+        public Guid SewingOutDetailId { get; private set; }
 
-        public GarmentFinishedGoodStockHistory(Guid identity, Guid finishedGoodStockId, Guid finishingOutItemId,Guid finishingOutDetailId, Guid expenditureGoodId, Guid expenditureGoodItemId,Guid adjustmentId,Guid adjustmentItemId, Guid expenditureGoodReturnId, Guid expenditureGoodReturnItemId, string stockType, string rONo, string article, UnitDepartmentId unitId, string unitCode, string unitName, GarmentComodityId comodityId, string comodityCode, string comodityName, SizeId sizeId, string sizeName, UomId uomId, string uomUnit, double quantity, double basicPrice, double price) : base(identity)
+
+        public GarmentFinishedGoodStockHistory(Guid identity, Guid finishedGoodStockId, Guid finishingOutItemId,Guid finishingOutDetailId, Guid expenditureGoodId, Guid expenditureGoodItemId,Guid adjustmentId,Guid adjustmentItemId, Guid expenditureGoodReturnId, Guid expenditureGoodReturnItemId, string stockType, string rONo, string article, UnitDepartmentId unitId, string unitCode, string unitName, GarmentComodityId comodityId, string comodityCode, string comodityName, SizeId sizeId, string sizeName, UomId uomId, string uomUnit, double quantity, double basicPrice, double price, Guid cuttingOutItemId, Guid cuttingOutDetailId, Guid loadingId, Guid loadingItemId, Guid sewingOutId, Guid sewingOutItemId, Guid sewingOutDetailId) : base(identity)
         {
             Validator.ThrowIfNull(() => unitId);
             Validator.ThrowIfNull(() => rONo);
@@ -71,6 +79,14 @@ namespace Manufactures.Domain.GarmentFinishedGoodStocks
             UomUnit = uomUnit;
             BasicPrice = basicPrice;
             Price = price;
+            CuttingOutItemId = cuttingOutItemId;
+            CuttingOutDetailId = cuttingOutDetailId;
+            LoadingId = loadingId;
+            LoadingItemId = loadingItemId;
+            SewingOutId = sewingOutId;
+            SewingOutItemId = sewingOutItemId;
+            SewingOutDetailId = sewingOutDetailId;
+
 
             ReadModel = new GarmentFinishedGoodStockHistoryReadModel(Identity)
             {
@@ -98,7 +114,14 @@ namespace Manufactures.Domain.GarmentFinishedGoodStocks
                 UomId = UomId.Value,
                 UomUnit = UomUnit,
                 BasicPrice = BasicPrice,
-                Price = Price
+                Price = Price,
+                CuttingOutItemId = CuttingOutItemId,
+                CuttingOutDetailId = CuttingOutDetailId,
+                LoadingId = LoadingId,
+                LoadingItemId = LoadingItemId,
+                SewingOutId = SewingOutId,
+                SewingOutItemId = SewingOutItemId,
+                SewingOutDetailId = SewingOutDetailId
             };
 
             ReadModel.AddDomainEvent(new OnGarmentFinishedGoodStockHistoryPlaced(Identity));
@@ -131,6 +154,13 @@ namespace Manufactures.Domain.GarmentFinishedGoodStocks
             UomId = new UomId(readModel.UomId);
             BasicPrice = readModel.BasicPrice;
             Price = readModel.Price;
+            CuttingOutItemId = readModel.CuttingOutItemId;
+            CuttingOutDetailId = readModel.CuttingOutDetailId;
+            LoadingId = readModel.LoadingId;
+            LoadingItemId = readModel.LoadingItemId;
+            SewingOutId = readModel.SewingOutId;
+            SewingOutItemId = readModel.SewingOutItemId;
+            SewingOutDetailId = readModel.SewingOutDetailId;
         }
 
         public void Modify()

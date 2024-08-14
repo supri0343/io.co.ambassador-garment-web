@@ -3,17 +3,21 @@ using Infrastructure.Data.EntityFrameworkCore.Utilities;
 using Manufactures.Application.GarmentSewingOuts.Queries.GetGarmentSewingOutsByRONo;
 using Manufactures.Application.GarmentSewingOuts.Queries.GetGarmentSewingOutsDynamic;
 using Manufactures.Application.GarmentSewingOuts.Queries.MonitoringSewing;
+using Manufactures.Domain.GarmentFinishedGoodStocks;
+using Manufactures.Domain.GarmentFinishedGoodStocks.Repositories;
 using Manufactures.Domain.GarmentSewingIns.Repositories;
 using Manufactures.Domain.GarmentSewingOuts.Commands;
 using Manufactures.Domain.GarmentSewingOuts.ReadModels;
 using Manufactures.Domain.GarmentSewingOuts.Repositories;
 using Manufactures.Dtos;
+using Manufactures.Dtos.GermentReciptSubcon.GarmentLoadingIn;
 using Manufactures.Helpers.PDFTemplates;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -31,12 +35,15 @@ namespace Manufactures.Controllers.Api
         private readonly IGarmentSewingOutDetailRepository _garmentSewingOutDetailRepository;
         private readonly IGarmentSewingInItemRepository _garmentSewingInItemRepository;
 
+        private readonly IGarmentFinishedGoodStockRepository _garmentFinishedGoodStockRepository;
         public GarmentSewingOutController(IServiceProvider serviceProvider) : base(serviceProvider)
         {
             _garmentSewingOutRepository = Storage.GetRepository<IGarmentSewingOutRepository>();
             _garmentSewingOutItemRepository = Storage.GetRepository<IGarmentSewingOutItemRepository>();
             _garmentSewingOutDetailRepository = Storage.GetRepository<IGarmentSewingOutDetailRepository>();
             _garmentSewingInItemRepository = Storage.GetRepository<IGarmentSewingInItemRepository>();
+
+            _garmentFinishedGoodStockRepository = Storage.GetRepository<IGarmentFinishedGoodStockRepository>();
         }
         [HttpGet]
         public async Task<IActionResult> Get(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")]List<string> select = null, string keyword = null, string filter = "{}")
@@ -93,6 +100,7 @@ namespace Manufactures.Controllers.Api
 
             GarmentSewingOutDto garmentSewingOutDto = _garmentSewingOutRepository.Find(o => o.Identity == guid).Select(sewOut => new GarmentSewingOutDto(sewOut)
             {
+                CanDeleted = new List<bool>(),
                 Items = _garmentSewingOutItemRepository.Find(o => o.SewingOutId == sewOut.Identity).OrderBy(i => i.Color).ThenBy(i => i.SizeName).Select(sewOutItem => new GarmentSewingOutItemDto(sewOutItem)
                 {
                     Details = _garmentSewingOutDetailRepository.Find(o => o.SewingOutItemId == sewOutItem.Identity).OrderBy(i => i.SizeName).Select(sewOutDetail => new GarmentSewingOutDetailDto(sewOutDetail)
@@ -102,6 +110,48 @@ namespace Manufactures.Controllers.Api
                 }).ToList()
             }
             ).FirstOrDefault();
+
+            //compare with finished good stock for delete button
+            if (garmentSewingOutDto.SewingTo == "BARANG JADI")
+            {
+                foreach (var item in garmentSewingOutDto.Items)
+                {
+                    if (garmentSewingOutDto.IsDifferentSize)
+                    {
+                        foreach (var detail in item.Details)
+                        {
+                            var matchFinishedGood = _garmentFinishedGoodStockRepository.Query.Where(
+                                 a => a.RONo == garmentSewingOutDto.RONo &&
+                                 a.Article == garmentSewingOutDto.Article &&
+                                 a.BasicPrice == item.BasicPrice &&
+                                 a.UnitId == garmentSewingOutDto.Unit.Id &&
+                                 a.SizeId == detail.Size.Id &&
+                                 a.ComodityId == garmentSewingOutDto.Comodity.Id &&
+                                 a.UomId == detail.Uom.Id
+                                 && a.FinishedFrom == "SEWING"
+                                 ).Select(s => new GarmentFinishedGoodStock(s)).SingleOrDefault();
+
+                            garmentSewingOutDto.CanDeleted.Add(matchFinishedGood.Quantity >= detail.Quantity);
+                        }
+                    }
+                    else
+                    {
+                        var matchFinishedGood = _garmentFinishedGoodStockRepository.Query.Where(
+                                a => a.RONo == garmentSewingOutDto.RONo &&
+                                a.Article == garmentSewingOutDto.Article &&
+                                a.BasicPrice == item.BasicPrice &&
+                                a.UnitId == garmentSewingOutDto.Unit.Id &&
+                                a.SizeId == item.Size.Id &&
+                                a.ComodityId == garmentSewingOutDto.Comodity.Id &&
+                                a.UomId == item.Uom.Id
+                                && a.FinishedFrom == "SEWING"
+                                ).Select(s => new GarmentFinishedGoodStock(s)).SingleOrDefault();
+
+                        garmentSewingOutDto.CanDeleted.Add(matchFinishedGood.Quantity >= item.Quantity);
+                    }
+                   
+                }
+            }
 
             await Task.Yield();
             return Ok(garmentSewingOutDto);
@@ -336,6 +386,40 @@ namespace Manufactures.Controllers.Api
             var order = await Mediator.Send(command);
 
             return Ok();
+        }
+
+        [HttpGet("color")]
+        public async Task<IActionResult> GetColor(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")] List<string> select = null, string keyword = null, string filter = "{}")
+        {
+            VerifyUser();
+
+            var query = _garmentSewingOutRepository.Read(page, size, order, keyword, filter);
+            var total = query.Count();
+            query = query.Skip((page - 1) * size).Take(size);
+
+            List<GarmentSewingOutListDto> garmentSewingOutListDtos = _garmentSewingOutRepository
+                .Find(query)
+                .Select(SewOut => new GarmentSewingOutListDto(SewOut))
+                .ToList();
+
+            var dtoIds = garmentSewingOutListDtos.Select(s => s.Id).ToHashSet();
+            var items = _garmentSewingOutItemRepository.Query
+                .Where(o => dtoIds.Contains(o.SewingOutId))
+                .Select(s =>  s.Color )
+                .ToHashSet();
+
+            List<object> color = new List<object>();
+            foreach (var item in items)
+            {
+                color.Add(new { Color=  item });
+            }
+            await Task.Yield();
+            return Ok(color.ToHashSet(), info: new
+            {
+                page,
+                size,
+                color.Count
+            });
         }
     }
 }

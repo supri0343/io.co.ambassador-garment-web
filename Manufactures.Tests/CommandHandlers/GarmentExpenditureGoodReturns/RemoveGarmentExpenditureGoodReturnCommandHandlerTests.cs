@@ -78,12 +78,12 @@ namespace Manufactures.Tests.CommandHandlers.GarmentExpenditureGoodReturns
             GarmentFinishedGoodStock garmentFinishedGoodStock = new GarmentFinishedGoodStock(finStockGuid,
                  "no", "ro", "article", expenditureGoodReturn.UnitId, expenditureGoodReturn.UnitCode, expenditureGoodReturn.UnitName,
                  expenditureGoodReturn.ComodityId, expenditureGoodReturn.ComodityCode, expenditureGoodReturn.ComodityName,
-                 new SizeId(1), null, new UomId(1), null, 1, 1, 1);
+                 new SizeId(1), null, new UomId(1), null, 1, 1, 1,"");
 
             GarmentFinishedGoodStockHistory garmentFinishedGoodStockHistory = new GarmentFinishedGoodStockHistory(Guid.NewGuid(), garmentFinishedGoodStock.Identity,
                Guid.Empty, Guid.Empty, Guid.Empty, Guid.Empty, Guid.Empty, Guid.Empty, returId, returItemId, null, "ro", "article", expenditureGoodReturn.UnitId, expenditureGoodReturn.UnitCode, expenditureGoodReturn.UnitName,
                expenditureGoodReturn.ComodityId, expenditureGoodReturn.ComodityCode, expenditureGoodReturn.ComodityName,
-               new SizeId(1), null, new UomId(1), null, 1, 1, 1);
+               new SizeId(1), null, new UomId(1), null, 1, 1, 1, Guid.Empty, Guid.Empty, Guid.Empty, Guid.Empty, Guid.Empty, Guid.Empty, Guid.Empty);
 
             _mockFinishedGoodStockRepository
                 .Setup(s => s.Query)

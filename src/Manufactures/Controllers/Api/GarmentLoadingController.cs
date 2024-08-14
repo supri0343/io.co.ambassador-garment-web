@@ -2,16 +2,22 @@
 using Infrastructure.Data.EntityFrameworkCore.Utilities;
 using Infrastructure.External.DanLirisClient.Microservice.Cache;
 using Manufactures.Application.GarmentLoadings.Queries;
+using Manufactures.Domain.GarmentFinishedGoodStocks;
+using Manufactures.Domain.GarmentFinishedGoodStocks.Repositories;
 using Manufactures.Domain.GarmentLoadings.Commands;
 using Manufactures.Domain.GarmentLoadings.Repositories;
 using Manufactures.Domain.GarmentSewingDOs.Repositories;
+using Manufactures.Domain.Shared.ValueObjects;
 using Manufactures.Dtos;
 using Manufactures.Helpers.PDFTemplates;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Org.BouncyCastle.Asn1.Ocsp;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -28,12 +34,13 @@ namespace Manufactures.Controllers.Api
         private readonly IGarmentLoadingRepository _garmentLoadingRepository;
         private readonly IGarmentLoadingItemRepository _garmentLoadingItemRepository;
         private readonly IGarmentSewingDOItemRepository _garmentSewingDOItemRepository;
-
+        private readonly IGarmentFinishedGoodStockRepository _garmentFinishedGoodStockRepository;
         public GarmentLoadingController(IServiceProvider serviceProvider) : base(serviceProvider)
         {
             _garmentLoadingRepository = Storage.GetRepository<IGarmentLoadingRepository>();
             _garmentLoadingItemRepository = Storage.GetRepository<IGarmentLoadingItemRepository>();
             _garmentSewingDOItemRepository = Storage.GetRepository<IGarmentSewingDOItemRepository>();
+            _garmentFinishedGoodStockRepository = Storage.GetRepository<IGarmentFinishedGoodStockRepository>();
         }
 
         [HttpGet]
@@ -96,10 +103,31 @@ namespace Manufactures.Controllers.Api
 
             GarmentLoadingDto garmentLoadingDto = _garmentLoadingRepository.Find(o => o.Identity == guid).Select(loading => new GarmentLoadingDto(loading)
             {
+                CanDeleted = new List<bool>(),
                 Items = _garmentLoadingItemRepository.Find(o => o.LoadingId == loading.Identity).OrderBy(i => i.Color).ThenBy(i => i.SizeName).Select(loadingItem => new GarmentLoadingItemDto(loadingItem)
                 ).ToList()
             }
             ).FirstOrDefault();
+
+            //compare with finished good stock for delete button
+            if (garmentLoadingDto.LoadingOutType == "BARANG JADI")
+            {
+                foreach (var item in garmentLoadingDto.Items)
+                {
+                    var matchFinishedGood = _garmentFinishedGoodStockRepository.Query.Where(
+                       a => a.RONo == garmentLoadingDto.RONo &&
+                       a.Article == garmentLoadingDto.Article &&
+                       a.BasicPrice == item.BasicPrice &&
+                       a.UnitId == garmentLoadingDto.Unit.Id &&
+                       a.SizeId == item.Size.Id &&
+                       a.ComodityId == garmentLoadingDto.Comodity.Id &&
+                       a.UomId == item.Uom.Id
+                       && a.FinishedFrom == "LOADING"
+                   ).Select(s => new GarmentFinishedGoodStock(s)).SingleOrDefault();
+
+                    garmentLoadingDto.CanDeleted.Add(matchFinishedGood.Quantity >= item.Quantity);
+                }
+            }
 
             await Task.Yield();
             return Ok(garmentLoadingDto);
@@ -277,6 +305,40 @@ namespace Manufactures.Controllers.Api
             var order = await Mediator.Send(command);
 
             return Ok();
+        }
+
+        [HttpGet("color")]
+        public async Task<IActionResult> GetColor(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")] List<string> select = null, string keyword = null, string filter = "{}")
+        {
+            VerifyUser();
+
+            var query = _garmentLoadingRepository.Read(page, size, order, keyword, filter);
+            var total = query.Count();
+            query = query.Skip((page - 1) * size).Take(size);
+
+            List<GarmentLoadingListDto> garmentLoadingListDtos = _garmentLoadingRepository
+                .Find(query)
+                .Select(x => new GarmentLoadingListDto(x))
+                .ToList();
+
+            var dtoIds = garmentLoadingListDtos.Select(s => s.Id).ToHashSet();
+            var items = _garmentLoadingItemRepository.Query
+                .Where(o => dtoIds.Contains(o.LoadingId))
+                .Select(s =>  s.Color )
+                .ToHashSet();
+
+            List<object> color = new List<object>();
+            foreach (var item in items)
+            {
+                color.Add(new { Color =  item });
+            }
+            await Task.Yield();
+            return Ok(color.ToHashSet(), info: new
+            {
+                page,
+                size,
+                color.Count
+            });
         }
     }
 }

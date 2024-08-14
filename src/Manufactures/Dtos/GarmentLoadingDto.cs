@@ -20,7 +20,7 @@ namespace Manufactures.Dtos
             UnitFrom = new UnitDepartment(garmentLoading.UnitFromId.Value, garmentLoading.UnitFromCode, garmentLoading.UnitFromName);
             Comodity = new GarmentComodity(garmentLoading.ComodityId.Value, garmentLoading.ComodityCode, garmentLoading.ComodityName);
             LoadingDate = garmentLoading.LoadingDate;
-
+            LoadingOutType = garmentLoading.LoadingOutType;
             Items = new List<GarmentLoadingItemDto>();
         }
 
@@ -35,7 +35,9 @@ namespace Manufactures.Dtos
         public string Article { get; internal set; }
         public GarmentComodity Comodity { get; internal set; }
         public DateTimeOffset LoadingDate { get; internal set; }
-
+        
         public virtual List<GarmentLoadingItemDto> Items { get; internal set; }
+        public string LoadingOutType { get; internal set; }
+        public List<bool> CanDeleted { get; set; }
     }
 }

@@ -32,8 +32,8 @@ namespace Manufactures.Domain.GarmentExpenditureGoods
         public double Carton { get; private set; }
         public string Description { get; private set; }
         public bool IsReceived { get; private set; }
-
-        public GarmentExpenditureGood(Guid identity, string expenditureGoodNo, string expenditureType, UnitDepartmentId unitId, string unitCode, string unitName, string rONo, string article, GarmentComodityId comodityId, string comodityCode, string comodityName, BuyerId buyerId, string buyerCode, string buyerName, DateTimeOffset expenditureDate, string invoice, string contractNo, double carton, string description, bool isReceived, int packingListId) : base(identity)
+        public string ExpenditureFrom { get; private set; }
+        public GarmentExpenditureGood(Guid identity, string expenditureGoodNo, string expenditureType, UnitDepartmentId unitId, string unitCode, string unitName, string rONo, string article, GarmentComodityId comodityId, string comodityCode, string comodityName, BuyerId buyerId, string buyerCode, string buyerName, DateTimeOffset expenditureDate, string invoice, string contractNo, double carton, string description, bool isReceived, int packingListId, string expenditureFrom) : base(identity)
         {
             Validator.ThrowIfNull(() => unitId);
 
@@ -59,6 +59,7 @@ namespace Manufactures.Domain.GarmentExpenditureGoods
             Description = description;
             IsReceived = isReceived;
             PackingListId = packingListId;
+            ExpenditureFrom = expenditureFrom;
 
             ReadModel = new GarmentExpenditureGoodReadModel(Identity)
             {
@@ -78,13 +79,15 @@ namespace Manufactures.Domain.GarmentExpenditureGoods
                 ComodityName = ComodityName,
                 Invoice = Invoice,
                 ContractNo = ContractNo,
-                Carton= Carton,
-                Description= Description,
-                IsReceived= IsReceived,
-                PackingListId = PackingListId
+                Carton = Carton,
+                Description = Description,
+                IsReceived = IsReceived,
+                PackingListId = PackingListId,
+                ExpenditureFrom = ExpenditureFrom
             };
 
             ReadModel.AddDomainEvent(new OnGarmentExpenditureGoodPlaced(Identity));
+            ExpenditureFrom = expenditureFrom;
         }
 
         public GarmentExpenditureGood(GarmentExpenditureGoodReadModel readModel) : base(readModel)
@@ -109,6 +112,7 @@ namespace Manufactures.Domain.GarmentExpenditureGoods
             Description = readModel.Description;
             IsReceived = readModel.IsReceived;
             PackingListId = readModel.PackingListId;
+            ExpenditureFrom = readModel.ExpenditureFrom;
         }
 
         public void SetCarton(double Carton)

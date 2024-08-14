@@ -25,6 +25,7 @@ namespace Manufactures.Domain.GarmentLoadings.Commands
         public double Price { get; set; }
 
         public List<GarmentLoadingItemValueObject> Items { get; set; }
+        public string LoadingOutType { get; set; }
     }
 
     public class PlaceGarmentLoadingCommandValidator : AbstractValidator<PlaceGarmentLoadingCommand>
