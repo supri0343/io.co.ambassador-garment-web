@@ -26,6 +26,8 @@ namespace Manufactures.Dtos
             IsReceived = garmentExpenditureGood.IsReceived;
             PackingListId = garmentExpenditureGood.PackingListId;
             Items = new List<GarmentExpenditureGoodItemDto>();
+            ExpenditureFrom = garmentExpenditureGood.ExpenditureFrom;
+
         }
         public Guid Id { get; internal set; }
         public string ExpenditureGoodNo { get; internal set; }
@@ -43,5 +45,6 @@ namespace Manufactures.Dtos
         public string Description { get; internal set; }
         public bool IsReceived { get; private set; }
         public virtual List<GarmentExpenditureGoodItemDto> Items { get; internal set; }
+        public string ExpenditureFrom { get; internal set; }
     }
 }

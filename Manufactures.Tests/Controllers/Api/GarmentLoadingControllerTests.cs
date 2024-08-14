@@ -80,7 +80,7 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Find(It.IsAny<IQueryable<GarmentLoadingReadModel>>()))
                 .Returns(new List<GarmentLoading>()
                 {
-                    new GarmentLoading(Guid.NewGuid(), null , Guid.NewGuid(), null, new UnitDepartmentId(1), null, null, "RONo",null,new UnitDepartmentId(1), null, null, DateTimeOffset.Now, new GarmentComodityId(1),null, null)
+                    new GarmentLoading(Guid.NewGuid(), null , Guid.NewGuid(), null, new UnitDepartmentId(1), null, null, "RONo",null,new UnitDepartmentId(1), null, null, DateTimeOffset.Now, new GarmentComodityId(1),null, null,"SEWING")
                 });
 
             _mockLoadingItemRepository
@@ -107,7 +107,7 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentLoadingReadModel, bool>>>()))
                 .Returns(new List<GarmentLoading>()
                 {
-                    new GarmentLoading(Guid.NewGuid(), null , Guid.NewGuid(), null, new UnitDepartmentId(1), null, null, "RONo",null,new UnitDepartmentId(1), null, null, DateTimeOffset.Now, new GarmentComodityId(1),null, null)
+                    new GarmentLoading(Guid.NewGuid(), null , Guid.NewGuid(), null, new UnitDepartmentId(1), null, null, "RONo",null,new UnitDepartmentId(1), null, null, DateTimeOffset.Now, new GarmentComodityId(1),null, null,"SEWING")
                 });
 
             _mockLoadingItemRepository
@@ -138,7 +138,7 @@ namespace Manufactures.Tests.Controllers.Api
                 .Setup(s => s.Find(It.IsAny<Expression<Func<GarmentLoadingReadModel, bool>>>()))
                 .Returns(new List<GarmentLoading>()
                 {
-                    new GarmentLoading(Guid.NewGuid(), "no" , Guid.NewGuid(), null, new UnitDepartmentId(1), null, null, "RONo","art",new UnitDepartmentId(1), null, null, DateTimeOffset.Now, new GarmentComodityId(1),null, null)
+                    new GarmentLoading(Guid.NewGuid(), "no" , Guid.NewGuid(), null, new UnitDepartmentId(1), null, null, "RONo","art",new UnitDepartmentId(1), null, null, DateTimeOffset.Now, new GarmentComodityId(1),null, null, "SEWING")
                 });
 
             _mockLoadingItemRepository
@@ -167,7 +167,7 @@ namespace Manufactures.Tests.Controllers.Api
 
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<PlaceGarmentLoadingCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentLoading(Guid.NewGuid(), null, Guid.NewGuid(), null, new UnitDepartmentId(1), null, null, "RONo", null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, new GarmentComodityId(1), null, null));
+                .ReturnsAsync(new GarmentLoading(Guid.NewGuid(), null, Guid.NewGuid(), null, new UnitDepartmentId(1), null, null, "RONo", null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, new GarmentComodityId(1), null, null   , "SEWING"));
 
             // Act
             var command = new PlaceGarmentLoadingCommand()
@@ -261,7 +261,7 @@ namespace Manufactures.Tests.Controllers.Api
 
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<UpdateGarmentLoadingCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentLoading(Guid.NewGuid(), null, Guid.NewGuid(), null, new UnitDepartmentId(1), null, null, "RONo", null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, new GarmentComodityId(1), null, null));
+                .ReturnsAsync(new GarmentLoading(Guid.NewGuid(), null, Guid.NewGuid(), null, new UnitDepartmentId(1), null, null, "RONo", null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, new GarmentComodityId(1), null, null, "SEWING"));
 
             // Act
             var result = await unitUnderTest.Put(Guid.NewGuid().ToString(), new UpdateGarmentLoadingCommand());
@@ -278,7 +278,7 @@ namespace Manufactures.Tests.Controllers.Api
 
             _MockMediator
                 .Setup(s => s.Send(It.IsAny<RemoveGarmentLoadingCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GarmentLoading(Guid.NewGuid(), null, Guid.NewGuid(), null, new UnitDepartmentId(1), null, null, "RONo", null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, new GarmentComodityId(1), null, null));
+                .ReturnsAsync(new GarmentLoading(Guid.NewGuid(), null, Guid.NewGuid(), null, new UnitDepartmentId(1), null, null, "RONo", null, new UnitDepartmentId(1), null, null, DateTimeOffset.Now, new GarmentComodityId(1), null, null, "SEWING"));
 
             // Act
             var result = await unitUnderTest.Delete(Guid.NewGuid().ToString());

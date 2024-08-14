@@ -30,6 +30,7 @@ namespace Manufactures.Domain.GarmentExpenditureGoods.Commands
 		public int InvoiceId { get; set; }
 		public int ExpenditureGoodId { get; set; }
 		public double TotalQty { get; set; }
+        public string ExpenditureFrom { get; set; }
     }
 
     public class PlaceGarmentExpenditureGoodCommandValidator : AbstractValidator<PlaceGarmentExpenditureGoodCommand>

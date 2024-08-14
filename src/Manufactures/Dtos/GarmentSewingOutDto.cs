@@ -36,6 +36,7 @@ namespace Manufactures.Dtos
         public GarmentComodity Comodity { get;  set; }
         public DateTimeOffset SewingOutDate { get;  set; }
         public bool IsDifferentSize { get;  set; }
+        public List<bool> CanDeleted { get;  set; }
 
         public virtual List<GarmentSewingOutItemDto> Items { get; internal set; }
     }

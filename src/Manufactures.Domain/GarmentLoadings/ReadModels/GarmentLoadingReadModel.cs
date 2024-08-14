@@ -29,6 +29,7 @@ namespace Manufactures.Domain.GarmentLoadings.ReadModels
         public DateTimeOffset LoadingDate { get; internal set; }
 		public string UId { get; private set; }
 		public virtual List<GarmentLoadingItemReadModel> Items { get; internal set; }
+        public string LoadingOutType { get; internal set; }
 
 
 
