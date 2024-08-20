@@ -315,7 +315,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
                 //DateTime? non = null;
                 var remark = Codes.FirstOrDefault(x => x.Code == item.productCode);
 
-                var finalRemark = remark != null ? " - " + remark.Composition + " " + remark.Width + " " + remark.Const + " " + remark.Yarn + " " + remark.Name : "";
+                var finalRemark = remark != null ? " - " + remark.Composition + " " + remark.Width + " " + remark.Const + " " + remark.Yarn : "";
 
                 GarmentMonitoringExpenditureGoodDto dto = new GarmentMonitoringExpenditureGoodDto
 				{
@@ -421,7 +421,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 				worksheet.Cells["A" + 1 + ":L" + 5 + ""].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 				worksheet.Cells["A" + 1 + ":L" + 5 + ""].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
 				worksheet.Cells["A5"].LoadFromDataTable(reportDataTable, true);
-				worksheet.Column(8).Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+				//worksheet.Column(8).Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
 				worksheet.Cells["I" + 2 + ":K" + counter + ""].Style.Numberformat.Format = "#,##0.00";
 				worksheet.Column(9).Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
 				worksheet.Cells["J" + 2 + ":J" + counter + ""].Style.Numberformat.Format = "#,##0.00";
