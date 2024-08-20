@@ -314,7 +314,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 
                 var remark = Codes.FirstOrDefault(x => x.Code == item.productCode);
 
-                var finalRemark = remark != null ? " - " + remark.Composition + " " + remark.Width + " " + remark.Const + " " + remark.Yarn + " " + remark.Name : "";
+                var finalRemark = remark != null ? " - " + remark.Composition + " " + remark.Width + " " + remark.Const + " " + remark.Yarn : "";
 
                 GarmentMonitoringExpenditureGoodDto dto = new GarmentMonitoringExpenditureGoodDto
                 {
