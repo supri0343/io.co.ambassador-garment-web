@@ -75,6 +75,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 			public decimal price { get; internal set; }
 			public double fc { get; internal set; }
             public string productCode { get; internal set; }
+            public string UId { get; internal set; }
         }
 
 		public async Task<PEBResult> GetDataPEB(List<string> invoice, string token)
@@ -280,12 +281,13 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 							invoice = a.Invoice,
 							//colour = b.Description,
 							qty = b.Quantity,
-                            productCode = d.ProductCode
+                            productCode = d.ProductCode,
                             //name = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault(),
                             //unitname = a.UnitName,
+							UId = a.UId
                         }).Distinct();
 
-			var querySum = Query.ToList().GroupBy(x => new { x.expenditureDate, x.expenditureGoodNo, x.invoice, x.comodityCode, x.comodityName, x.uomUnit, x.productCode }, (key, group) => new
+			var querySum = Query.ToList().GroupBy(x => new { x.expenditureDate, x.expenditureGoodNo, x.invoice, x.comodityCode, x.comodityName, x.uomUnit, x.productCode,x.UId }, (key, group) => new
 			{
 				//ros = key.roNo,
 				//buyer = key.buyerArticle,
@@ -304,11 +306,13 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 				comodityName = key.comodityName,
 				uomUnit = key.uomUnit,
                 productCode = key.productCode,
+                key.UId
 
-			}).OrderBy(s => s.expendituregoodNo);
+            }).OrderBy(s => s.expendituregoodNo);
 
 			var Pebs = await GetDataPEB(querySum.Select(x => x.invoices).ToList(), request.token);
             var Codes = await GetProductCode(string.Join(",", querySum.Select(x => x.productCode).ToHashSet()), request.token);
+            string[] exceptionBonNo = { "EGEAG223100009", "EGEAG223100060" };
             foreach (var item in querySum)
 			{
 				var peb = Pebs.data.FirstOrDefault(x => x.BonNo.Trim() == item.invoices);
@@ -331,8 +335,8 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 					expenditureDate = item.expenditureDates,
 					qty = item.qty,
 					comodityCode = item.comodityCode,
-					comodityName = item.comodityName + finalRemark,
-					uomUnit = item.uomUnit,
+                    comodityName = item.comodityName + (exceptionBonNo.Contains(item.expendituregoodNo) ? item.UId : finalRemark),
+                    uomUnit = item.uomUnit,
 					price = (decimal)(peb == null ? 0 : peb.Nominal),
 					//colour = item.color,
 					//name = item.names,
