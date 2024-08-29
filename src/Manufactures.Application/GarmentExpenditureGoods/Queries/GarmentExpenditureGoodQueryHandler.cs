@@ -334,7 +334,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 					expenditureDate = item.expenditureDates,
 					qty = item.qty,
                     comodityCode = item.comodityCode,
-                    comodityName = item.comodityName + (exceptionBonNo.Contains(item.expendituregoodNo) ? item.UId:  finalRemark),
+                    comodityName = item.comodityName + " - " + (exceptionBonNo.Contains(item.expendituregoodNo) ? item.UId:  finalRemark),
                     uomUnit = item.uomUnit,
                     price = (decimal)((peb == null ? 0 : peb.Nominal) * (peb == null ? 0 : peb.Quantity)),
                     //colour = item.color,
