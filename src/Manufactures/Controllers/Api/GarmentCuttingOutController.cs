@@ -20,7 +20,6 @@ using Manufactures.Helpers.PDFTemplates;
 using Manufactures.Domain.GarmentCuttingOuts;
 using Manufactures.Application.GarmentCuttingOuts.Queries.GetCuttingOutForTraceable;
 using Manufactures.Domain.GarmentFinishedGoodStocks;
-using Manufactures.Dtos.GermentReciptSubcon.GarmentLoadingIn;
 using Manufactures.Domain.GarmentFinishedGoodStocks.Repositories;
 
 namespace Manufactures.Controllers.Api
