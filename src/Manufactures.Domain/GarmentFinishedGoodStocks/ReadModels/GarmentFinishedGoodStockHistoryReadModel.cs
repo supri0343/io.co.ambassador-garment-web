@@ -36,7 +36,14 @@ namespace Manufactures.Domain.GarmentFinishedGoodStocks.ReadModels
         public double BasicPrice { get; internal set; }
         public double Price { get; internal set; }
 		public string UId { get; set; }
+        public Guid CuttingOutItemId { get; internal set; }
+        public Guid CuttingOutDetailId { get; internal set; }
+        public Guid LoadingId { get; internal set; }
+        public Guid LoadingItemId { get; internal set; }
+        public Guid SewingOutId { get; internal set; }
+        public Guid SewingOutItemId { get; internal set; }
+        public Guid SewingOutDetailId { get; internal set; }
 
 
-	}
+    }
 }

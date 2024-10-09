@@ -114,7 +114,7 @@ namespace Manufactures.Tests.CommandHandlers.GarmentExpenditureGoodReturns
 
             GarmentExpenditureGood garmentExpenditureGood = new GarmentExpenditureGood(exGoodGuid, placeGarmentExpenditureGoodReturnCommand.ExpenditureNo, null,
                 new UnitDepartmentId(placeGarmentExpenditureGoodReturnCommand.Unit.Id), null,null, placeGarmentExpenditureGoodReturnCommand.RONo,null,new GarmentComodityId(1),
-                null,null,new BuyerId(1),null,null,DateTimeOffset.Now,null,null,0,null,false,0);
+                null,null,new BuyerId(1),null,null,DateTimeOffset.Now,null,null,0,null,false,0,"");
 
             GarmentExpenditureGoodItem garmentExpenditureGoodItem = new GarmentExpenditureGoodItem(
                 exGoodItemGuid, exGoodGuid, finStockGuid, new SizeId(1), null, 1, 0, new UomId(1), null, "Color", 1, 1);

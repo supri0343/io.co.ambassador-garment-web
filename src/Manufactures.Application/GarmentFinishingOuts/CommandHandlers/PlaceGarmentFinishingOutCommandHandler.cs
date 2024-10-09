@@ -203,6 +203,7 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
                             new SizeId(a.SizeId) == sizeId &&
                             a.ComodityId == request.Comodity.Id &&
                             new UomId(a.UomId) == uomId
+                            && a.FinishedFrom == "FINISHING"
                         ).Select(s => new GarmentFinishedGoodStock(s)).SingleOrDefault();
 
                     double qty = garmentFinishedGoodExist == null ? finGoodStock.Value : (finGoodStock.Value + garmentFinishedGoodExist.Quantity);
@@ -238,7 +239,8 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
                                         uomUnit,
                                         qty,
                                         basicPrice,
-                                        price
+                                        price,
+                                        "FINISHING"
                                         );
                         count++;
                         await _garmentFinishedGoodStockRepository.Update(finishedGood);
@@ -307,7 +309,14 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
                                         stock.UomUnit,
                                         detail.Quantity,
                                         stock.BasicPrice,
-                                        price
+                                        price,
+                                        Guid.Empty,
+                                        Guid.Empty,
+                                        Guid.Empty,
+                                        Guid.Empty,
+                                        Guid.Empty,
+                                        Guid.Empty,
+                                        Guid.Empty
                                     );
                                 await _garmentFinishedGoodStockHistoryRepository.Update(garmentFinishedGoodStockHistory);
                             }
@@ -350,7 +359,14 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
                                     stock.UomUnit,
                                     item.Quantity,
                                     stock.BasicPrice,
-                                    price
+                                    price,
+                                    Guid.Empty,
+                                    Guid.Empty,
+                                    Guid.Empty,
+                                    Guid.Empty,
+                                    Guid.Empty,
+                                    Guid.Empty,
+                                    Guid.Empty
                                 );
                             await _garmentFinishedGoodStockHistoryRepository.Update(garmentFinishedGoodStockHistory);
                         }

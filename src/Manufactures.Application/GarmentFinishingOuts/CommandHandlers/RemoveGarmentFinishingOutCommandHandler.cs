@@ -110,6 +110,7 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
                                 new SizeId(a.SizeId) == finishOutDetail.SizeId &&
                                 new GarmentComodityId(a.ComodityId) == finishOut.ComodityId &&
                                 new UomId(a.UomId) == finishOutDetail.UomId
+                                && a.FinishedFrom == "FINISHING"
                             ).Select(s => new GarmentFinishedGoodStock(s)).Single();
 
                             if (finGood.ContainsKey(garmentFinishedGoodExist))
@@ -152,6 +153,7 @@ namespace Manufactures.Application.GarmentFinishingOuts.CommandHandlers
                                 new SizeId(a.SizeId) == finishOutItem.SizeId &&
                                 new GarmentComodityId(a.ComodityId) == finishOut.ComodityId &&
                                 new UomId(a.UomId) == finishOutItem.UomId
+                                 && a.FinishedFrom == "FINISHING"
                             ).Select(s => new GarmentFinishedGoodStock(s)).Single();
 
                         if (finGood.ContainsKey(garmentFinishedGoodExist))

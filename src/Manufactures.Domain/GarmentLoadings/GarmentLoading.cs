@@ -26,8 +26,9 @@ namespace Manufactures.Domain.GarmentLoadings
         public string ComodityCode { get; internal set; }
         public string ComodityName { get; internal set; }
         public DateTimeOffset LoadingDate { get; internal set; }
-
-        public GarmentLoading(Guid identity, string loadingNo, Guid sewingDOId, string sewingDONo, UnitDepartmentId unitFromId, string unitFromCode, string unitFromName, string rONo, string article, UnitDepartmentId unitId, string unitCode, string unitName, DateTimeOffset loadingDate, GarmentComodityId comodityId, string comodityCode, string comodityName) : base(identity)
+        public string LoadingOutType { get; internal set; }
+        
+        public GarmentLoading(Guid identity, string loadingNo, Guid sewingDOId, string sewingDONo, UnitDepartmentId unitFromId, string unitFromCode, string unitFromName, string rONo, string article, UnitDepartmentId unitId, string unitCode, string unitName, DateTimeOffset loadingDate, GarmentComodityId comodityId, string comodityCode, string comodityName,string loadingOutType) : base(identity)
         {
             Validator.ThrowIfNull(() => unitId);
             //Validator.ThrowIfNull(() => sewingDOId);
@@ -49,6 +50,7 @@ namespace Manufactures.Domain.GarmentLoadings
             LoadingDate = loadingDate;
             ComodityCode = comodityCode;
             ComodityName = comodityName;
+            LoadingOutType = loadingOutType;
 
             ReadModel = new GarmentLoadingReadModel(Identity)
             {
@@ -66,7 +68,8 @@ namespace Manufactures.Domain.GarmentLoadings
                 UnitFromId = UnitFromId.Value,
                 ComodityId=ComodityId.Value,
                 ComodityCode=ComodityCode,
-                ComodityName=ComodityName
+                ComodityName=ComodityName,
+                LoadingOutType = LoadingOutType
             };
 
             ReadModel.AddDomainEvent(new OnGarmentLoadingPlaced(Identity));
@@ -89,6 +92,7 @@ namespace Manufactures.Domain.GarmentLoadings
             ComodityName = readModel.ComodityName;
             ComodityCode = readModel.ComodityCode;
             LoadingDate = readModel.LoadingDate;
+            LoadingOutType = readModel.LoadingOutType;
         }
         public void setDate(DateTimeOffset loadingDate)
         {

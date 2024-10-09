@@ -1,7 +1,11 @@
 ﻿using ExtCore.Data.Abstractions;
 using Infrastructure.Domain.Commands;
+using Manufactures.Domain.GarmentComodityPrices;
+using Manufactures.Domain.GarmentComodityPrices.Repositories;
 using Manufactures.Domain.GarmentCuttingIns;
 using Manufactures.Domain.GarmentCuttingIns.Repositories;
+using Manufactures.Domain.GarmentFinishedGoodStocks;
+using Manufactures.Domain.GarmentFinishedGoodStocks.Repositories;
 using Manufactures.Domain.GarmentFinishingIns;
 using Manufactures.Domain.GarmentFinishingIns.Repositories;
 using Manufactures.Domain.GarmentSewingIns;
@@ -9,9 +13,11 @@ using Manufactures.Domain.GarmentSewingIns.Repositories;
 using Manufactures.Domain.GarmentSewingOuts;
 using Manufactures.Domain.GarmentSewingOuts.Commands;
 using Manufactures.Domain.GarmentSewingOuts.Repositories;
+using Manufactures.Domain.Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -32,6 +38,10 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
         private readonly IGarmentFinishingInRepository _garmentFinishingInRepository;
         private readonly IGarmentFinishingInItemRepository _garmentFinishingInItemRepository;
 
+        private readonly IGarmentComodityPriceRepository _garmentComodityPriceRepository;
+        private readonly IGarmentFinishedGoodStockRepository _garmentFinishedGoodStockRepository;
+        private readonly IGarmentFinishedGoodStockHistoryRepository _garmentFinishedGoodStockHistoryRepository;
+
         public RemoveGarmentSewingOutCommandHandler(IStorage storage)
         {
             _storage = storage;
@@ -45,6 +55,10 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
             _garmentCuttingInDetailRepository = storage.GetRepository<IGarmentCuttingInDetailRepository>();
             _garmentFinishingInRepository = storage.GetRepository<IGarmentFinishingInRepository>();
             _garmentFinishingInItemRepository = storage.GetRepository<IGarmentFinishingInItemRepository>();
+
+            _garmentComodityPriceRepository = storage.GetRepository<IGarmentComodityPriceRepository>();
+            _garmentFinishedGoodStockRepository = storage.GetRepository<IGarmentFinishedGoodStockRepository>();
+            _garmentFinishedGoodStockHistoryRepository = storage.GetRepository<IGarmentFinishedGoodStockHistoryRepository>();
         }
 
         public async Task<GarmentSewingOut> Handle(RemoveGarmentSewingOutCommand request, CancellationToken cancellationToken)
@@ -128,6 +142,93 @@ namespace Manufactures.Application.GarmentSewingOuts.CommandHandlers
                 var finIn = _garmentFinishingInRepository.Query.Where(a => a.Identity == finInId).Select(o => new GarmentFinishingIn(o)).Single();
                 finIn.Remove();
                 await _garmentFinishingInRepository.Update(finIn);
+            }
+
+            if (sewOut.SewingTo == "BARANG JADI")
+            {
+                Dictionary<GarmentFinishedGoodStock, double> finGood = new Dictionary<GarmentFinishedGoodStock, double>();
+                _garmentSewingOutItemRepository.Find(o => o.SewingOutId == sewOut.Identity).ForEach(async sewOutItem =>
+                {
+                    if (sewOut.IsDifferentSize)
+                    {
+                        _garmentSewingOutDetailRepository.Find(o => o.SewingOutItemId == sewOutItem.Identity).ForEach(async sewOutDetail =>
+                        {
+                            //check garment finished good stock exist
+                            var garmentFinishedGoodExist = _garmentFinishedGoodStockRepository.Query.Where(
+                                a => a.RONo == sewOut.RONo &&
+                                a.Article == sewOut.Article &&
+                                a.BasicPrice == sewOutItem.BasicPrice &&
+                                new UnitDepartmentId(a.UnitId) == sewOut.UnitId &&
+                                new SizeId(a.SizeId) == sewOutDetail.SizeId &&
+                                new GarmentComodityId(a.ComodityId) == sewOut.ComodityId &&
+                                new UomId(a.UomId) == sewOutDetail.UomId
+                                && a.FinishedFrom == "SEWING"
+                            ).Select(s => new GarmentFinishedGoodStock(s)).Single();
+
+                            //push data garment finished good stock
+                            if (finGood.ContainsKey(garmentFinishedGoodExist))
+                            {
+                                finGood[garmentFinishedGoodExist] += sewOutDetail.Quantity;
+                            }
+                            else
+                            {
+                                finGood.Add(garmentFinishedGoodExist, sewOutDetail.Quantity);
+                            }
+
+                            //delete garment finished good stock history
+                            GarmentFinishedGoodStockHistory garmentFinishedGoodStockHistory = _garmentFinishedGoodStockHistoryRepository.Query.Where(a => a.SewingOutDetailId == sewOutDetail.Identity).Select(a => new GarmentFinishedGoodStockHistory(a)).Single();
+                            garmentFinishedGoodStockHistory.Remove();
+                            await _garmentFinishedGoodStockHistoryRepository.Update(garmentFinishedGoodStockHistory);
+                        });
+                    }
+                    else
+                    {
+                        //check garment finished good stock exist
+                        var garmentFinishedGoodExist = _garmentFinishedGoodStockRepository.Query.Where(
+                            a => a.RONo == sewOut.RONo &&
+                            a.Article == sewOut.Article &&
+                            a.BasicPrice == sewOutItem.BasicPrice &&
+                            new UnitDepartmentId(a.UnitId) == sewOut.UnitId &&
+                            new SizeId(a.SizeId) == sewOutItem.SizeId &&
+                            new GarmentComodityId(a.ComodityId) == sewOut.ComodityId &&
+                            new UomId(a.UomId) == sewOutItem.UomId
+                            && a.FinishedFrom == "SEWING"
+                        ).Select(s => new GarmentFinishedGoodStock(s)).Single();
+
+                        //push data garment finished good stock
+                        if (finGood.ContainsKey(garmentFinishedGoodExist))
+                        {
+                            finGood[garmentFinishedGoodExist] += sewOutItem.Quantity;
+                        }
+                        else
+                        {
+                            finGood.Add(garmentFinishedGoodExist, sewOutItem.Quantity);
+                        }
+
+                        //delete garment finished good stock history
+                        GarmentFinishedGoodStockHistory garmentFinishedGoodStockHistory = _garmentFinishedGoodStockHistoryRepository.Query.Where(a => a.SewingOutItemId == sewOutItem.Identity).Select(a => new GarmentFinishedGoodStockHistory(a)).Single();
+                        garmentFinishedGoodStockHistory.Remove();
+                        await _garmentFinishedGoodStockHistoryRepository.Update(garmentFinishedGoodStockHistory);
+                    }
+                });
+
+                //update finished good stock
+                foreach (var finGoodStock in finGood)
+                {
+                    var garmentFinishedGoodExist = _garmentFinishedGoodStockRepository.Query.Where(
+                        a => a.Identity == finGoodStock.Key.Identity
+                        ).Select(s => new GarmentFinishedGoodStock(s)).Single();
+
+                    var qty = garmentFinishedGoodExist.Quantity - finGoodStock.Value;
+                    GarmentComodityPrice garmentComodityPrice = _garmentComodityPriceRepository.Query.Where(a => a.IsValid == true && new UnitDepartmentId(a.UnitId) == sewOut.UnitId && new GarmentComodityId(a.ComodityId) == sewOut.ComodityId).Select(s => new GarmentComodityPrice(s)).Single();
+
+                    garmentFinishedGoodExist.SetQuantity(qty);
+                    garmentFinishedGoodExist.SetPrice((garmentFinishedGoodExist.BasicPrice + (double)garmentComodityPrice.Price) * (qty));
+                    garmentFinishedGoodExist.Modify();
+
+                    await _garmentFinishedGoodStockRepository.Update(garmentFinishedGoodExist);
+                }
+
             }
 
             Dictionary<Guid, double> sewInItemToBeUpdated = new Dictionary<Guid, double>();

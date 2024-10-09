@@ -260,7 +260,14 @@ namespace Manufactures.Application.GarmentAdjustments.CommandHandlers
                             garmentFinishedGoodstock.UomUnit,
                             garmentFinishedGoodstock.Quantity,
                             garmentFinishedGoodstock.BasicPrice,
-                            garmentFinishedGoodstock.Price
+                            garmentFinishedGoodstock.Price,
+                            Guid.Empty,
+                            Guid.Empty,
+                            Guid.Empty,
+                            Guid.Empty,
+                            Guid.Empty,
+                            Guid.Empty,
+                            Guid.Empty
                         );
                     await _garmentFinishedGoodStockHistoryRepository.Update(garmentFinishedGoodStockHistory);
                     await _garmentAdjustmentItemRepository.Update(garmentAdjustmentItem);

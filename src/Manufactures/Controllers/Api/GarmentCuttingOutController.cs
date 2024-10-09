@@ -19,6 +19,9 @@ using Manufactures.Application.GarmentCuttingOuts.Queries;
 using Manufactures.Helpers.PDFTemplates;
 using Manufactures.Domain.GarmentCuttingOuts;
 using Manufactures.Application.GarmentCuttingOuts.Queries.GetCuttingOutForTraceable;
+using Manufactures.Domain.GarmentFinishedGoodStocks;
+using Manufactures.Dtos.GermentReciptSubcon.GarmentLoadingIn;
+using Manufactures.Domain.GarmentFinishedGoodStocks.Repositories;
 
 namespace Manufactures.Controllers.Api
 {
@@ -35,7 +38,7 @@ namespace Manufactures.Controllers.Api
         private readonly IGarmentCuttingInDetailRepository _garmentCuttingInDetailRepository;
         private readonly IGarmentSewingDORepository _garmentSewingDORepository;
         private readonly IGarmentSewingDOItemRepository _garmentSewingDOItemRepository;
-
+        private readonly IGarmentFinishedGoodStockRepository _garmentFinishedGoodStockRepository;
         public GarmentCuttingOutController(IServiceProvider serviceProvider) : base(serviceProvider)
         {
             _garmentCuttingOutRepository = Storage.GetRepository<IGarmentCuttingOutRepository>();
@@ -46,6 +49,7 @@ namespace Manufactures.Controllers.Api
             _garmentCuttingInDetailRepository = Storage.GetRepository<IGarmentCuttingInDetailRepository>();
             _garmentSewingDORepository = Storage.GetRepository<IGarmentSewingDORepository>();
             _garmentSewingDOItemRepository = Storage.GetRepository<IGarmentSewingDOItemRepository>();
+            _garmentFinishedGoodStockRepository = Storage.GetRepository<IGarmentFinishedGoodStockRepository>();
         }
 
         [HttpGet]
@@ -74,6 +78,7 @@ namespace Manufactures.Controllers.Api
 
             GarmentCuttingOutDto garmentCuttingOutDto = _garmentCuttingOutRepository.Find(o => o.Identity == guid).Select(cutOut => new GarmentCuttingOutDto(cutOut)
             {
+                CanDeleted = new List<bool>(),
                 Items = _garmentCuttingOutItemRepository.Find(o => o.CutOutId == cutOut.Identity).Select(cutOutItem => new GarmentCuttingOutItemDto(cutOutItem)
                 {
                     Details = _garmentCuttingOutDetailRepository.Find(o => o.CutOutItemId == cutOutItem.Identity).OrderBy(s=>s.Color).ThenBy(s=>s.SizeName).Select(cutOutDetail => new GarmentCuttingOutDetailDto(cutOutDetail)
@@ -83,6 +88,29 @@ namespace Manufactures.Controllers.Api
                 }).ToList()
             }
             ).FirstOrDefault();
+
+            //compare with finished good stock for delete button
+            if (garmentCuttingOutDto.CuttingOutType == "BARANG JADI")
+            {
+                foreach (var item in garmentCuttingOutDto.Items)
+                {
+                    foreach (var detail in item.Details)
+                    {
+                        var matchFinishedGood = _garmentFinishedGoodStockRepository.Query.Where(
+                           a => a.RONo == garmentCuttingOutDto.RONo &&
+                           a.Article == garmentCuttingOutDto.Article &&
+                           a.BasicPrice == detail.BasicPrice &&
+                           a.UnitId == garmentCuttingOutDto.Unit.Id &&
+                           a.SizeId == detail.Size.Id &&
+                           a.ComodityId == garmentCuttingOutDto.Comodity.Id &&
+                           a.UomId == detail.CuttingOutUom.Id
+                           && a.FinishedFrom == "CUTTING"
+                       ).Select(s => new GarmentFinishedGoodStock(s)).SingleOrDefault();
+
+                        garmentCuttingOutDto.CanDeleted.Add(matchFinishedGood.Quantity >= detail.CuttingOutQuantity);
+                    }
+                }
+            }
 
             await Task.Yield();
             return Ok(garmentCuttingOutDto);
@@ -154,16 +182,20 @@ namespace Manufactures.Controllers.Api
             Guid guid = Guid.Parse(id);
 
             VerifyUser();
+            GarmentCuttingOutDto garmentCuttingOutDto = _garmentCuttingOutRepository.Find(o => o.Identity == guid).Select(cutOut => new GarmentCuttingOutDto(cutOut)).FirstOrDefault();
             var usedData = false;
-            var garmentSewingDO = _garmentSewingDORepository.Query.Where(o => o.CuttingOutId == guid).Select(o => new GarmentSewingDO(o)).Single();
-
-            _garmentSewingDOItemRepository.Find(x => x.SewingDOId == garmentSewingDO.Identity).ForEach(async sewingDOItem =>
+            if (garmentCuttingOutDto.CuttingOutType == "SEWING")
             {
-                if (sewingDOItem.RemainingQuantity < sewingDOItem.Quantity)
+                var garmentSewingDO = _garmentSewingDORepository.Query.Where(o => o.CuttingOutId == guid).Select(o => new GarmentSewingDO(o)).Single();
+
+                _garmentSewingDOItemRepository.Find(x => x.SewingDOId == garmentSewingDO.Identity).ForEach(async sewingDOItem =>
                 {
-                    usedData = true;
-                }
-            });
+                    if (sewingDOItem.RemainingQuantity < sewingDOItem.Quantity)
+                    {
+                        usedData = true;
+                    }
+                });
+            }
 
             if(usedData == true)
             {
@@ -300,6 +332,44 @@ namespace Manufactures.Controllers.Api
             var viewModel = await Mediator.Send(query);
 
             return Ok(viewModel.data);
+        }
+
+        [HttpGet("color")]
+        public async Task<IActionResult> GetColor(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")] List<string> select = null, string keyword = null, string filter = "{}")
+        {
+            VerifyUser();
+
+            var query = _garmentCuttingOutRepository.Read(page, size, order, keyword, filter);
+            var total = query.Count();
+            query = query.Skip((page - 1) * size).Take(size);
+
+            List<GarmentCuttingOutListDto> garmentLoadingListDtos = _garmentCuttingOutRepository
+                .Find(query)
+                .Select(x => new GarmentCuttingOutListDto(x))
+                .ToList();
+
+            var dtoIds = garmentLoadingListDtos.Select(s => s.Id).ToHashSet();
+            var itemIds = _garmentCuttingOutItemRepository.Query
+                .Where(o => dtoIds.Contains(o.CutOutId))
+                .Select(s => s.Identity )
+                .ToHashSet();
+
+            var details = _garmentCuttingOutDetailRepository.Query
+                .Where(x => itemIds.Contains(x.CutOutItemId))
+                .Select(x => x.Color).ToHashSet();
+
+            List<object> color = new List<object>();
+            foreach (var detail in details)
+            {
+                color.Add(new { Color = detail });
+            }
+            await Task.Yield();
+            return Ok(color.ToHashSet(), info: new
+            {
+                page,
+                size,
+                color.Count
+            });
         }
     }
 }
