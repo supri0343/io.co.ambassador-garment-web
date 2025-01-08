@@ -58,7 +58,7 @@ namespace Manufactures.Application.GarmentCuttingOuts.CommandHandlers
 
 
             Dictionary<Guid, double> cuttingInDetailToBeUpdated = new Dictionary<Guid, double>();
-            Dictionary<GarmentFinishedGoodStock, double> finGood = new Dictionary<GarmentFinishedGoodStock, double>();
+            Dictionary<Guid, double> finGood = new Dictionary<Guid, double>();
 
             _garmentCuttingOutItemRepository.Find(o => o.CutOutId == cutOut.Identity).ForEach(async cutOutItem =>
             {
@@ -90,13 +90,13 @@ namespace Manufactures.Application.GarmentCuttingOuts.CommandHandlers
                         ).Select(s => new GarmentFinishedGoodStock(s)).Single();
 
                         //push data garment finished good stock
-                        if (finGood.ContainsKey(garmentFinishedGoodExist))
+                        if (finGood.ContainsKey(garmentFinishedGoodExist.Identity))
                         {
-                            finGood[garmentFinishedGoodExist] += cutOutDetail.CuttingOutQuantity;
+                            finGood[garmentFinishedGoodExist.Identity] += cutOutDetail.CuttingOutQuantity;
                         }
                         else
                         {
-                            finGood.Add(garmentFinishedGoodExist, cutOutDetail.CuttingOutQuantity);
+                            finGood.Add(garmentFinishedGoodExist.Identity, cutOutDetail.CuttingOutQuantity);
                         }
 
                         //delete garment finished good stock history
@@ -143,7 +143,7 @@ namespace Manufactures.Application.GarmentCuttingOuts.CommandHandlers
                 foreach (var finGoodStock in finGood)
                 {
                     var garmentFinishedGoodExist = _garmentFinishedGoodStockRepository.Query.Where(
-                        a => a.Identity == finGoodStock.Key.Identity
+                        a => a.Identity == finGoodStock.Key
                         ).Select(s => new GarmentFinishedGoodStock(s)).Single();
 
                     var qty = garmentFinishedGoodExist.Quantity - finGoodStock.Value;
