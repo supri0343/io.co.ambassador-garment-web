@@ -221,6 +221,16 @@ namespace Manufactures.Domain.GarmentPreparings
             }
         }
 
+
+        public void SetCustomsCategory(string customsCategory)
+        {
+            if (customsCategory != CustomsCategory)
+            {
+                CustomsCategory = customsCategory;
+                ReadModel.CustomsCategory = customsCategory;
+            }
+        }
+
         public void SetDeleted()
         {
             MarkModified();
