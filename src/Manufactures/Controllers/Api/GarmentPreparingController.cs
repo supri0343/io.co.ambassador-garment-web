@@ -467,5 +467,22 @@ namespace Manufactures.Controllers.Api
 
             return Ok(viewModel.getCustomsByRO);
         }
+
+
+        [HttpPut("update-customs-category")]
+        public async Task<IActionResult> UpdateCustomsCategory([FromBody] UpdateCustomsCategoryPreparingCommand request)
+        {
+            VerifyUser(); // Ensure user authentication
+
+            // Convert request data into command format
+            var query = new UpdateCustomsCategoryPreparingCommand(request.Data);
+
+            // Send the command to Mediator for processing
+            var viewModel = await Mediator.Send(query);
+
+            return Ok(viewModel);
+        }
+
+
     }
 }
