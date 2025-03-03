@@ -379,7 +379,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 
 			};
 			monitoringDtos.Add(dtos);
-			listViewModel.garmentMonitorings = monitoringDtos;
+			listViewModel.garmentMonitorings = monitoringDtos.OrderByDescending(s => s.pebDate).ThenBy(s => s.pebNo).ToList(); ;
 			var reportDataTable = new DataTable();
 			//reportDataTable.Columns.Add(new DataColumn() { ColumnName = "NO", DataType = typeof(int) });
 			reportDataTable.Columns.Add(new DataColumn() { ColumnName = "NO PEB", DataType = typeof(string) });
