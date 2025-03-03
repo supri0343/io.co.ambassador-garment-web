@@ -352,7 +352,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
                     monitoringDtos.Add(dto);
                 }
 			}
-			listViewModel.garmentMonitorings = monitoringDtos;
+			listViewModel.garmentMonitorings = monitoringDtos.OrderByDescending(s => s.pebDate).ThenBy(s => s.pebNo).ToList();
 			return listViewModel;
 		}
 	}
