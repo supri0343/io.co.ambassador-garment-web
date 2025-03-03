@@ -1,4 +1,5 @@
 ﻿using Infrastructure.Domain.ReadModels;
+using Moonlay.Domain;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -30,5 +31,8 @@ namespace Manufactures.Domain.GarmentPreparings.ReadModels
 
         public string ROSource { get; internal set; }
         public string CustomsCategory { get; internal set; }
+
     }
+
+
 }
