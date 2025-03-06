@@ -255,12 +255,12 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 			//                      unitname = a.UnitName};
 
 			var Query = (from a in (from aa in garmentExpenditureGoodRepository.Query
-								   where aa.ExpenditureDate >= dateFrom && aa.ExpenditureDate <= dateTo
+								   where aa.ExpenditureDate.AddHours(7).Date >= dateFrom.Date && aa.ExpenditureDate.AddHours(7).Date <= dateTo.Date
 								   select aa)
 						join b in garmentExpenditureGoodItemRepository.Query on a.Identity equals b.ExpenditureGoodId
-						where a.ExpenditureDate >= dateFrom && a.ExpenditureDate <= dateTo
-
-
+						join c in garmentPreparingRepository.Query on a.RONo equals c.RONo
+						join d in garmentPreparingItemRepository.Query on c.Identity equals d.GarmentPreparingId
+						where d.CustomsCategory == "FASILITAS" && a.ExpenditureDate.AddHours(7).Date >= dateFrom.Date && a.ExpenditureDate.AddHours(7).Date <= dateTo.Date
 						//select new monitoringView { fc = (from aa in sumFCs where aa.RO == a.RONo select aa.FC / aa.Count).FirstOrDefault(),
 						select new monitoringView
 						{
@@ -268,7 +268,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 							//price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.BasicPrice / aa.Count).FirstOrDefault()),
 							//price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.AvgBasicPrice).FirstOrDefault()),
 							//buyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(),
-							expenditureDate = a.ExpenditureDate,
+							expenditureDate = a.ExpenditureDate.AddHours(7).Date,
 							expenditureGoodNo = a.ExpenditureGoodNo,
 							expenditureGoodItemId = b.Identity,
 							//buyerArticle = a.BuyerCode + " " + a.Article,
