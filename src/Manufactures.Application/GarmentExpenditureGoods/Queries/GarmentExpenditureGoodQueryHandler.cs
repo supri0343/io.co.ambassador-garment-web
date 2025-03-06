@@ -279,7 +279,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
                             invoice = a.Invoice,
                             //colour = b.Description,
                             qty = b.Quantity,
-                            productCode = d.ProductCode,
+                            //productCode = d.ProductCode,
                             UId = a.UId
                             //name = (from cost in costCalculation.data where cost.ro == a.RONo select cost.comodityName).FirstOrDefault(),
                             //unitname = a.UnitName
@@ -335,7 +335,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
 					expenditureDate = item.expenditureDates,
 					qty = item.qty,
                     comodityCode = item.comodityCode,
-                    comodityName = item.comodityName + " - " + (exceptionBonNo.Contains(item.expendituregoodNo) ? item.UId:  finalRemark),
+                    comodityName = item.comodityName /*+ " - " + (exceptionBonNo.Contains(item.expendituregoodNo) ? item.UId:  finalRemark)*/,
                     uomUnit = item.uomUnit,
                     price =(decimal) (peb == null ? 0 : peb.Nominal) ,
                     //colour = item.color,
