@@ -266,7 +266,7 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
                             //price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.BasicPrice / aa.Count).FirstOrDefault()),
                             //price = Convert.ToDecimal((from aa in sumbasicPrice where aa.RO == a.RONo select aa.AvgBasicPrice).FirstOrDefault()),
                             //buyerCode = (from cost in costCalculation.data where cost.ro == a.RONo select cost.buyerCode).FirstOrDefault(),
-                            expenditureDate = a.ExpenditureDate,
+                            expenditureDate = a.ExpenditureDate.AddHours(7),
                             expenditureGoodNo = a.ExpenditureGoodNo,
                             expenditureGoodItemId = b.Identity,
                             //buyerArticle = a.BuyerCode + " " + a.Article,
