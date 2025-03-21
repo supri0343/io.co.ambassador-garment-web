@@ -29,7 +29,7 @@ namespace Manufactures.Data.EntityFrameworkCore.GarmentDeliveryReturns.Config
             builder.Property(a => a.Level)
               .HasMaxLength(100);
             builder.Property(a => a.Colour)
-              .HasMaxLength(100);
+              .HasMaxLength(1000);
             builder.Property(a => a.Box)
               .HasMaxLength(100);
             builder.Property(a => a.Area)
