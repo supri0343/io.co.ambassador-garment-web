@@ -314,7 +314,10 @@ namespace Manufactures.Application.GarmentExpenditureGoods.Queries
             string[] exceptionBonNo = { "EGEAG223100009", "EGEAG223100060" };
             foreach (var item in querySum)
 			{
-                var peb = Pebs.data.FirstOrDefault(x => x.BonNo.Trim() == item.invoices);
+                var peb = Pebs.data
+                    .GroupBy(s => new { s.BCNo,s.BCDate,s.BuyerName,s.Country,s.CurrencyCode,s.BonNo})
+                    .Select(s => new {s.Key.BCNo,s.Key.BCDate,s.Key.BuyerName,s.Key.Country,s.Key.CurrencyCode,s.Key.BonNo, Nominal = s.Sum(r => r.Nominal) })
+                    .FirstOrDefault(x => x.BonNo.Trim() == item.invoices);
                 DateTime? non = null;
 
                 var remark = Codes.FirstOrDefault(x => x.Code == item.productCode);
